@@ -45,4 +45,5 @@ clean :
 	@rm -f src/*.tab.cpp
 	@rm -f src/*.yy.cpp
 	@rm -f src/*.output
+	@rm -f src/*.d
 
