@@ -70,7 +70,11 @@ function_definition
 	;
 
 declaration_specifiers
-	: type_specifier { $$ = $1; }
+    :
+	/* : storage_class_specifier */
+	/* | storage_class_specifier declaration_specifiers */
+	| type_specifier { $$ = $1; }
+	| type_specifier declaration_specifiers
 	;
 
 type_specifier
@@ -81,17 +85,36 @@ type_specifier
 
 declarator
 	: direct_declarator { $$ = $1; }
+	/* | pointer direct_declarator */
 	;
 
 direct_declarator
-	: IDENTIFIER {
-		$$ = new Identifier(*$1);
-		delete $1;
-	}
-	| direct_declarator '(' ')' {
-		$$ = new DirectDeclarator($1);
-	}
+    : IDENTIFIER {
+        $$ = new Identifier(*$1);
+        delete $1;
+    }
+    /* | '(' declarator ')'
+    | direct_declarator '[' constant_expression ']'
+    | direct_declarator '[' ']' */
+    | direct_declarator '(' parameter_list ')' {
+		$$ = new DirectDeclarator($1, $3);}
+    /* | direct_declarator '(' identifier_list ')' */
+    | direct_declarator '(' ')' {
+        $$ = new DirectDeclarator($1);
+    }
+    ;
+
+parameter_list
+	: parameter_declaration {$$ = $1;}
+	| parameter_list ',' parameter_declaration
 	;
+
+parameter_declaration
+	: declaration_specifiers declarator {$$ = new ParameterDeclarator($1, $2);}
+	/* | declaration_specifiers abstract_declarator
+	| declaration_specifiers */
+	;
+
 
 statement
 	: jump_statement { $$ = $1; }
