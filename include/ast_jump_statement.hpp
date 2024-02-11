@@ -10,13 +10,13 @@ private:
 
 public:
     ReturnStatement(Node *expression) : expression_(expression) {}
-    ~ReturnStatement()
+    virtual ~ReturnStatement()
     {
         delete expression_;
     };
 
-    void EmitRISC(std::ostream &stream, Context &context) const override;
-    void Print(std::ostream &stream) const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override;
+    virtual void Print(std::ostream &stream) const override;
 };
 
 #endif

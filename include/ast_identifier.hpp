@@ -10,9 +10,9 @@ private:
 
 public:
   Identifier(std::string &identifier) : identifier_(identifier){};
-  ~Identifier(){};
-  void EmitRISC(std::ostream &stream, Context &context) const override;
-  void Print(std::ostream &stream) const override;
+  virtual ~Identifier(){};
+  virtual void EmitRISC(std::ostream &stream, Context &context) const override;
+  virtual void Print(std::ostream &stream) const override;
 };
 
 #endif

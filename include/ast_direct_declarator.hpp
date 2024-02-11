@@ -11,13 +11,13 @@ private:
 
 public:
     DirectDeclarator(Node *identifier, Node *parameter_list=nullptr) : identifier_(identifier), parameter_list_(parameter_list){};
-    ~DirectDeclarator()
+    virtual ~DirectDeclarator()
     {
         delete identifier_;
         delete parameter_list_;
     };
-    void EmitRISC(std::ostream &stream, Context &context) const override;
-    void Print(std::ostream &stream) const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context) const override;
+    virtual void Print(std::ostream &stream) const override;
 };
 
 #endif
