@@ -6,15 +6,15 @@
 class ParameterDeclarator : public Node
 {
 private:
-    Node* type_specifier_;
+    Node* declaration_specifier_;
     Node* declarator_;
 
 
 public:
-  ParameterDeclarator(Node *type_specifier, Node *declarator) : type_specifier_(type_specifier), declarator_(declarator){};
-  ~ParameterDeclarator(){};
-  void EmitRISC(std::ostream &stream, Context &context) const override;
-  void Print(std::ostream &stream) const override;
+  ParameterDeclarator(Node *declaration_specifier, Node *declarator) : declaration_specifier_(declaration_specifier), declarator_(declarator){};
+  virtual ~ParameterDeclarator(){};
+  virtual void EmitRISC(std::ostream &stream, Context &context) const override;
+  virtual void Print(std::ostream &stream) const override;
 };
 
 #endif
