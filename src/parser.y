@@ -106,7 +106,7 @@ direct_declarator
     ;
 
 parameter_list
-	: parameter_declaration {$$ = new NodeList($1);}
+	: parameter_declaration {$$ = new ParameterList($1);}
 	| parameter_list ',' parameter_declaration {$$ = $1; $1->PushBack($3);}
 	;
 
