@@ -36,11 +36,11 @@
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_list parameter_declaration
+%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement declaration_list expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list
+%type <nodes> statement_list parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -74,7 +74,7 @@ declaration_specifiers
 	/* : storage_class_specifier */
 	/* | storage_class_specifier declaration_specifiers */
 	| type_specifier { $$ = $1; }
-	| type_specifier declaration_specifiers
+	/* | type_specifier declaration_specifiers */
 	;
 
 type_specifier
@@ -97,7 +97,8 @@ direct_declarator
     | direct_declarator '[' constant_expression ']'
     | direct_declarator '[' ']' */
     | direct_declarator '(' parameter_list ')' {
-		$$ = new DirectDeclarator($1, $3);}
+		$$ = new DirectDeclarator($1, $3);
+	}
     /* | direct_declarator '(' identifier_list ')' */
     | direct_declarator '(' ')' {
         $$ = new DirectDeclarator($1);
@@ -105,8 +106,8 @@ direct_declarator
     ;
 
 parameter_list
-	: parameter_declaration {$$ = $1;}
-	| parameter_list ',' parameter_declaration
+	: parameter_declaration {$$ = new NodeList($1);}
+	| parameter_list ',' parameter_declaration {$$ = $1; $1->PushBack($3);}
 	;
 
 parameter_declaration
@@ -139,13 +140,17 @@ jump_statement
 	;
 
 primary_expression
-	: INT_CONSTANT {
+	: IDENTIFIER {
+		$$ = new Identifier(*$1);
+		delete $1;
+	}
+	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
 	;
 
 postfix_expression
-	: primary_expression
+	: primary_expression { $$ = $1; }
 	;
 
 argument_expression_list
@@ -153,63 +158,63 @@ argument_expression_list
 	;
 
 unary_expression
-	: postfix_expression
+	: postfix_expression { $$ = $1; }
 	;
 
 cast_expression
-	: unary_expression
+	: unary_expression { $$ = $1; }
 	;
 
 multiplicative_expression
-	: cast_expression
+	: cast_expression { $$ = $1; }
 	;
 
 additive_expression
-	: multiplicative_expression
+	: multiplicative_expression { $$ = $1; }
 	;
 
 shift_expression
-	: additive_expression
+	: additive_expression { $$ = $1; }
 	;
 
 relational_expression
-	: shift_expression
+	: shift_expression { $$ = $1; }
 	;
 
 equality_expression
-	: relational_expression
+	: relational_expression { $$ = $1; }
 	;
 
 and_expression
-	: equality_expression
+	: equality_expression { $$ = $1; }
 	;
 
 exclusive_or_expression
-	: and_expression
+	: and_expression { $$ = $1; }
 	;
 
 inclusive_or_expression
-	: exclusive_or_expression
+	: exclusive_or_expression { $$ = $1; }
 	;
 
 logical_and_expression
-	: inclusive_or_expression
+	: inclusive_or_expression { $$ = $1; }
 	;
 
 logical_or_expression
-	: logical_and_expression
+	: logical_and_expression { $$ = $1; }
 	;
 
 conditional_expression
-	: logical_or_expression
+	: logical_or_expression { $$ = $1; }
 	;
 
 assignment_expression
-	: conditional_expression
+	: conditional_expression { $$ = $1; }
 	;
 
 expression
-	: assignment_expression
+	: assignment_expression { $$ = $1; }
 	;
 
 %%

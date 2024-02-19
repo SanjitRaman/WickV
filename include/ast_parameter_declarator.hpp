@@ -12,7 +12,10 @@ private:
 
 public:
   ParameterDeclarator(Node *declaration_specifier, Node *declarator) : declaration_specifier_(declaration_specifier), declarator_(declarator){};
-  virtual ~ParameterDeclarator(){};
+  virtual ~ParameterDeclarator(){
+    delete declaration_specifier_;
+    delete declarator_;
+  };
   virtual void EmitRISC(std::ostream &stream, Context &context) const override;
   virtual void Print(std::ostream &stream) const override;
 };

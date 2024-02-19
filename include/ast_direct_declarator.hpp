@@ -14,7 +14,9 @@ public:
     virtual ~DirectDeclarator()
     {
         delete identifier_;
-        delete parameter_list_;
+        if (parameter_list_ != nullptr) {
+            delete parameter_list_;
+        }
     };
     virtual void EmitRISC(std::ostream &stream, Context &context) const override;
     virtual void Print(std::ostream &stream) const override;
