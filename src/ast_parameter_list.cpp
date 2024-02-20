@@ -16,7 +16,6 @@ void ParameterList::Print(std::ostream &stream) const
         int n = nodes_.size();
         for (int i = 0; i < n-1; i++)
         {
-            std::cout << "Printing parameter list" << std::endl;
             if (nodes_[i] == nullptr)
             {
                 continue;
