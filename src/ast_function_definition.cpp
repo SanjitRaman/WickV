@@ -22,7 +22,7 @@ void FunctionDefinition::Print(std::ostream &stream) const
     stream << " ";
 
     declarator_->Print(stream);
-    stream << "() {" << std::endl;
+    stream << " {" << std::endl;
 
     if (compound_statement_ != nullptr)
     {
