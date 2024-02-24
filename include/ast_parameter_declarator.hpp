@@ -1,5 +1,5 @@
-#ifndef AST_PARAMETER_LIST_HPP
-#define AST_PARAMETER_LIST_HPP
+#ifndef AST_PARAMETER_DECLARATOR_HPP
+#define AST_PARAMETER_DECLARATOR_HPP
 
 #include "ast_node.hpp"
 

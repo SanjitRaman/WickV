@@ -17,6 +17,7 @@
 %union{
   Node         *node;
   NodeList     *nodes;
+  ParameterList *parameter_list;
   int          number_int;
   double       number_float;
   std::string  *string;
@@ -40,7 +41,8 @@
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement declaration_list expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list parameter_list
+%type <nodes> statement_list
+%type <parameter_list> parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
@@ -106,7 +108,7 @@ direct_declarator
     ;
 
 parameter_list
-	: parameter_declaration {$$ = new NodeList($1);}
+	: parameter_declaration {$$ = new ParameterList($1);}
 	| parameter_list ',' parameter_declaration {$$ = $1; $1->PushBack($3);}
 	;
 
