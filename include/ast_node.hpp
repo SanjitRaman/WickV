@@ -21,7 +21,7 @@ public:
 // Represents a list of nodes.
 class NodeList : public Node
 {
-private:
+protected:
     std::vector<Node *> nodes_;
 
 public:
