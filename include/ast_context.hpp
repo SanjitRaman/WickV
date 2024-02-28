@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <utility>
+#include <iostream>
 #include "ast_data_type.hpp"
 
 
@@ -13,17 +14,14 @@
 // compiled (e.g. function scope and variable names).
 
 //Stores 
-struct function_properties {
-    std::unordered_map<std::string, data_type> funct_params; //(change : just storing identifiers)
-    data_type return_type; // todo
-};
+
 
 struct variable {};
 
 
 struct param {
     std::string param_name;
-    int offset;
+    std::string offset;
     data_type type;
 };
 //Scope : store local var bindings in the memory scope 
@@ -52,7 +50,8 @@ class Context
             param new_param;
             new_param.param_name = param_name;
             new_param.type = param_type;
-            new_param.param_offset = offset;
+            new_param.offset = param_offset;
+
 
         } //TODO: call to update params in parameter_list
 
@@ -80,10 +79,8 @@ class Context
         }
 
 
-        //May not need
-        void AllocateStack(int num_bytes, std::){
-            
-        }
+        //Probs won't need
+        void AllocateStack(int num_bytes){}
 
 
 };

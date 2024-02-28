@@ -1,7 +1,8 @@
 #ifndef AST_DATA_TYPE_HPP
 #define AST_DATA_TYPE_HPP
 enum data_type {
-    INT
+    INTEGER,
+    INVALID
     // todo add more data types
 };
 

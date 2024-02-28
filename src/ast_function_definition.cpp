@@ -18,7 +18,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     }
 
     // Epilog
-    CreateEpilog();
+    // CreateEpilog();
 }
 
 void FunctionDefinition::Print(std::ostream &stream) const

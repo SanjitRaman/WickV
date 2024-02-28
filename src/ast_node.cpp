@@ -7,6 +7,15 @@ Node::~Node()
         delete branch;
     }
 }
+data_type Node::getType() const {
+    return INVALID; //Shouldn't go here
+}
+
+std::string Node::getId() const {
+    return "ERROR"; //Shouldn't go here
+}
+
+
 
 void NodeList::PushBack(Node *item)
 {
