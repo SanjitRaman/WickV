@@ -14,12 +14,18 @@
 
 //Stores 
 struct function_properties {
-    std::vector<std::pair<std::string, data_type>> param; //(change : just storing identifiers)
+    std::unordered_map<std::string, data_type> funct_params; //(change : just storing identifiers)
     data_type return_type; // todo
 };
 
 struct variable {};
 
+
+struct param {
+    std::string param_name;
+    int offset;
+    data_type type;
+};
 //Scope : store local var bindings in the memory scope 
 
 
@@ -28,30 +34,51 @@ class Context
 {
     /* TODO decide what goes inside here */
     public:
-        std::vector<std::map<std::string, variable>> scopes; //Stores symbol tables
+        std::vector<std::unordered_map<std::string, variable>> scopes; //Stores symbol tables
+        std::unordered_map<std::string, param> params; //Clear params in exit scope
+        std::unordered_map<std::string, function_properties> functions;
         
-        std::map<std::string, function_properties> functions;
-        
-        std::map<std::string, variable> bindings; //Bindings (Local variables) for current scope
+        std::unordered_map<std::string, variable> bindings; //Bindings (Local variables) for current scope
 
 
         int frame_size = 128; //Size of stack frame
+        int remaining_mem; //Offset 
+        
 
-        void set_function_params(std::string function_name, std::string param_name, data_type param_type){} //TODO: Implement
+        void set_function_params(std::string function_name, function_properties function_info){} //TODO: Implement to update params (call in function_definition after prolog)
+
+
+        void update_params(std::string param_name, data_type param_type, std::string param_offset){
+            param new_param;
+            new_param.param_name = param_name;
+            new_param.type = param_type;
+            new_param.param_offset = offset;
+
+        } //TODO: call to update params in parameter_list
 
         void set_local_vars(std::string function_name, std::string var_name, data_type var_type){} //TODO : set bindings 
 
+        std::string getMemory(int mem_size){
+            if (remaining_mem == 0){
+                return ""; //ERROR            
+            }
+            else{
+                remaining_mem -= mem_size;
+                return std::to_string(remaining_mem);
+            }
+        }
         
 
         void CreateScope(std::ostream &stream){
             //Store local variables, parameters and return type
             scopes.push_back(bindings);
             bindings.clear(); //Reset bindings for new scope
-
-            stream << "addi sp, sp, " << frame_size << std::endl;
+            remaining_mem = frame_size; //Resets offset 
+            stream << "addi sp, sp, -" << frame_size << std::endl;
 
 
         }
+
 
         //May not need
         void AllocateStack(int num_bytes, std::){

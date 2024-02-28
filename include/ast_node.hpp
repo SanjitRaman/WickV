@@ -16,6 +16,7 @@ public:
     virtual ~Node();
     virtual void EmitRISC(std::ostream &stream, Context &context) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
+    virtual std::string getType() const;
 };
 
 // Represents a list of nodes.

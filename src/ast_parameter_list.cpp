@@ -2,13 +2,23 @@
 
 void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
     {
-        for (auto node : nodes_)
+        std::unordered_map<std::string, data_type> params;
+        int i = 0;
+        std::string offset;
+        const int INT_MEM = 4;
+        for (auto param : nodes_)
         {
-            if (node == nullptr)
+            if (param == nullptr)
             {
                 continue;
             }
-            node->EmitRISC(stream, context);
+            params[param->getId()] = param->getType(); //so we know the offset in compound statement
+            offset = context.getMemory(INT_MEM);
+            stream << "sw a" << i << ", " << offset << "(sp)" << std::endl; //We know which register to use by order that function declares parameters 
+            i++;
+            context.update_params(param->getId(), param->getType(), offset);
+        
+            // node->EmitRISC(stream, context);
         }
     }
 void ParameterList::Print(std::ostream &stream) const 

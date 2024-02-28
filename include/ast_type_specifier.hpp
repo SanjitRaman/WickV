@@ -13,6 +13,7 @@ public:
     virtual ~TypeSpecifier(){};
     virtual void EmitRISC(std::ostream &stream, Context &context) const override;
     virtual void Print(std::ostream &stream) const override;
+    virtual std::string getType() const override;
 };
 
 #endif

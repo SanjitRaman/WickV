@@ -4,6 +4,11 @@ void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context) const
 {
     identifier_->EmitRISC(stream, context);
     stream << ":" << std::endl;
+    
+    //Prolog
+    context.CreateScope(stream);
+    
+
 }
 
 void DirectDeclarator::Print(std::ostream &stream) const

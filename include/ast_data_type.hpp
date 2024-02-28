@@ -5,6 +5,12 @@ enum data_type {
     // todo add more data types
 };
 
+//MIGHT DELETE
+struct function_properties {
+    std::unordered_map<std::string, data_type> funct_params; //(change : just storing identifiers)
+    data_type return_type; // todo
+};
+
 
 
 #endif

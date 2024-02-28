@@ -11,8 +11,6 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     
     declarator_->EmitRISC(stream, context);
     
-    //Prolog
-    context.CreateScope(); 
 
     if (compound_statement_ != nullptr)
     {
