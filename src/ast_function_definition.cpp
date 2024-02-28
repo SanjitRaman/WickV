@@ -7,13 +7,20 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     // the concept of directives and correct them.
     stream << ".text" << std::endl;
     stream << ".globl f" << std::endl;
-
+    
+    
     declarator_->EmitRISC(stream, context);
+    
+    //Prolog
+    context.CreateScope(); 
 
     if (compound_statement_ != nullptr)
     {
         compound_statement_->EmitRISC(stream, context);
     }
+
+    // Epilog
+    CreateEpilog();
 }
 
 void FunctionDefinition::Print(std::ostream &stream) const
