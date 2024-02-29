@@ -16,7 +16,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     {
         compound_statement_->EmitRISC(stream, context);
     }
-
+    context.ExitScope(stream);
     // Epilog
     // CreateEpilog();
 }

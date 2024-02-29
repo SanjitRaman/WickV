@@ -15,21 +15,54 @@
 
 //Stores 
 
+static int makeNameUnq=0;
 
-struct variable {};
+static std::string makeName(std::string base)
+{
+    return "_"+base+"_"+std::to_string(makeNameUnq++);
+}
+
+
+struct variable {
+    int offset;
+};
 
 
 struct param {
-    std::string param_name;
     std::string offset;
     data_type type;
 };
 //Scope : store local var bindings in the memory scope 
 
+struct reg_file {
+    int Regs[32] = {
+            1,                      //x0            zero        Zero
+            1,                      //x1            ra          Return address
+            1,                      //x2            sp          Stack pointer
+            1,                      //x3            gp          Global pointer
+            1,                      //x4            tp          Thread pointer
+            0,0,0,                  //x5 - x7       t0 - t2     Temporary registers
+            1,1,                    //x8 - x9       s0 - s1     Callee-saved registers
+            1,1,1,1,1,1,1,1,        //x10 - x17     a0 - a7     Argument registers
+            1,1,1,1,1,1,1,1,1,1,    //x18 - x27     s2 - s11    Callee-saved registers
+            0,0,0,0                 //x28 - x31     t3 - t6     Temporary registers
+        };
+
+    void setReg(int reg, int val){ //Val should be 0 or 1
+        Regs[reg] = val;
+    }
+    int getReg(int reg){
+        return Regs[reg];
+    }
+
+};
+
 
 
 class Context
 {
+    protected:
+        reg_file risc_regs;
     /* TODO decide what goes inside here */
     public:
         std::vector<std::unordered_map<std::string, variable>> scopes; //Stores symbol tables
@@ -48,12 +81,12 @@ class Context
 
         void update_params(std::string param_name, data_type param_type, std::string param_offset){
             param new_param;
-            new_param.param_name = param_name;
             new_param.type = param_type;
             new_param.offset = param_offset;
+            params[param_name] = new_param;
 
 
-        } //TODO: call to update params in parameter_list
+        } //TODO: call to update params in parameter_list DONE
 
         void set_local_vars(std::string function_name, std::string var_name, data_type var_type){} //TODO : set bindings 
 
@@ -67,6 +100,19 @@ class Context
             }
         }
         
+        std::string allocateReg(){
+            for (int i = 0; i < 32; i++){
+                if (risc_regs.getReg(i) == 0){
+                    risc_regs.setReg(i, 1);
+                    return "x" + std::to_string(i);
+                }
+            }
+            return ""; //ERROR
+        }
+
+        std::string deallocateReg(std::string reg){
+            risc_regs.setReg(std::stoi(reg), 0);
+        }
 
         void CreateScope(std::ostream &stream){
             //Store local variables, parameters and return type
@@ -75,7 +121,14 @@ class Context
             remaining_mem = frame_size; //Resets offset 
             stream << "addi sp, sp, -" << frame_size << std::endl;
 
+        }
 
+        void ExitScope(std::ostream &stream){
+            //Pop the last scope
+            bindings = scopes.back();
+            scopes.pop_back();
+            params.clear(); //The param offsets should be pushed into functions straight after prolog
+            stream << "addi sp, sp, " << frame_size << std::endl;
         }
 
 

@@ -143,7 +143,7 @@ jump_statement
 
 primary_expression
 	: IDENTIFIER {
-		$$ = new Identifier(*$1);
+		$$ = new Variable(*$1); //Variable?
 		delete $1;
 	}
 	| INT_CONSTANT {

@@ -14,7 +14,7 @@ protected:
 public:
     Node(){};
     virtual ~Node();
-    virtual void EmitRISC(std::ostream &stream, Context &context) const = 0;
+    virtual void EmitRISC(std::ostream &stream, Context &context, std::string destReg = "") const = 0;
     virtual void Print(std::ostream &stream) const = 0;
     virtual data_type getType() const;
     virtual std::string getId() const;

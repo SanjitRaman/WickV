@@ -7,6 +7,8 @@ void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context) const
     
     //Prolog
     context.CreateScope(stream);
+
+    parameter_list_->EmitRISC(stream, context);
     
 
 }
