@@ -33,6 +33,10 @@ void NodeList::EmitRISC(std::ostream &stream, Context &context) const
         node->EmitRISC(stream, context);
     }
 }
+void NodeList::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+{
+
+}
 
 void NodeList::Print(std::ostream &stream) const
 {

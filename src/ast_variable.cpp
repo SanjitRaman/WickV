@@ -1,4 +1,8 @@
 #include "ast_variable.hpp"
+void Variable::EmitRISC(std::ostream &stream, Context &context) const
+{
+
+}
 
 void Variable::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
 {
@@ -22,10 +26,10 @@ void Variable::EmitRISC(std::ostream &stream, Context &context, std::string dest
 }
 
 std::string Variable::getId() const {
-    return Id_
+    return Id_;
 }
 
 void Variable::Print(std::ostream &stream) const
 {
-    stream << identifier_;
+    stream << Id_;
 };

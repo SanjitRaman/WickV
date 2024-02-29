@@ -21,6 +21,11 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
             // node->EmitRISC(stream, context);
         }
     }
+
+void ParameterList::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+{
+
+}
 void ParameterList::Print(std::ostream &stream) const 
     {
         int n = nodes_.size();

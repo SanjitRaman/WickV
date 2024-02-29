@@ -11,7 +11,10 @@ void ParameterDeclarator::EmitRISC(std::ostream &stream, Context &context) const
     declarator_->EmitRISC(stream, context);
   }
 }
+void ParameterDeclarator::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+{
 
+}
 data_type ParameterDeclarator::getType() const 
 {
   return declaration_specifier_->getType();

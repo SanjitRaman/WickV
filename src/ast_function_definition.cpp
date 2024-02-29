@@ -17,10 +17,16 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
         compound_statement_->EmitRISC(stream, context);
     }
     context.ExitScope(stream);
+
+    stream << "ret" << std::endl;
     // Epilog
     // CreateEpilog();
 }
 
+void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+{
+
+}
 void FunctionDefinition::Print(std::ostream &stream) const
 {
     declaration_specifiers_->Print(stream);

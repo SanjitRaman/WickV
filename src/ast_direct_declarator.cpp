@@ -13,6 +13,11 @@ void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context) const
 
 }
 
+void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+{
+
+}
+
 void DirectDeclarator::Print(std::ostream &stream) const
 {
     identifier_->Print(stream);
