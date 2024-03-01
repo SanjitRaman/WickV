@@ -18,6 +18,7 @@
   Node         *node;
   NodeList     *nodes;
   ParameterList *parameter_list;
+  // DeclarationList *declaration_list;
   int          number_int;
   double       number_float;
   std::string  *string;
@@ -284,8 +285,8 @@ expression
 	;
 
 declaration
-	: declaration_specifiers ';' // No need for a for loop
-	| declaration_specifiers init_declarator_list ';' { $$ = $2 ; $2->SetType($1); } //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
+	: declaration_specifiers ';' // Unsure what to do here
+	| declaration_specifiers init_declarator_list ';' { $$ = Declaration($1, $2); } //(Set type of declaration here) //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
 	;
 
 declaration_specifiers
@@ -297,14 +298,18 @@ declaration_specifiers
 	/* | type_specifier declaration_specifiers */
 
 init_declarator_list
-	: init_declarator { $$ = new DeclarationList($1); } //Node (Declaration)
+	: init_declarator { $$ = new InitDeclaratorList($1); } //Node (Declaration)
 	| init_declarator_list ',' init_declarator {$$ = $1; $1->PushBack($2);} //NodeList (DeclarationList with vars and Declaration)
 	;
 
 init_declarator
-	: declarator { $$ = $1; }//create a declaration (just var might be fine) here with the declarator variable
-	| declarator '=' initializer {$$ = new VarDeclaration($1, $3)} //Create a declaration here with the declarator variable and the initializer (Set type if variable type exists)
+	: declarator { $$ = $1; }//create a declaration (just var, or function def might be fine) here with the declarator variable
+	| declarator '=' initializer {$$ = new VarAssign($1, $3)} // () Create a declaration here with the declarator variable and the initializer - type is set in Declaration
 	;
+
+//Create bindings in Declaration for each init_declarator
+// Assign the value of the initializer to the declarator in VarAssign->EmitRISC()
+
 
 
 %%

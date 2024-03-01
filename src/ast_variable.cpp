@@ -18,6 +18,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context, std::string dest
     }
     //If the variable is not present in bindings then it must be
     //  a local var which is yet to be initialised in the current scope
+    //TRY TO NOT USE THE BELOW CODE 
     else {
         context.createBinding(getId(), getType()); 
         stream << "sw " << destReg << context.bindings.at(getId()).offset << "(sp)" << std::endl;  
@@ -37,6 +38,10 @@ data_type Variable::getType() const {
 
 std::string Variable::getId() const {
     return Id_;
+}
+void Variable::setType(data_type type)
+{
+    type_ = type;
 }
 
 void Variable::Print(std::ostream &stream) const

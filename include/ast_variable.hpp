@@ -27,6 +27,7 @@ public:
   virtual void Print(std::ostream &stream) const override;
   virtual std::string getId() const override;
   virtual data_type getType() const override;
+  void setType(data_type type);
 };
 
 #endif

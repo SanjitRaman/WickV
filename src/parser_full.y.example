@@ -412,7 +412,7 @@ compound_statement
 		$$ = nullptr;
 	}
 	;
-
+/* Create a class called DeclarationList */ int x; float f; is valid for this 
 declaration_list
 	: declaration
 	| declaration_list declaration

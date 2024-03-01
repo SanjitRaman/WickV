@@ -21,6 +21,7 @@ public:
   virtual void Print(std::ostream &stream) const override;
   virtual data_type getType() const override; //may be overridden (return declarator_->getType())
   virtual std::string getId() const override; //may be overridden (return declarator_->getId()) but shouldn't be necessary
+  void setType(data_type type);
 };
 
 #endif
