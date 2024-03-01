@@ -258,8 +258,25 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression { $$ = $1; }
-	/* 	| unary_expression assignment_operator assignment_expression */
+	| unary_expression assignment_operator assignment_expression {$$ = new Assignment($1, $2, $3);} //Do I have to delete $2?
 	;
+
+assignment_operator
+	: '=' { $$ = $1; }
+	| MUL_ASSIGN
+	| DIV_ASSIGN
+	| MOD_ASSIGN
+	| ADD_ASSIGN
+	| SUB_ASSIGN
+	| LEFT_ASSIGN
+	| RIGHT_ASSIGN
+	| AND_ASSIGN
+	| XOR_ASSIGN
+	| OR_ASSIGN
+	;
+
+
+
 
 expression
 	: assignment_expression { $$ = $1; }
@@ -268,7 +285,7 @@ expression
 
 declaration
 	: declaration_specifiers ';' // No need for a for loop
-	| declaration_specifiers init_declarator_list ';' //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
+	| declaration_specifiers init_declarator_list ';' { $$ = $2 ; $2->SetType($1); } //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
 	;
 
 declaration_specifiers
@@ -280,13 +297,13 @@ declaration_specifiers
 	/* | type_specifier declaration_specifiers */
 
 init_declarator_list
-	: init_declarator //Node (Declaration)
-	| init_declarator_list ',' init_declarator //NodeList (DeclarationList with vars and Declaration)
+	: init_declarator { $$ = new DeclarationList($1); } //Node (Declaration)
+	| init_declarator_list ',' init_declarator {$$ = $1; $1->PushBack($2);} //NodeList (DeclarationList with vars and Declaration)
 	;
 
 init_declarator
-	: declarator //create a declaration (just var might be fine) here with the declarator variable
-	| declarator '=' initializer //Create a declaration here with the declarator variable and the initializer
+	: declarator { $$ = $1; }//create a declaration (just var might be fine) here with the declarator variable
+	| declarator '=' initializer {$$ = new VarDeclaration($1, $3)} //Create a declaration here with the declarator variable and the initializer (Set type if variable type exists)
 	;
 
 

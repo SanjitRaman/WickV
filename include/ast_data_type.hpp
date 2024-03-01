@@ -12,7 +12,7 @@ enum data_type {
 
 //MIGHT DELETE
 struct function_properties {
-    std::unordered_map<std::string, data_type> funct_params; //(change : just storing identifiers)
+    std::unordered_map<std::string, data_type> funct_params; //(change : just storing identifiers) //Change to <string, param>
     data_type return_type; // todo
 };
 
