@@ -24,7 +24,8 @@ static std::string makeName(std::string base)
 
 
 struct variable {
-    int offset;
+    std::string offset;
+    data_type type;
 };
 
 
@@ -88,7 +89,7 @@ class Context
 
         } //TODO: call to update params in parameter_list DONE
 
-        void set_local_vars(std::string function_name, std::string var_name, data_type var_type){} //TODO : set bindings 
+        void set_local_vars(std::string function_name, std::string var_name, data_type var_type){} //TODO : set bindings (may not need to link to function)
 
         std::string getMemory(int mem_size){
             if (remaining_mem == 0){
@@ -98,6 +99,14 @@ class Context
                 remaining_mem -= mem_size;
                 return std::to_string(remaining_mem);
             }
+        }
+
+        void createBinding(std::string id, data_type type){
+            std::string offset = getMemory(INT_MEM);
+            variable newVar;
+            newVar.offset = offset;
+            newVar.type = type;
+            bindings[id] = newVar;
         }
         
         std::string allocateReg(){
@@ -110,8 +119,9 @@ class Context
             return ""; //ERROR
         }
 
-        std::string deallocateReg(std::string reg){
-            risc_regs.setReg(std::stoi(reg), 0);
+        void deallocateReg(std::string reg){
+            int reg_num = std::stoi(reg.substr(1));
+            risc_regs.setReg(reg_num, 0);
         }
 
         void CreateScope(std::ostream &stream){

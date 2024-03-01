@@ -1,7 +1,7 @@
 #include "ast_variable.hpp"
 void Variable::EmitRISC(std::ostream &stream, Context &context) const
 {
-
+    stream << Id_;
 }
 
 void Variable::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
@@ -10,12 +10,18 @@ void Variable::EmitRISC(std::ostream &stream, Context &context, std::string dest
 
     //Check parameter bindings
     if (context.params.find(getId()) != context.params.end()){
-        stream << "lw " << destReg << ", (sp)" << context.params[getId()].offset << std::endl;
+        stream << "lw " << destReg << ", " << context.params[getId()].offset << "(sp)"  << std::endl;
     }
+    //Check local var bindings
     else if (context.bindings.find(getId()) != context.bindings.end()){
-        stream << "lw " << destReg << ", (sp)" << context.bindings[getId()].offset << std::endl;
+        stream << "lw " << destReg << ", " << context.bindings[getId()].offset << "(sp)"  << std::endl;
     }
-    else {}
+    //If the variable is not present in bindings then it must be
+    //  a local var which is yet to be initialised in the current scope
+    else {
+        context.createBinding(getId(), getType()); 
+        stream << "sw " << destReg << context.bindings.at(getId()).offset << "(sp)" << std::endl;  
+    }
 
     //Check local var bindings (TODO)
 
@@ -23,6 +29,10 @@ void Variable::EmitRISC(std::ostream &stream, Context &context, std::string dest
 
     return;
 
+}
+
+data_type Variable::getType() const {
+    return type_;
 }
 
 std::string Variable::getId() const {

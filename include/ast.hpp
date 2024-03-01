@@ -16,6 +16,7 @@
 #include "ast_parameter_declarator.hpp"
 #include "ast_parameter_list.hpp"
 #include "ast_variable.hpp"
+#include "ast_operators.hpp"
 extern Node *ParseAST(std::string file_name);
 
 #endif

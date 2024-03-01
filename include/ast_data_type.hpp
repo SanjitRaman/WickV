@@ -1,5 +1,9 @@
 #ifndef AST_DATA_TYPE_HPP
 #define AST_DATA_TYPE_HPP
+
+const int INT_MEM = 4;
+
+
 enum data_type {
     INTEGER,
     INVALID

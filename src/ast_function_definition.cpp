@@ -16,6 +16,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     {
         compound_statement_->EmitRISC(stream, context);
     }
+    std::cout << "wassup" << std::endl;
     context.ExitScope(stream);
 
     stream << "ret" << std::endl;
