@@ -8,6 +8,7 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
         {
             continue;
         }
+        if (node->)
         context.createBinding(node->getId(), declaration_specifiers_->getType());
         node->EmitRISC(stream, context);
     }

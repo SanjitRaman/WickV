@@ -6,7 +6,9 @@ const int INT_MEM = 4;
 
 enum data_type {
     INTEGER,
-    INVALID
+    INVALID,
+    FUNCTION,
+    VARIABLE
     // todo add more data types
 };
 

@@ -18,6 +18,16 @@ void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context, std::str
 
 }
 
+data_type DirectDeclarator::getType() const
+{
+    return data_type::FUNCTION;
+}
+
+std::string DirectDeclarator::getId() const
+{
+    return identifier_->getId();
+}
+
 void DirectDeclarator::Print(std::ostream &stream) const
 {
     identifier_->Print(stream);
