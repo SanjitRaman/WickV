@@ -31,7 +31,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context, std::string dest
     return;
 
 }
-
+//Try not to use below method
 data_type Variable::getType() const {
     return type_;
 }

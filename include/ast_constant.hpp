@@ -2,7 +2,7 @@
 #define AST_CONSTANT_HPP
 
 #include "ast_node.hpp"
-
+#include "ast_context.hpp"
 class IntConstant : public Node
 {
 private:

@@ -7,6 +7,7 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
         expression_->EmitRISC(stream, context, "a0"); // store the return value in a0 register
     }
     // stream << "ret" << std::endl;
+    stream << "beq zero, zero, " << context.getReturnLabel() << std::endl;
 }
 void ReturnStatement::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
 {

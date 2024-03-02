@@ -27,7 +27,7 @@
 
 %token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP AND_OP OR_OP
-%token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN
+%token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN ASSIGN
 %token TYPE_NAME TYPEDEF EXTERN STATIC AUTO REGISTER SIZEOF
 %token CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID
 %token STRUCT UNION ENUM ELLIPSIS
@@ -36,13 +36,13 @@
 %type <node> translation_unit external_declaration function_definition primary_expression postfix_expression argument_expression_list
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
-%type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list
+%type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
-%type <node> compound_statement declaration_list expression_statement selection_statement iteration_statement jump_statement
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list
+%type <nodes> statement_list declaration_list init_declarator_list
 %type <parameter_list> parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
@@ -127,15 +127,34 @@ initializer_list
 
 statement
 	: jump_statement { $$ = $1; }
-	;
+	| expression_statement { $$ = $1; }
+	/* | labeled_statement
+	| compound_statement
+	| selection_statement
+	| iteration_statement
+	; */
 
 compound_statement
-	: '{' statement_list '}' { $$ = $2; }
+	: '{' '}' {
+		// TODO: correct this
+		$$ = nullptr;
+	}
+	| '{' statement_list '}' { $$ = $2; }
+	| '{' declaration_list '}' { $$ = $2; }
+	| '{' declaration_list statement_list '}' { $$ = new MultiList($2, $3); } //May need to change
 	;
-
+declaration_list
+	: declaration { $$ = new NodeList($1); }
+	| declaration_list declaration {$1->PushBack($2); $$ = $1;}//Create declaration list here
+	;
 statement_list
 	: statement { $$ = new NodeList($1); }
 	| statement_list statement { $1->PushBack($2); $$=$1; }
+	;
+
+expression_statement
+	: ';'
+	| expression ';' { $$ = $1; }
 	;
 
 jump_statement
@@ -259,11 +278,11 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression { $$ = $1; }
-	| unary_expression assignment_operator assignment_expression {$$ = new Assignment($1, $2, $3);} //Do I have to delete $2?
+	| unary_expression assignment_operator assignment_expression {$$ = new Assignment($1, *$2, $3); delete $2;} //Do I have to delete $2? */
 	;
 
 assignment_operator
-	: '=' { $$ = $1; }
+	: ASSIGN { $$ = new std::string("="); }
 	| MUL_ASSIGN
 	| DIV_ASSIGN
 	| MOD_ASSIGN
@@ -286,7 +305,7 @@ expression
 
 declaration
 	: declaration_specifiers ';' // Unsure what to do here
-	| declaration_specifiers init_declarator_list ';' { $$ = Declaration($1, $2); } //(Set type of declaration here) //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
+	| declaration_specifiers init_declarator_list ';' { $$ = new Declaration($1, $2); } //(Set type of declaration here) //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
 	;
 
 declaration_specifiers
@@ -299,12 +318,12 @@ declaration_specifiers
 
 init_declarator_list
 	: init_declarator { $$ = new InitDeclaratorList($1); } //Node (Declaration)
-	| init_declarator_list ',' init_declarator {$$ = $1; $1->PushBack($2);} //NodeList (DeclarationList with vars and Declaration)
+	| init_declarator_list ',' init_declarator {$$ = $1; $1->PushBack($3);} //NodeList (DeclarationList with vars and Declaration)
 	;
 
 init_declarator
-	: declarator { $$ = $1; }//create a declaration (just var, or function def might be fine) here with the declarator variable
-	| declarator '=' initializer {$$ = new VarAssign($1, $3)} // () Create a declaration here with the declarator variable and the initializer - type is set in Declaration
+	: declarator { $$ = new InitDeclarator($1); }//create a declaration (just var, or function def might be fine) here with the declarator variable
+	| declarator '=' initializer {$$ = new VarAssign($1, $3); } // () Create a declaration here with the declarator variable and the initializer - type is set in Declaration
 	;
 
 //Create bindings in Declaration for each init_declarator

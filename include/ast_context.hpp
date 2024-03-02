@@ -69,7 +69,7 @@ class Context
         std::vector<std::unordered_map<std::string, variable>> scopes; //Stores symbol tables
         std::unordered_map<std::string, param> params; //Clear params in exit scope
         std::unordered_map<std::string, function_properties> functions;
-        
+        std::vector<std::string> return_branches;
         std::unordered_map<std::string, variable> bindings; //Bindings (Local variables) for current scope
 
 
@@ -129,12 +129,19 @@ class Context
             scopes.push_back(bindings);
             bindings.clear(); //Reset bindings for new scope
             remaining_mem = frame_size; //Resets offset 
+            return_branches.push_back(makeName("function_end")); //Create a unique label for the end of the function
             stream << "addi sp, sp, -" << frame_size << std::endl;
 
         }
+        std::string getReturnLabel(){
+            return return_branches.back();
+        }
+
+
 
         void ExitScope(std::ostream &stream){
             //Pop the last scope
+            return_branches.pop_back();
             bindings = scopes.back();
             scopes.pop_back();
             params.clear(); //The param offsets should be pushed into functions straight after prolog

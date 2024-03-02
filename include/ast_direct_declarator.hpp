@@ -2,7 +2,7 @@
 #define AST_DIRECT_DECLARATOR_HPP
 
 #include "ast_node.hpp"
-
+#include "ast_context.hpp"
 class DirectDeclarator : public Node
 {
 private:

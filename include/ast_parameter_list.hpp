@@ -14,7 +14,7 @@ class ParameterList : public NodeList
 public:
   ParameterList(Node *first_node) : NodeList(first_node) {}
 
-  ~ParameterList() {}
+  virtual ~ParameterList() {}
 
   // void PushBack(Node *item);
   virtual void EmitRISC(std::ostream &stream, Context &context) const override;

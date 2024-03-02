@@ -2,7 +2,7 @@
 #define AST_FUNCTION_DEFINITION_HPP
 
 #include "ast_node.hpp"
-
+#include "ast_context.hpp"
 class FunctionDefinition : public Node
 {
 private:

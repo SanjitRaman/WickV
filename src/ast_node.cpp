@@ -49,3 +49,6 @@ void NodeList::Print(std::ostream &stream) const
         node->Print(stream);
     }
 }
+const std::vector<Node*>& NodeList::getNodes() const {
+    return nodes_;
+}

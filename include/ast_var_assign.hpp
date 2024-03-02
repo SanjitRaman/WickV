@@ -1,9 +1,10 @@
-#ifndef AST_VAR_DECLARATION_HPP
-#define AST_VAR_DECLARATION_HPP
+#ifndef AST_VAR_ASSIGN_HPP
+#define AST_VAR_ASSIGN_HPP
 
 #include "ast_node.hpp"
+#include "ast_context.hpp"
 
-class VarDeclaration : public Node
+class VarAssign : public Node
 {
 private:
     Node* declarator_;
@@ -11,8 +12,8 @@ private:
 
 
 public:
-  VarDeclaration(Node *declarator_, Node *initializer_) : declarator_(declarator_), initializer_(initializer_){};
-  virtual ~VarDeclaration(){
+  VarAssign(Node *declarator_, Node *initializer_) : declarator_(declarator_), initializer_(initializer_){};
+  virtual ~VarAssign(){
     delete declarator_;
     delete initializer_;
   };
@@ -21,7 +22,7 @@ public:
   virtual void Print(std::ostream &stream) const override;
   virtual data_type getType() const override; //may be overridden (return declarator_->getType())
   virtual std::string getId() const override; //may be overridden (return declarator_->getId()) but shouldn't be necessary
-  void setType(data_type type);
+  // void setType(data_type type);
 };
 
 #endif
