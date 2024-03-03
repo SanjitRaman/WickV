@@ -15,7 +15,7 @@ void ParameterDeclarator::EmitRISC(std::ostream &stream, Context &context, std::
 {
 
 }
-data_type ParameterDeclarator::getType() const 
+entity_type ParameterDeclarator::getType() const 
 {
   return declaration_specifier_->getType();
 }

@@ -7,7 +7,7 @@ class Variable : public Node
 {
 private:
     std::string Id_;
-    data_type type_;
+    entity_type type_;
 
 public:
   Variable(std::string &id_, std::string type = "") : Id_(id_){
@@ -26,8 +26,8 @@ public:
   virtual void EmitRISC(std::ostream &stream, Context &context, std::string destReg) const override;
   virtual void Print(std::ostream &stream) const override;
   virtual std::string getId() const override;
-  virtual data_type getType() const override;
-  void setType(data_type type);
+  virtual entity_type getType() const override;
+  void setType(entity_type type);
 };
 
 #endif

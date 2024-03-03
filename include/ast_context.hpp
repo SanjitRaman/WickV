@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <utility>
 #include <iostream>
-#include "ast_data_type.hpp"
+#include "ast_entity_type.hpp"
 
 
 
@@ -25,13 +25,13 @@ static std::string makeName(std::string base)
 
 struct variable {
     std::string offset;
-    data_type type;
+    entity_type type;
 };
 
 
 struct param {
     std::string offset;
-    data_type type;
+    entity_type type;
 };
 //Scope : store local var bindings in the memory scope 
 
@@ -80,7 +80,7 @@ class Context
         void set_function_params(std::string function_name, function_properties function_info){} //TODO: Implement to update params (call in function_definition after prolog)
 
 
-        void update_params(std::string param_name, data_type param_type, std::string param_offset){
+        void update_params(std::string param_name, entity_type param_type, std::string param_offset){
             param new_param;
             new_param.type = param_type;
             new_param.offset = param_offset;
@@ -89,7 +89,7 @@ class Context
 
         } //TODO: call to update params in parameter_list DONE
 
-        void set_local_vars(std::string function_name, std::string var_name, data_type var_type){} //TODO : set bindings (may not need to link to function)
+        void set_local_vars(std::string function_name, std::string var_name, entity_type var_type){} //TODO : set bindings (may not need to link to function)
 
         std::string getMemory(int mem_size){
             if (remaining_mem == 0){
@@ -101,7 +101,7 @@ class Context
             }
         }
 
-        void createBinding(std::string id, data_type type){
+        void createBinding(std::string id, entity_type type){
             std::string offset = getMemory(INT_MEM);
             variable newVar;
             newVar.offset = offset;

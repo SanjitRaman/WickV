@@ -51,7 +51,7 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
         stream << "or " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
     }
     //For integer types
-    
+    std::cout << "sw " << tempReg1 << ", " << context.bindings.at(unary_expression_->getId()).offset << "(sp)" << std::endl; 
     stream << "sw " << tempReg1 << ", " << context.bindings.at(unary_expression_->getId()).offset << "(sp)" << std::endl; 
     
     stream << "mv " << tempReg1 << ", " << "zero" << std::endl;

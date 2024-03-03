@@ -18,9 +18,9 @@ void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context, std::str
 
 }
 
-data_type DirectDeclarator::getType() const
+entity_type DirectDeclarator::getType() const
 {
-    return data_type::FUNCTION;
+    return entity_type::FUNCTION;
 }
 
 std::string DirectDeclarator::getId() const

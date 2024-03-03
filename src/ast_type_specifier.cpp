@@ -10,7 +10,7 @@ void TypeSpecifier::Print(std::ostream &stream) const
     stream << type_;
 }
 
-data_type TypeSpecifier::getType() const {
+entity_type TypeSpecifier::getType() const {
     if (type_ == "int"){
         return INTEGER;
     }

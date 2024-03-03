@@ -7,7 +7,7 @@ Node::~Node()
         delete branch;
     }
 }
-data_type Node::getType() const {
+entity_type Node::getType() const {
     return INVALID; //Shouldn't go here
 }
 

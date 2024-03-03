@@ -2,7 +2,7 @@
 
 void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
     {
-        std::unordered_map<std::string, data_type> params;
+        std::unordered_map<std::string, entity_type> params;
         int i = 0;
         std::string offset;
         for (auto param : nodes_)

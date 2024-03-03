@@ -8,9 +8,9 @@ void InitDeclarator::EmitRISC(std::ostream &stream, Context &context, std::strin
 {
 
 }
-data_type InitDeclarator::getType() const 
+entity_type InitDeclarator::getType() const 
 {
-    //Shouldn't need to be called
+    return declarator_->getType();
 }
 
 std::string InitDeclarator::getId() const

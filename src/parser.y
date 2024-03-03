@@ -84,7 +84,7 @@ declarator
 	: direct_declarator { $$ = $1; }
 	/* | pointer direct_declarator */
 	;
-
+//Only use DirectDeclarator for function defs
 direct_declarator
     : IDENTIFIER {
         $$ = new Variable(*$1); //CHANGED FROM Identifier to Variable
@@ -114,13 +114,13 @@ parameter_declaration
 	;
 
 initializer
-	: assignment_expression
+	: assignment_expression { $$ = $1; }
 	| '{' initializer_list '}'
 	| '{' initializer_list ',' '}'
 	;
 
 initializer_list
-	: initializer
+	: initializer 
 	| initializer_list ',' initializer
 	;
 

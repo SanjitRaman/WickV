@@ -21,7 +21,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context, std::string dest
     //TRY TO NOT USE THE BELOW CODE 
     else {
         context.createBinding(getId(), getType()); 
-        stream << "sw " << destReg << context.bindings.at(getId()).offset << "(sp)" << std::endl;  
+        stream << "sw " << destReg << " " << context.bindings.at(getId()).offset << "(sp)" << std::endl;  
     }
 
     //Check local var bindings (TODO)
@@ -32,15 +32,15 @@ void Variable::EmitRISC(std::ostream &stream, Context &context, std::string dest
 
 }
 //Try not to use below method
-data_type Variable::getType() const {
+entity_type Variable::getType() const {
     // return type_;
-    return data_type::VARIABLE;
+    return entity_type::VARIABLE;
 }
 
 std::string Variable::getId() const {
     return Id_;
 }
-void Variable::setType(data_type type)
+void Variable::setType(entity_type type)
 {
     type_ = type;
 }

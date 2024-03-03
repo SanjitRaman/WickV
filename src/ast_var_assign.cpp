@@ -8,6 +8,7 @@ void VarAssign::EmitRISC(std::ostream &stream, Context &context) const
         //If it is then execute this code
         std::string offset = context.bindings.at(declarator_->getId()).offset;
         initializer_->EmitRISC(stream, context, varReg); //As it is an assignment, it cannot be null
+        std::cout << "sw " << varReg << ", " << offset << "(sp)" << std::endl;
         stream << "sw " << varReg << ", " << offset << "(sp)" << std::endl;
     }
     stream << "mv " << varReg << ", " << "zero" << std::endl; //Set the register to zero
@@ -18,9 +19,9 @@ void VarAssign::EmitRISC(std::ostream &stream, Context &context, std::string des
   //May not be necessary
   //But if it is then assign the value then move to destReg (maybe call var->emitRISC)
 }
-data_type VarAssign::getType() const 
+entity_type VarAssign::getType() const 
 {
-  return declarator_->getType();
+  return entity_type::VARIABLE_ASSIGN;
 }
 
 std::string VarAssign::getId() const
@@ -33,7 +34,7 @@ void VarAssign::Print(std::ostream &stream) const
 
 }
 //Try not to use below method
-// void VarAssign::setType(data_type type)
+// void VarAssign::setType(entity_type type)
 // {
 //  declarator_->setType(type);
 // }
