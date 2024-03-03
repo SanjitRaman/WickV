@@ -71,100 +71,10 @@ external_declaration
 function_definition
 	: declaration_specifiers declarator compound_statement {
 		$$ = new FunctionDefinition($1, $2, $3);
+		std::cout << "FunctionDefinition: " << std::endl;
 	}
 	;
 
-type_specifier
-	: INT {
-		$$ = new TypeSpecifier("int");
-	}
-	;
-
-declarator
-	: direct_declarator { $$ = $1; }
-	/* | pointer direct_declarator */
-	;
-//Only use DirectDeclarator for function defs
-direct_declarator
-    : IDENTIFIER {
-        $$ = new Variable(*$1); //CHANGED FROM Identifier to Variable
-        delete $1;
-    }
-    /* | '(' declarator ')'
-    | direct_declarator '[' constant_expression ']'
-    | direct_declarator '[' ']' */
-    | direct_declarator '(' parameter_list ')' {
-		$$ = new DirectDeclarator($1, $3);
-	}
-    /* | direct_declarator '(' identifier_list ')' */
-    | direct_declarator '(' ')' {
-        $$ = new DirectDeclarator($1);
-    }
-    ;
-
-parameter_list
-	: parameter_declaration {$$ = new ParameterList($1);}
-	| parameter_list ',' parameter_declaration {$$ = $1; $1->PushBack($3);}
-	;
-
-parameter_declaration
-	: declaration_specifiers declarator {$$ = new ParameterDeclarator($1, $2);}
-	/* | declaration_specifiers abstract_declarator
-	| declaration_specifiers */
-	;
-
-initializer
-	: assignment_expression { $$ = $1; }
-	| '{' initializer_list '}'
-	| '{' initializer_list ',' '}'
-	;
-
-initializer_list
-	: initializer 
-	| initializer_list ',' initializer
-	;
-
-
-statement
-	: jump_statement { $$ = $1; }
-	| expression_statement { $$ = $1; }
-	/* | labeled_statement
-	| compound_statement
-	| selection_statement
-	| iteration_statement
-	; */
-
-compound_statement
-	: '{' '}' {
-		// TODO: correct this
-		$$ = nullptr;
-	}
-	| '{' statement_list '}' { $$ = $2; }
-	| '{' declaration_list '}' { $$ = $2; }
-	| '{' declaration_list statement_list '}' { $$ = new MultiList($2, $3); } //May need to change
-	;
-declaration_list
-	: declaration { $$ = new NodeList($1); }
-	| declaration_list declaration {$1->PushBack($2); $$ = $1;}//Create declaration list here
-	;
-statement_list
-	: statement { $$ = new NodeList($1); }
-	| statement_list statement { $1->PushBack($2); $$=$1; }
-	;
-
-expression_statement
-	: ';'
-	| expression ';' { $$ = $1; }
-	;
-
-jump_statement
-	: RETURN ';' {
-		$$ = new ReturnStatement(nullptr);
-	}
-	| RETURN expression ';' {
-		$$ = new ReturnStatement($2);
-	}
-	;
 
 primary_expression
 	: IDENTIFIER {
@@ -181,7 +91,7 @@ primary_expression
 
 postfix_expression
 	: primary_expression { $$ = $1; }
-	| postfix_expression '(' ')' { $$ = new FunctionCall($1); }
+	| postfix_expression '(' ')' { $$ = new FunctionCall($1); std::cout << "PostfixExpression: " << std::endl;}
 	| postfix_expression '(' argument_expression_list ')' { $$ = new FunctionCall($1, $3); }
 	/* | postfix_expression '[' expression ']'
 	| postfix_expression '.' IDENTIFIER
@@ -296,9 +206,6 @@ assignment_operator
 	| OR_ASSIGN
 	;
 
-
-
-
 expression
 	: assignment_expression { $$ = $1; }
 	/* | expression ',' assignment_expression */
@@ -310,7 +217,7 @@ declaration
 	;
 
 declaration_specifiers
-	   : type_specifier { $$ = $1; }
+	   : type_specifier { $$ = $1; std::cout << "DeclarationSpecifier: " << std::endl; }
 	;
 	/* : storage_class_specifier */
 	/* | storage_class_specifier declaration_specifiers */
@@ -323,13 +230,105 @@ init_declarator_list
 	;
 
 init_declarator
-	: declarator { $$ = new InitDeclarator($1); }//create a declaration (just var, or function def might be fine) here with the declarator variable
-	| declarator '=' initializer {$$ = new VarAssign($1, $3); } // () Create a declaration here with the declarator variable and the initializer - type is set in Declaration
+	: declarator {std::cout << "Could be an error with InitDeclarator" ;$$ = new InitDeclarator($1); std::cout << "It's going to InitDeclarator : declarator" << std::endl; }//create a declaration (just var, or function def might be fine) here with the declarator variable
+	| declarator ASSIGN initializer {$$ = new VarAssign($1, $3); } // () Create a declaration here with the declarator variable and the initializer - type is set in Declaration
 	;
 
 //Create bindings in Declaration for each init_declarator
 // Assign the value of the initializer to the declarator in VarAssign->EmitRISC()
 
+type_specifier
+	: INT {
+		$$ = new TypeSpecifier("int"); std::cout << "TypeSpecifier: " << std::endl;	
+	}
+	;
+
+declarator
+	: direct_declarator { $$ = $1; std::cout << "It's going to Declarator : direct_declarator" << std::endl;}
+	/* | pointer direct_declarator */
+	;
+//Only use DirectDeclarator for function defs
+direct_declarator
+    : IDENTIFIER {
+        $$ = new Variable(*$1); //CHANGED FROM Identifier to Variable
+        delete $1;
+    }
+    /* | '(' declarator ')'
+    | direct_declarator '[' constant_expression ']'
+    | direct_declarator '[' ']' */
+    | direct_declarator '(' parameter_list ')' {
+		$$ = new DirectDeclarator($1, $3);
+	}
+    /* | direct_declarator '(' identifier_list ')' */
+    | direct_declarator '(' ')' {
+        $$ = new DirectDeclarator($1);
+		std::cout << "DirectDeclarator: " << std::endl;
+    }
+    ;
+
+parameter_list
+	: parameter_declaration {$$ = new ParameterList($1);}
+	| parameter_list ',' parameter_declaration {$$ = $1; $1->PushBack($3);}
+	;
+
+parameter_declaration
+	: declaration_specifiers declarator {$$ = new ParameterDeclarator($1, $2); std::cout << "ParameterDeclaration: " << std::endl;}
+	/* | declaration_specifiers abstract_declarator
+	| declaration_specifiers */
+	;
+
+initializer
+	: assignment_expression { $$ = $1; std::cout << "Initializer: " << std::endl;}
+	| '{' initializer_list '}'
+	| '{' initializer_list ',' '}'
+	;
+
+initializer_list
+	: initializer 
+	| initializer_list ',' initializer
+	;
+
+
+statement
+	: jump_statement { $$ = $1; }
+	| expression_statement { $$ = $1; }
+	/* | labeled_statement
+	| compound_statement
+	| selection_statement
+	| iteration_statement
+	; */
+
+compound_statement
+	: '{' '}' {
+		// TODO: correct this
+		$$ = nullptr;
+	}
+	| '{' statement_list '}' { $$ = $2; }
+	| '{' declaration_list '}' { $$ = $2; }
+	| '{' declaration_list statement_list '}' { $$ = new MultiList($2, $3); } //May need to change
+	;
+declaration_list
+	: declaration { $$ = new NodeList($1); }
+	| declaration_list declaration {$1->PushBack($2); $$ = $1;}//Create declaration list here
+	;
+statement_list
+	: statement { $$ = new NodeList($1); }
+	| statement_list statement { $1->PushBack($2); $$=$1; }
+	;
+
+expression_statement
+	: ';'
+	| expression ';' { $$ = $1; }
+	;
+
+jump_statement
+	: RETURN ';' {
+		$$ = new ReturnStatement(nullptr);
+	}
+	| RETURN expression ';' {
+		$$ = new ReturnStatement($2);
+	}
+	;
 
 
 %%
