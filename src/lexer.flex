@@ -66,7 +66,6 @@ L?'(\\.|[^\\'])+'	{yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_
 L?\"(\\.|[^\\"])*\"	{/* TODO process string literal */; return(STRING_LITERAL);}
 
 "..."      {return(ELLIPSIS);}
-"="        {return(ASSIGN);}
 ">>="			 {return(RIGHT_ASSIGN);}
 "<<="      {return(LEFT_ASSIGN);}
 "+="			 {return(ADD_ASSIGN);}

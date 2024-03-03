@@ -33,7 +33,7 @@
 %token STRUCT UNION ENUM ELLIPSIS
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%type <node> translation_unit external_declaration function_definition primary_expression postfix_expression
+%type <node> external_declaration function_definition primary_expression postfix_expression
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
@@ -42,7 +42,7 @@
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list
+%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit
 %type <parameter_list> parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
@@ -59,13 +59,13 @@ ROOT
     : translation_unit { g_root = $1; }
 
 translation_unit
-	: external_declaration { $$ = $1; }
-	/* | translation_unit external_declaration */
+	: external_declaration { $$ = new NodeList($1); }
+	| translation_unit external_declaration { $1->PushBack($2); $$ = $1;}
 	;
 
 external_declaration
 	: function_definition { $$ = $1; }
-	/* | declaration */
+	| declaration { $$ = $1; }
 	;
 
 function_definition
@@ -193,7 +193,7 @@ assignment_expression
 	;
 
 assignment_operator
-	: ASSIGN { $$ = new std::string("="); }
+	: '=' { $$ = new std::string("="); }
 	| MUL_ASSIGN
 	| DIV_ASSIGN
 	| MOD_ASSIGN
@@ -231,7 +231,7 @@ init_declarator_list
 
 init_declarator
 	: declarator {std::cout << "Could be an error with InitDeclarator" ;$$ = new InitDeclarator($1); std::cout << "It's going to InitDeclarator : declarator" << std::endl; }//create a declaration (just var, or function def might be fine) here with the declarator variable
-	| declarator ASSIGN initializer {$$ = new VarAssign($1, $3); } // () Create a declaration here with the declarator variable and the initializer - type is set in Declaration
+	| declarator '=' initializer {$$ = new VarAssign($1, $3); } // () Create a declaration here with the declarator variable and the initializer - type is set in Declaration
 	;
 
 //Create bindings in Declaration for each init_declarator

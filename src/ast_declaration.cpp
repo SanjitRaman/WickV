@@ -15,6 +15,7 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
             node->EmitRISC(stream, context);
         }
         else if (node->getType() == entity_type::VARIABLE){
+            std::cout << "VAR" << std::endl;
             context.createBinding(node->getId(), declaration_specifiers_->getType());
         }
         

@@ -2,7 +2,7 @@
 #define AST_entity_type_HPP
 
 const int INT_MEM = 4;
-
+const int RA_MEM = 4;
 
 enum entity_type {
     INTEGER,

@@ -6,17 +6,18 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     // TODO: these are just examples ones, make sure you understand
     // the concept of directives and correct them.
     stream << ".text" << std::endl;
-    stream << ".globl f" << std::endl;
+    stream << ".globl " << declarator_->getId() << std::endl;
     
     
     declarator_->EmitRISC(stream, context);
-    
+
 
     if (compound_statement_ != nullptr)
     {
         compound_statement_->EmitRISC(stream, context);
     }
     stream << context.getReturnLabel() << ":" << std::endl;
+
     std::cout << "wassup" << std::endl;
     context.ExitScope(stream);
 
