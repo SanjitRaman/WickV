@@ -122,6 +122,7 @@ class Context
         void deallocateReg(std::string reg){
             int reg_num = std::stoi(reg.substr(1));
             risc_regs.setReg(reg_num, 0);
+            std::cout << "Deallocating x" << reg_num << " " << risc_regs.getReg(reg_num) << std::endl;
         }
 
         void CreateScope(std::ostream &stream){

@@ -37,11 +37,18 @@ void FunctionCall::Print(std::ostream &stream) const
 {
     postfix_expression_->Print(stream);
     stream << "(";
+    //TODO: FIX extra ,
     if (argument_expression_list_ != nullptr)
     {
-        
-        argument_expression_list_->Print(stream);
-        
+        for (auto node : argument_expression_list_->getNodes())
+        {
+            if (node == nullptr)
+            {
+                continue;
+            }
+            node->Print(stream);
+            stream << ", ";
+        }
     }
     stream << ")" << std::endl;
 }
