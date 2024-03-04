@@ -5,14 +5,15 @@
 
 class Identifier : public Node
 {
-private:
+   private:
     std::string identifier_;
 
-public:
-  Identifier(std::string &identifier) : identifier_(identifier){};
-  virtual ~Identifier(){};
-  virtual void EmitRISC(std::ostream &stream, Context &context) const override;
-  virtual void Print(std::ostream &stream) const override;
+   public:
+    Identifier(std::string &identifier) : identifier_(identifier){};
+    virtual ~Identifier(){};
+    virtual void EmitRISC(std::ostream &stream,
+                          Context &context) const override;
+    virtual void Print(std::ostream &stream) const override;
 };
 
 #endif

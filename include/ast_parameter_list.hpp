@@ -7,20 +7,18 @@
 #include "ast_context.hpp"
 #include "ast_node.hpp"
 
-
 class ParameterList : public NodeList
 {
+   public:
+    ParameterList(Node *first_node) : NodeList(first_node) {}
 
-public:
-  ParameterList(Node *first_node) : NodeList(first_node) {}
+    ~ParameterList() {}
 
-  ~ParameterList() {}
+    // void PushBack(Node *item);
+    virtual void EmitRISC(std::ostream &stream,
+                          Context &context) const override;
 
-  // void PushBack(Node *item);
-  virtual void EmitRISC(std::ostream &stream, Context &context) const override;
-
-  virtual void Print(std::ostream &stream) const override;
-    
+    virtual void Print(std::ostream &stream) const override;
 };
 
 #endif

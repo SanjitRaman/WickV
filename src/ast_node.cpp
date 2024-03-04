@@ -8,10 +8,7 @@ Node::~Node()
     }
 }
 
-void NodeList::PushBack(Node *item)
-{
-    nodes_.push_back(item);
-}
+void NodeList::PushBack(Node *item) { nodes_.push_back(item); }
 
 void NodeList::EmitRISC(std::ostream &stream, Context &context) const
 {

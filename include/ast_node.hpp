@@ -8,10 +8,10 @@
 
 class Node
 {
-protected:
+   protected:
     std::vector<Node *> branches_;
 
-public:
+   public:
     Node(){};
     virtual ~Node();
     virtual void EmitRISC(std::ostream &stream, Context &context) const = 0;
@@ -21,10 +21,10 @@ public:
 // Represents a list of nodes.
 class NodeList : public Node
 {
-protected:
+   protected:
     std::vector<Node *> nodes_;
 
-public:
+   public:
     NodeList(Node *first_node) : nodes_({first_node}) {}
 
     ~NodeList()
@@ -36,7 +36,8 @@ public:
     }
 
     void PushBack(Node *item);
-    virtual void EmitRISC(std::ostream &stream, Context &context) const override;
+    virtual void EmitRISC(std::ostream &stream,
+                          Context &context) const override;
     virtual void Print(std::ostream &stream) const override;
 };
 
