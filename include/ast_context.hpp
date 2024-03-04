@@ -101,6 +101,7 @@ class Context
             }
         }
 
+        //Change entity_type to data_type
         void createBinding(std::string id, entity_type type){
             std::string offset = getMemory(INT_MEM);
             variable newVar;
