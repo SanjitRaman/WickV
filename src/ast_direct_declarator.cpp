@@ -4,8 +4,8 @@ void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context) const
 {
     identifier_->EmitRISC(stream, context);
     stream << ":" << std::endl;
-    
-    //Prolog
+
+    // Prolog
     context.CreateScope(stream);
     if (parameter_list_ != nullptr)
     {
@@ -13,20 +13,14 @@ void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context) const
     }
 }
 
-void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context,
+                                std::string destReg) const
 {
-
 }
 
-entity_type DirectDeclarator::getType() const
-{
-    return entity_type::FUNCTION;
-}
+entity_type DirectDeclarator::getType() const { return entity_type::FUNCTION; }
 
-std::string DirectDeclarator::getId() const
-{
-    return identifier_->getId();
-}
+std::string DirectDeclarator::getId() const { return identifier_->getId(); }
 
 void DirectDeclarator::Print(std::ostream &stream) const
 {

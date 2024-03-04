@@ -4,23 +4,23 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
     if (expression_ != nullptr)
     {
-        //Allocate temp register
+        // Allocate temp register
         std::string tempReturn = context.allocateReg(stream);
-        expression_->EmitRISC(stream, context, tempReturn); // store the return value in a0 register
+        expression_->EmitRISC(
+            stream, context,
+            tempReturn);  // store the return value in a0 register
         stream << "mv a0, " << tempReturn << std::endl;
         context.deallocateReg(tempReturn);
-        
     }
     // stream << "ret" << std::endl;
-    //Move a0, free register
-    //Free register
+    // Move a0, free register
+    // Free register
     stream << "beq zero, zero, " << context.getReturnLabel() << std::endl;
 }
-void ReturnStatement::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+void ReturnStatement::EmitRISC(std::ostream &stream, Context &context,
+                               std::string destReg) const
 {
-
 }
-
 
 void ReturnStatement::Print(std::ostream &stream) const
 {

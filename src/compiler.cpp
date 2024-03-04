@@ -1,8 +1,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "cli.h"
 #include "ast.hpp"
+#include "cli.h"
 
 Node *Parse(CommandLineArguments &args)
 {
@@ -34,8 +34,7 @@ void Compile(Node *root, CommandLineArguments &args)
     Context ctx;
 
     std::cout << "Compiling parsed AST..." << std::endl;
-    std::ofstream
-     output(args.compile_output_path, std::ios::trunc);
+    std::ofstream output(args.compile_output_path, std::ios::trunc);
     root->EmitRISC(output, ctx);
     output.close();
     std::cout << "Compiled to: " << args.compile_output_path << std::endl;
@@ -43,8 +42,9 @@ void Compile(Node *root, CommandLineArguments &args)
 
 int main(int argc, char **argv)
 {
-    // Parse CLI arguments to fetch the source file to compile and the path to output to.
-    // This retrives [source-file.c] and [dest-file.s], when the compiler is invoked as follows:
+    // Parse CLI arguments to fetch the source file to compile and the path to
+    // output to. This retrives [source-file.c] and [dest-file.s], when the
+    // compiler is invoked as follows:
     // ./bin/c_compiler -S [source-file.c] -o [dest-file.s]
     auto command_line_arguments = ParseCommandLineArgs(argc, argv);
 
@@ -53,7 +53,9 @@ int main(int argc, char **argv)
     if (ast_root == nullptr)
     {
         // Check something was actually returned by parseAST().
-        std::cerr << "The root of the AST was a null pointer. Likely the root was never initialised correctly during parsing." << std::endl;
+        std::cerr << "The root of the AST was a null pointer. Likely the root "
+                     "was never initialised correctly during parsing."
+                  << std::endl;
         return 3;
     }
 

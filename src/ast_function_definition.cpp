@@ -7,10 +7,8 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     // the concept of directives and correct them.
     stream << ".text" << std::endl;
     stream << ".globl " << declarator_->getId() << std::endl;
-    
-    
-    declarator_->EmitRISC(stream, context);
 
+    declarator_->EmitRISC(stream, context);
 
     if (compound_statement_ != nullptr)
     {
@@ -26,9 +24,9 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     // CreateEpilog();
 }
 
-void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context,
+                                  std::string destReg) const
 {
-
 }
 void FunctionDefinition::Print(std::ostream &stream) const
 {

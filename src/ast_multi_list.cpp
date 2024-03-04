@@ -11,11 +11,10 @@ void MultiList::EmitRISC(std::ostream &stream, Context &context) const
         statement_list_->EmitRISC(stream, context);
     }
 }
-void MultiList::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+void MultiList::EmitRISC(std::ostream &stream, Context &context,
+                         std::string destReg) const
 {
-
 }
-
 
 void MultiList::Print(std::ostream &stream) const
 {

@@ -9,26 +9,29 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
             continue;
         }
         std::cout << "DECLARATION" << std::endl;
-        if (node->getType() == entity_type::VARIABLE_ASSIGN){
+        if (node->getType() == entity_type::VARIABLE_ASSIGN)
+        {
             std::cout << "VARASSIGN" << std::endl;
-            context.createBinding(node->getId(), declaration_specifiers_->getType());
+            context.createBinding(node->getId(),
+                                  declaration_specifiers_->getType());
             node->EmitRISC(stream, context);
         }
-        else if (node->getType() == entity_type::VARIABLE){
+        else if (node->getType() == entity_type::VARIABLE)
+        {
             std::cout << "VAR" << std::endl;
-            context.createBinding(node->getId(), declaration_specifiers_->getType());
+            context.createBinding(node->getId(),
+                                  declaration_specifiers_->getType());
         }
-        
     }
 }
 
-void Declaration::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+void Declaration::EmitRISC(std::ostream &stream, Context &context,
+                           std::string destReg) const
 {
-
 }
 void Declaration::Print(std::ostream &stream) const
 {
-    //TODO: Implement
+    // TODO: Implement
 }
 
 entity_type Declaration::getType() const

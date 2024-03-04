@@ -12,55 +12,70 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
     }
     else if (assignment_operator_ == "+=")
     {
-        stream << "add " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "add " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == "-=")
     {
-        stream << "sub " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "sub " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == "*=")
     {
-        stream << "mul " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "mul " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == "/=")
     {
-        stream << "div " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "div " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == "%=")
     {
-        stream << "rem " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "rem " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == "<<=")
     {
-        stream << "sll " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "sll " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == ">>=")
     {
-        stream << "sra " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "sra " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == "&=")
     {
-        stream << "and " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "and " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == "^=")
     {
-        stream << "xor " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "xor " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
     else if (assignment_operator_ == "|=")
     {
-        stream << "or " << tempReg1 << ", " << tempReg1 << ", " << tempReg2 << std::endl;
+        stream << "or " << tempReg1 << ", " << tempReg1 << ", " << tempReg2
+               << std::endl;
     }
-    //For integer types
-    std::cout << "sw " << tempReg1 << ", " << context.bindings.at(unary_expression_->getId()).offset << "(sp)" << std::endl; 
-    stream << "sw " << tempReg1 << ", " << context.bindings.at(unary_expression_->getId()).offset << "(sp)" << std::endl; 
-    
+    // For integer types
+    std::cout << "sw " << tempReg1 << ", "
+              << context.bindings.at(unary_expression_->getId()).offset
+              << "(sp)" << std::endl;
+    stream << "sw " << tempReg1 << ", "
+           << context.bindings.at(unary_expression_->getId()).offset << "(sp)"
+           << std::endl;
+
     context.deallocateReg(tempReg1);
     context.deallocateReg(tempReg2);
 }
 
-void Assignment::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+void Assignment::EmitRISC(std::ostream &stream, Context &context,
+                          std::string destReg) const
 {
-    //Shouldn't need to use this method
+    // Shouldn't need to use this method
 }
 
 void Assignment::Print(std::ostream &stream) const

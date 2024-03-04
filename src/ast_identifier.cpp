@@ -5,12 +5,9 @@ void Identifier::EmitRISC(std::ostream &stream, Context &context) const
     stream << identifier_;
 }
 
-void Identifier::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
+void Identifier::EmitRISC(std::ostream &stream, Context &context,
+                          std::string destReg) const
 {
-
 }
 
-void Identifier::Print(std::ostream &stream) const
-{
-    stream << identifier_;
-};
+void Identifier::Print(std::ostream &stream) const { stream << identifier_; };

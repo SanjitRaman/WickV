@@ -4,7 +4,8 @@
 const int INT_MEM = 4;
 const int RA_MEM = 4;
 
-enum entity_type {
+enum entity_type
+{
     INTEGER,
     INVALID,
     FUNCTION,
@@ -13,12 +14,13 @@ enum entity_type {
     // todo add more data types
 };
 
-//MIGHT DELETE
-struct function_properties {
-    std::unordered_map<std::string, entity_type> funct_params; //(change : just storing identifiers) //Change to <string, param>
-    entity_type return_type; // todo
+// MIGHT DELETE
+struct function_properties
+{
+    std::unordered_map<std::string, entity_type>
+        funct_params;         //(change : just storing identifiers) //Change to
+                              //<string, param>
+    entity_type return_type;  // todo
 };
-
-
 
 #endif

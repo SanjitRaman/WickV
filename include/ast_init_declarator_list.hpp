@@ -7,21 +7,20 @@
 #include "ast_context.hpp"
 #include "ast_node.hpp"
 
-
 class InitDeclaratorList : public NodeList
 {
+   public:
+    InitDeclaratorList(Node *first_node) : NodeList(first_node) {}
 
-public:
-  InitDeclaratorList(Node *first_node) : NodeList(first_node) {}
+    virtual ~InitDeclaratorList() {}
 
-  virtual ~InitDeclaratorList() {}
-
-  // void PushBack(Node *item);
-  virtual void EmitRISC(std::ostream &stream, Context &context) const override;
-  virtual void EmitRISC(std::ostream &stream, Context &context, std::string destReg) const override;
-  virtual void Print(std::ostream &stream) const override;
-  // std::vector<Node*>& getNodes() const;
-    
+    // void PushBack(Node *item);
+    virtual void EmitRISC(std::ostream &stream,
+                          Context &context) const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context,
+                          std::string destReg) const override;
+    virtual void Print(std::ostream &stream) const override;
+    // std::vector<Node*>& getNodes() const;
 };
 
 #endif

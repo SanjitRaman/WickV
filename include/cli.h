@@ -1,8 +1,9 @@
 #ifndef LANGPROC_COMPILER_CLI_H
 #define LANGPROC_COMPILER_CLI_H
 
-#include <iostream>
 #include <unistd.h>
+
+#include <iostream>
 
 struct CommandLineArguments
 {
