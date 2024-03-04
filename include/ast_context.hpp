@@ -109,13 +109,14 @@ class Context
             bindings[id] = newVar;
         }
         
-        std::string allocateReg(){
+        std::string allocateReg(std::ostream &stream){
             
             for (int i = 0; i < 32; i++){
                 if (risc_regs.getReg(i) == 0){
                     risc_regs.setReg(i, 1);
-                    
-                    return "x" + std::to_string(i);
+                    std::string allocated_reg = "x" + std::to_string(i);
+                    stream << "mv " << allocated_reg << ", zero" << std::endl;
+                    return allocated_reg;
                 }
             }
             return ""; //ERROR

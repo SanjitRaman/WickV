@@ -18,7 +18,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     }
     stream << context.getReturnLabel() << ":" << std::endl;
 
-    std::cout << "wassup" << std::endl;
+    // std::cout << "wassup" << std::endl;
     context.ExitScope(stream);
 
     stream << "ret" << std::endl;

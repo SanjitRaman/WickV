@@ -2,8 +2,8 @@
 
 void Assignment::EmitRISC(std::ostream &stream, Context &context) const
 {
-    std::string tempReg1 = context.allocateReg();
-    std::string tempReg2 = context.allocateReg();
+    std::string tempReg1 = context.allocateReg(stream);
+    std::string tempReg2 = context.allocateReg(stream);
     unary_expression_->EmitRISC(stream, context, tempReg1);
     assignment_expression_->EmitRISC(stream, context, tempReg2);
     if (assignment_operator_ == "=")
@@ -54,8 +54,6 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
     std::cout << "sw " << tempReg1 << ", " << context.bindings.at(unary_expression_->getId()).offset << "(sp)" << std::endl; 
     stream << "sw " << tempReg1 << ", " << context.bindings.at(unary_expression_->getId()).offset << "(sp)" << std::endl; 
     
-    stream << "mv " << tempReg1 << ", " << "zero" << std::endl;
-    stream << "mv " << tempReg2 << ", " << "zero" << std::endl;
     context.deallocateReg(tempReg1);
     context.deallocateReg(tempReg2);
 }

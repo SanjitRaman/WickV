@@ -2,7 +2,7 @@
 
 void VarAssign::EmitRISC(std::ostream &stream, Context &context) const
 {
-    std::string varReg = context.allocateReg();
+    std::string varReg = context.allocateReg(stream);
     //Assume the binding exists
     if (context.bindings.find(declarator_->getId()) != context.bindings.end()){
         //If it is then execute this code
@@ -11,7 +11,6 @@ void VarAssign::EmitRISC(std::ostream &stream, Context &context) const
         std::cout << "sw " << varReg << ", " << offset << "(sp)" << std::endl;
         stream << "sw " << varReg << ", " << offset << "(sp)" << std::endl;
     }
-    stream << "mv " << varReg << ", " << "zero" << std::endl; //Set the register to zero
     context.deallocateReg(varReg);
 }
 void VarAssign::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const
