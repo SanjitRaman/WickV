@@ -1,11 +1,7 @@
 #!/bin/bash
 
-# If Python does not work, run scripts/ to test
-
-if ! command -v python3 &> /dev/null; then
-    echo "Python is not installed. Installing Python..."
-    sudo apt-get update
-    sudo apt-get install python3 -y
+if ! python3 --version > /dev/null 2>&1; then
+    . scripts/test.sh
+else
+    ./scripts/test.py $@
 fi
-
-./scripts/test.py
