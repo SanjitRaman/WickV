@@ -1,7 +1,7 @@
 #ifndef AST_DECLARATION_HPP
 #define AST_DECLARATION_HPP
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
 class Declaration : public Node
 {

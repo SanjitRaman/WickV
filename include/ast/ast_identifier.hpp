@@ -1,7 +1,7 @@
 #ifndef AST_IDENTIFIER_HPP
 #define AST_IDENTIFIER_HPP
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
 class Identifier : public Node
 {

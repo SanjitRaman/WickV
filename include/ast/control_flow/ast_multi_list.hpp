@@ -15,7 +15,7 @@ class MultiList : public Node
     {
     }
 
-    virtual ~MultiList()
+    ~MultiList()
     {
         delete declaration_list_;
         delete statement_list_;

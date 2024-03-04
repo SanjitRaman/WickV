@@ -1,4 +1,4 @@
-#include "ast_direct_declarator.hpp"
+#include "ast/ast_direct_declarator.hpp"
 
 void DirectDeclarator::EmitRISC(std::ostream &stream, Context &context) const
 {

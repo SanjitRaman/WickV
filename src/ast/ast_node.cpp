@@ -1,4 +1,4 @@
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
 Node::~Node()
 {

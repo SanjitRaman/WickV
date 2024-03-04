@@ -1,4 +1,4 @@
-#include "ast_init_declarator_list.hpp"
+#include "ast/ast_init_declarator_list.hpp"
 
 void InitDeclaratorList::EmitRISC(std::ostream &stream, Context &context) const
 {
