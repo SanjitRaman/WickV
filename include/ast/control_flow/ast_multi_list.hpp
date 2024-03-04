@@ -10,9 +10,10 @@ protected:
     NodeList* statement_list_;
 
 public:
-    MultiList(NodeList *declaration_list,  NodeList* statement_list) : declaration_list_(declaration_list), statement_list_(statement_list) {}
+    // MultiList(NodeList *declaration_list,  NodeList* statement_list) : declaration_list_(declaration_list), statement_list_(statement_list) {}
+    MultiList(NodeList *declaration_list,  NodeList* statement_list);
 
-    virtual ~MultiList()
+    ~MultiList()
     {
         delete declaration_list_;
         delete statement_list_;

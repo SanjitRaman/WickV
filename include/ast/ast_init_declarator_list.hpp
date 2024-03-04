@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 
-#include "ast_context.hpp"
-#include "ast_node.hpp"
+#include "ast/ast_context.hpp"
+#include "ast/ast_node.hpp"
 
 
 class InitDeclaratorList : public NodeList

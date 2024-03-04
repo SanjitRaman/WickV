@@ -1,5 +1,7 @@
 #include "ast/control_flow/ast_multi_list.hpp"
 
+MultiList::MultiList(NodeList *declaration_list,  NodeList* statement_list) : declaration_list_(declaration_list), statement_list_(statement_list) {}
+
 void MultiList::EmitRISC(std::ostream &stream, Context &context) const
 {
     if (declaration_list_ != nullptr)

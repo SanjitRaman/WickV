@@ -1,8 +1,8 @@
 #ifndef AST_DIRECT_DECLARATOR_HPP
 #define AST_DIRECT_DECLARATOR_HPP
 
-#include "ast_node.hpp"
-#include "ast_context.hpp"
+#include "ast/ast_node.hpp"
+#include "ast/ast_context.hpp"
 class DirectDeclarator : public Node
 {
 private:

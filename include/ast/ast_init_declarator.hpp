@@ -1,7 +1,7 @@
 #ifndef AST_DECLARATOR_HPP
 #define AST_DECLARATOR_HPP
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
 class InitDeclarator : public Node
 {
