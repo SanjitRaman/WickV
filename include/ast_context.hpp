@@ -110,9 +110,11 @@ class Context
         }
         
         std::string allocateReg(){
+            
             for (int i = 0; i < 32; i++){
                 if (risc_regs.getReg(i) == 0){
                     risc_regs.setReg(i, 1);
+                    
                     return "x" + std::to_string(i);
                 }
             }

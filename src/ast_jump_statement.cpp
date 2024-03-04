@@ -5,7 +5,12 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
     if (expression_ != nullptr)
     {
         //Allocate temp register
-        expression_->EmitRISC(stream, context, "a0"); // store the return value in a0 register
+        std::string tempReturn = context.allocateReg();
+        stream << "mv " << tempReturn << ", zero" << std::endl;
+        expression_->EmitRISC(stream, context, tempReturn); // store the return value in a0 register
+        stream << "mv a0, " << tempReturn << std::endl;
+        stream << "mv " << tempReturn << ", zero" << std::endl;
+        context.deallocateReg(tempReturn);
         
     }
     // stream << "ret" << std::endl;
