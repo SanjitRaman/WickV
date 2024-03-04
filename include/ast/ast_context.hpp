@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "ast_entity_type.hpp"
+#include "ast/types/ast_entity_type.hpp"
 
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
@@ -109,7 +109,6 @@ class Context
         }
     }
 
-    // Change entity_type to data_type
     void createBinding(std::string id, entity_type type)
     {
         std::string offset = getMemory(INT_MEM);
@@ -119,16 +118,14 @@ class Context
         bindings[id] = newVar;
     }
 
-    std::string allocateReg(std::ostream &stream)
+    std::string allocateReg()
     {
         for (int i = 0; i < 32; i++)
         {
             if (risc_regs.getReg(i) == 0)
             {
                 risc_regs.setReg(i, 1);
-                std::string allocated_reg = "x" + std::to_string(i);
-                stream << "mv " << allocated_reg << ", zero" << std::endl;
-                return allocated_reg;
+                return "x" + std::to_string(i);
             }
         }
         return "";  // ERROR

@@ -1,22 +1,17 @@
-#ifndef AST_OPERATORS_HPP
-#define AST_OPERATORS_HPP
+#ifndef AST_JUMP_STATEMENT_HPP
+#define AST_JUMP_STATEMENT_HPP
 
-#include "ast_node.hpp"
+#include "ast/control_flow/ast_jump_statement.hpp"
 
-class AddOperator : public Node
+class ReturnStatement : public Node
 {
    private:
-    Node *op1_;
-    Node *op2_;
+    Node *expression_;
 
    public:
-    AddOperator(Node *op1, Node *op2) : op1_(op1), op2_(op2){};
-    virtual ~AddOperator()
-    {
-        delete op1_;
-        delete op2_;
-    };
-    // Do we need an evaluate?
+    ReturnStatement(Node *expression) : expression_(expression) {}
+    virtual ~ReturnStatement() { delete expression_; };
+
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;
     virtual void EmitRISC(std::ostream &stream, Context &context,

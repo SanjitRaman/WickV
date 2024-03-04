@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "ast_context.hpp"
+#include "ast/ast_context.hpp"
 
 class Node
 {

@@ -1,7 +1,8 @@
 #ifndef AST_MULTI_LIST_HPP
 #define AST_MULTI_LIST_HPP
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
+
 class MultiList : public Node
 {
    protected:

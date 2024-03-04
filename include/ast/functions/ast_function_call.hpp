@@ -1,8 +1,8 @@
 #ifndef AST_FUNCTION_CALL_HPP
 #define AST_FUNCTION_CALL_HPP
 
-#include "ast_context.hpp"
-#include "ast_node.hpp"
+#include "ast/ast_context.hpp"
+#include "ast/ast_node.hpp"
 class FunctionCall : public Node
 {
    private:

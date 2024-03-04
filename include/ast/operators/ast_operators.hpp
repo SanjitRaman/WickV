@@ -1,23 +1,27 @@
-#ifndef AST_TYPE_SPECIFIER
-#define AST_TYPE_SPECIFIER
+#ifndef AST_OPERATORS_HPP
+#define AST_OPERATORS_HPP
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
-class TypeSpecifier : public Node
+class AddOperator : public Node
 {
    private:
-    std::string type_;
+    Node *op1_;
+    Node *op2_;
 
    public:
-    TypeSpecifier(std::string type) : type_(type){};
-    virtual ~TypeSpecifier(){};
+    AddOperator(Node *op1, Node *op2) : op1_(op1), op2_(op2){};
+    virtual ~AddOperator()
+    {
+        delete op1_;
+        delete op2_;
+    };
+    // Do we need an evaluate?
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
-    virtual entity_type getType() const override;
-    virtual std::string getId() const override;
 };
 
 #endif

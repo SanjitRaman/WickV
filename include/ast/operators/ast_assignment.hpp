@@ -1,8 +1,9 @@
 #ifndef AST_ASSIGNMENT_HPP
 #define AST_ASSIGNMENT_HPP
 
-#include "ast_context.hpp"
-#include "ast_node.hpp"
+#include "ast/ast_context.hpp"
+#include "ast/ast_node.hpp"
+
 class Assignment : public Node
 {
    private:

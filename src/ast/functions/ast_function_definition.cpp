@@ -1,4 +1,4 @@
-#include "ast_function_definition.hpp"
+#include "ast/functions/ast_function_definition.hpp"
 
 void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
 {
