@@ -1,4 +1,4 @@
-#include "ast_variable.hpp"
+#include "ast/types/ast_variable.hpp"
 void Variable::EmitRISC(std::ostream &stream, Context &context) const
 {
     stream << Id_;

@@ -1,7 +1,7 @@
 #ifndef AST_OPERATORS_HPP
 #define AST_OPERATORS_HPP
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
 class AddOperator : public Node
 {

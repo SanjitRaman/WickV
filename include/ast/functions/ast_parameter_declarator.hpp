@@ -1,7 +1,7 @@
 #ifndef AST_PARAMETER_DECLARATOR_HPP
 #define AST_PARAMETER_DECLARATOR_HPP
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
 class ParameterDeclarator : public Node
 {

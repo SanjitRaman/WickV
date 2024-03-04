@@ -1,4 +1,4 @@
-#include "ast_constant.hpp"
+#include "ast/types/ast_constant.hpp"
 
 void IntConstant::EmitRISC(std::ostream &stream, Context &context) const
 {

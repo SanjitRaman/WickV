@@ -1,4 +1,4 @@
-#include "ast_type_specifier.hpp"
+#include "ast/types/ast_type_specifier.hpp"
 
 void TypeSpecifier::EmitRISC(std::ostream &stream, Context &context) const {}
 void TypeSpecifier::EmitRISC(std::ostream &stream, Context &context, std::string destReg) const

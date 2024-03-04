@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <utility>
 #include <iostream>
-#include "ast_entity_type.hpp"
+#include "ast/types/ast_entity_type.hpp"
 
 
 

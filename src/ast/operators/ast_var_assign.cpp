@@ -1,4 +1,4 @@
-#include "ast_var_assign.hpp"
+#include "ast/operators/ast_var_assign.hpp"
 
 void VarAssign::EmitRISC(std::ostream &stream, Context &context) const
 {

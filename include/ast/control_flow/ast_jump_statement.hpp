@@ -1,7 +1,7 @@
 #ifndef AST_JUMP_STATEMENT_HPP
 #define AST_JUMP_STATEMENT_HPP
 
-#include "ast_node.hpp"
+#include "ast/control_flow/ast_jump_statement.hpp"
 
 class ReturnStatement : public Node
 {

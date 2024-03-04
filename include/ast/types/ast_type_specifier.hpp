@@ -1,7 +1,7 @@
 #ifndef AST_TYPE_SPECIFIER
 #define AST_TYPE_SPECIFIER
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
 class TypeSpecifier : public Node
 {
