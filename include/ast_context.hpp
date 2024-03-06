@@ -118,6 +118,16 @@ class Context
         bindings[id] = newVar;
     }
 
+    std::string getOffset(std::string id)
+    {
+        if (bindings.find(id) != bindings.end())
+        {
+            return bindings[id].offset;
+            
+        }
+        return "ERROR : getOffset";
+    }
+
     std::string allocateReg(std::ostream &stream)
     {
         for (int i = 0; i < 32; i++)

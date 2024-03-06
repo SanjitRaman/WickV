@@ -2,6 +2,7 @@
 
 void ParameterDeclarator::EmitRISC(std::ostream &stream, Context &context) const
 {
+    //Check
     if (declaration_specifier_ != nullptr)
     {
         declaration_specifier_->EmitRISC(stream, context);
