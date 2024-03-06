@@ -31,4 +31,8 @@ void DirectDeclarator::Print(std::ostream &stream) const
         parameter_list_->Print(stream);
         stream << ")";
     }
+    else
+    {
+        stream << "()";
+    }
 }

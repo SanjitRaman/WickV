@@ -14,13 +14,6 @@
 
 // Stores
 
-static int makeNameUnq = 0;
-
-static std::string makeName(std::string base)
-{
-    return "_" + base + "_" + std::to_string(makeNameUnq++);
-}
-
 struct variable
 {
     std::string offset;
@@ -61,6 +54,7 @@ class Context
 {
    protected:
     reg_file risc_regs;
+    int makeLabelUnq = 0;
     /* TODO decide what goes inside here */
    public:
     std::vector<std::unordered_map<std::string, variable>>
@@ -74,6 +68,11 @@ class Context
 
     int frame_size = 128;  // Size of stack frame
     int remaining_mem;     // Offset
+
+    std::string makeLabel(std::string base)
+    {
+        return "_" + base + "_" + std::to_string(makeLabelUnq++);
+    }
 
     void set_function_params(std::string function_name,
                              function_properties function_info)
@@ -149,8 +148,8 @@ class Context
         bindings.clear();            // Reset bindings for new scope
         remaining_mem = frame_size;  // Resets offset
         return_branches.push_back(
-            makeName("function_end"));  // Create a unique label for the end of
-                                        // the function
+            makeLabel("function_end"));  // Create a unique label for the end of
+                                         // the function
         stream << "addi sp, sp, -" << frame_size << std::endl;
     }
     std::string getReturnLabel() { return return_branches.back(); }
