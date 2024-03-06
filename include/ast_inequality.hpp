@@ -24,4 +24,25 @@ class GreaterThan : public Node
     virtual void Print(std::ostream &stream) const override;
 };
 
+class LessThan : public Node
+{
+   private:
+    Node *left_;
+    Node *right_;
+
+   public:
+    LessThan(Node *left, Node *right) : left_(left), right_(right){};
+    virtual ~LessThan()
+    {
+        delete left_;
+        delete right_;
+    };
+    virtual void EmitRISC(std::ostream &stream,
+                          Context &context) const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context,
+                          std::string destReg) const override;
+    virtual void Print(std::ostream &stream) const override;
+};
+
+
 #endif
