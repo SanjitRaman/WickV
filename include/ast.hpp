@@ -13,6 +13,7 @@
 #include "ast_function_call.hpp"
 #include "ast_function_definition.hpp"
 #include "ast_identifier.hpp"
+#include "ast_if_else_statement.hpp"
 #include "ast_if_statement.hpp"
 #include "ast_init_declarator.hpp"
 #include "ast_init_declarator_list.hpp"
