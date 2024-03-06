@@ -132,7 +132,9 @@ additive_expression
 	| additive_expression '+' multiplicative_expression {
 		$$ = new AddOperator($1, $3);
 	}
-	/* | additive_expression '-' multiplicative_expression */
+	| additive_expression '-' multiplicative_expression {
+		$$ = new SubtractOperator($1, $3);
+	}
 	;
 
 shift_expression
@@ -143,8 +145,8 @@ shift_expression
 
 relational_expression
 	: shift_expression { $$ = $1; }
+	| relational_expression '>' shift_expression { $$ = new GreaterThan($1, $3); }
 	/* | relational_expression '<' shift_expression
-	| relational_expression '>' shift_expression
 	| relational_expression LE_OP shift_expression
 	| relational_expression GE_OP shift_expression */
 	;
