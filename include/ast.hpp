@@ -26,6 +26,7 @@
 #include "ast_type_specifier.hpp"
 #include "ast_var_assign.hpp"
 #include "ast_variable.hpp"
+#include "ast_while.hpp"
 extern Node *ParseAST(std::string file_name);
 
 #endif

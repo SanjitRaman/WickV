@@ -294,9 +294,9 @@ statement
 	| expression_statement { $$ = $1; }
 	| compound_statement {$$ = $1; }
 	| selection_statement {$$ = $1; }
-	/* | labeled_statement
-	| iteration_statement */
-  ;
+	| iteration_statement {$$ = $1; }
+	/* | labeled_statement */
+  	;
 
 
 compound_statement
@@ -326,6 +326,13 @@ selection_statement
 	: IF '(' expression ')' statement { $$ = new IfStatement($3, $5); }
 	| IF '(' expression ')' statement ELSE statement { $$ = new IfElseStatement($3, $5, $7); }
 	/* | SWITCH '(' expression ')' statement */
+	;
+
+iteration_statement
+	: WHILE '(' expression ')' statement { $$ = new WhileStatement($3, $5); }
+	/* | DO statement WHILE '(' expression ')' ';' */
+	/* | FOR '(' expression_statement expression_statement ')' statement */
+	/* | FOR '(' expression_statement expression_statement expression ')' statement */
 	;
 
 jump_statement
