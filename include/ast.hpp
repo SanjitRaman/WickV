@@ -29,6 +29,7 @@
 #include "ast_while.hpp"
 #include "ast_empty_statement.hpp"
 #include "ast_inequality.hpp"
+#include "ast_for.hpp"
 extern Node *ParseAST(std::string file_name);
 
 #endif
