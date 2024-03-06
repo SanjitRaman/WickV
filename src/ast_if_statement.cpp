@@ -28,6 +28,7 @@ void IfStatement::EmitRISC(std::ostream &stream, Context &context,
                            std::string destReg) const
 {
 }
+
 void IfStatement::Print(std::ostream &stream) const
 {
     stream << "if (";

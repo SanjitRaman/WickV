@@ -295,8 +295,9 @@ statement
 	| compound_statement {$$ = $1; }
 	| selection_statement {$$ = $1; }
 	/* | labeled_statement
-	| iteration_statement
-	; */
+	| iteration_statement */
+  ;
+
 
 compound_statement
 	: '{' '}' {
@@ -319,6 +320,11 @@ statement_list
 expression_statement
 	: ';'
 	| expression ';' { $$ = $1; }
+	;
+selection_statement
+	: IF '(' expression ')' statement { $$ = new IfStatement($3, $5); }
+	| IF '(' expression ')' statement ELSE statement { $$ = new IfElseStatement($3, $5, $7); }
+	| SWITCH '(' expression ')' statement
 	;
 
 selection_statement
