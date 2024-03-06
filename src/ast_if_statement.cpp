@@ -2,11 +2,6 @@
 
 void IfStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
-    //     // TODO: I think we should be having a register for each time we
-    //     compile
-    //     a
-    //     // branch of the if statement.
-
     //  Emit the condition
 
     std::cout << "Emitting if statement" << std::endl;
