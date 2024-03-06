@@ -302,7 +302,7 @@ statement
 compound_statement
 	: '{' '}' {
 		// TODO: correct this
-		$$ = nullptr;
+		$$ = new EmptyStatement();
 	}
 	| '{' statement_list '}' { $$ = $2; }
 	| '{' declaration_list '}' { $$ = $2; }
