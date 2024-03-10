@@ -2,8 +2,8 @@
 
 void Assignment::EmitRISC(std::ostream &stream, Context &context) const
 {
-    std::string tempReg1 = context.allocateReg(stream);
-    std::string tempReg2 = context.allocateReg(stream);
+    std::string tempReg1 = context.allocateReg();
+    std::string tempReg2 = context.allocateReg();
     unary_expression_->EmitRISC(stream, context, tempReg1);
     assignment_expression_->EmitRISC(stream, context, tempReg2);
     if (assignment_operator_ == "=")
