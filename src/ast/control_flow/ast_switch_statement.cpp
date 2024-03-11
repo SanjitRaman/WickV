@@ -2,18 +2,31 @@
 
 void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
-    std::string destReg = context.allocateReg(stream);
-
-    std::string endLabel = context.makeLabel("endswitch");
+    std::string switch_reg = context.allocateReg(stream);
 
     // Emit the expression
-    expression_->EmitRISC(stream, context, destReg);
+    context.InitialiseSwitch();
+
+    expression_->EmitRISC(stream, context, switch_reg);
 
     // Emit the case list
-    case_list_->EmitRISC(stream, context, destReg);
+    case_list_->EmitRISC(stream, context, switch_reg);
 
-    // Free the register
-    context.deallocateReg(destReg);
+    context.deallocateReg(switch_reg);
+    //put default here
+    std::string defaultLabel = context.getDefaultLabel();
+    std::string switchLabel = context.getSwitchLabel();
+    if (defaultLabel != "")
+    {
+        stream << "j " << defaultLabel << std::endl;
+        context.ExitSwitch(true);
+    }
+    else{
+        context.ExitSwitch(false);
+    }
+    stream << switchLabel << ":" << std::endl;    
+
+    //end switch here
 }
 
 void SwitchStatement::EmitRISC(std::ostream &stream, Context &context,

@@ -7,12 +7,18 @@
 #include <vector>
 
 #include "ast/types/ast_entity_type.hpp"
-
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
 // compiled (e.g. function scope and variable names).
 
 // Stores
+
+
+struct switch_properties
+{
+    std::vector<std::string> switch_labels;
+    std::vector<std::string> default_labels;
+};
 
 struct variable
 {
@@ -65,8 +71,7 @@ class Context
     std::vector<std::string> return_branches;
     std::unordered_map<std::string, variable>
         bindings;  // Bindings (Local variables) for current scope
-    std::vector<std::string> switch_labels;
-    // std::vector<std::string> 
+    switch_properties switch_info;
 
 
 
@@ -76,6 +81,40 @@ class Context
     std::string makeLabel(std::string base)
     {
         return "_" + base + "_" + std::to_string(makeLabelUnq++);
+    }
+
+    void InitialiseSwitch()
+    {
+        std::string switch_label = makeLabel("end_switch");
+        switch_info.switch_labels.push_back(switch_label);
+    }
+
+    std::string getSwitchLabel(){
+        return switch_info.switch_labels.back();
+    }
+
+    void ExitSwitch(bool is_default = false)
+    {
+        if (is_default)
+        {
+            switch_info.default_labels.pop_back();
+        }
+        switch_info.switch_labels.pop_back();
+    }
+
+    void setDefaultLabel()
+    {
+        std::string default_statement = makeLabel("default");
+        switch_info.default_labels.push_back(default_statement);
+    }
+
+    std::string getDefaultLabel()
+    {
+        if (switch_info.default_labels.empty())
+        {
+            return "";
+        }
+        return switch_info.default_labels.back();
     }
 
     void set_function_params(std::string function_name,

@@ -26,5 +26,4 @@ class CaseStatement : public Node
     Node *expression_;
     Node *statement_;
 };
-
 #endif
