@@ -1,4 +1,4 @@
-#include "ast_empty_statement.hpp"
+#include "ast/control_flow/ast_empty_statement.hpp"
 
 
 void EmptyStatement::EmitRISC(std::ostream &stream, Context &context) const

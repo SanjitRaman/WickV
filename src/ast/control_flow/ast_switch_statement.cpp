@@ -1,4 +1,4 @@
-#include "ast_switch_statement.hpp"
+#include "ast/control_flow/ast_switch_statement.hpp"
 
 void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
@@ -10,7 +10,7 @@ void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
     expression_->EmitRISC(stream, context, destReg);
 
     // Emit the case list
-    case_list_->EmitRISC(stream, context, destReg, endLabel);
+    case_list_->EmitRISC(stream, context, destReg);
 
     // Free the register
     context.deallocateReg(destReg);

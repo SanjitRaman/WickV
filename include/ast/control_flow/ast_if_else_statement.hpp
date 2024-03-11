@@ -1,8 +1,8 @@
 #ifndef AST_IF_ELSE_STATEMENT_HPP
 #define AST_IF_ELSE_STATEMENT_HPP
 
-#include "ast_context.hpp"
-#include "ast_node.hpp"
+#include "ast/ast_context.hpp"
+#include "ast/ast_node.hpp"
 
 class IfElseStatement : public Node
 {

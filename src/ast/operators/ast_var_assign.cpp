@@ -2,7 +2,7 @@
 
 void VarAssign::EmitRISC(std::ostream &stream, Context &context) const
 {
-    std::string varReg = context.allocateReg();
+    std::string varReg = context.allocateReg(stream);
     // Assume the binding exists
     if (context.bindings.find(declarator_->getId()) != context.bindings.end())
     {

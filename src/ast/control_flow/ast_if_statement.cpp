@@ -1,4 +1,4 @@
-#include "ast_if_statement.hpp"
+#include "ast/control_flow/ast_if_statement.hpp"
 
 void IfStatement::EmitRISC(std::ostream &stream, Context &context) const
 {

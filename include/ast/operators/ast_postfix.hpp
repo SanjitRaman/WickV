@@ -1,7 +1,7 @@
 #ifndef AST_POSTFIX_HPP
 #define AST_POSTFIX_HPP
 
-#include "ast_node.hpp"
+#include "ast/ast_node.hpp"
 
 class PostfixOperator : public Node
 {

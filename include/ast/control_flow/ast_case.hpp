@@ -1,20 +1,20 @@
-#ifndef AST_SWITCH_STATEMENT_HPP
-#define AST_SWITCH_STATEMENT_HPP
+#ifndef AST_CASE_HPP
+#define AST_CASE_HPP
 
-#include "ast_context.hpp"
-#include "ast_node.hpp"
+#include "ast/ast_context.hpp"
+#include "ast/ast_node.hpp"
 
-class SwitchStatement : public Node
+class CaseStatement : public Node
 {
    public:
-    SwitchStatement(Node *expression, Node *case_list)
-        : expression_(expression), case_list_(case_list){};
+    CaseStatement(Node *expression, Node *statement)
+        : expression_(expression), statement_(statement){};
 
-    virtual ~SwitchStatement()
+    virtual ~CaseStatement()
     {
         delete expression_;
-        delete case_list_;
-    };
+        delete statement_;
+    }
 
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;
@@ -24,7 +24,7 @@ class SwitchStatement : public Node
 
    private:
     Node *expression_;
-    Node *case_list_;
+    Node *statement_;
 };
 
 #endif

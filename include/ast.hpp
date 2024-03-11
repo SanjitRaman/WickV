@@ -12,6 +12,15 @@
 // Control Flow
 #include "ast/control_flow/ast_jump_statement.hpp"
 #include "ast/control_flow/ast_multi_list.hpp"
+#include "ast/control_flow/ast_case.hpp"
+#include "ast/control_flow/ast_default.hpp"
+#include "ast/control_flow/ast_for.hpp"
+#include "ast/control_flow/ast_if_statement.hpp"
+#include "ast/control_flow/ast_while.hpp"
+#include "ast/control_flow/ast_if_else_statement.hpp"
+#include "ast/control_flow/ast_switch_statement.hpp"
+#include "ast/control_flow/ast_multi_list.hpp"
+#include "ast/control_flow/ast_empty_statement.hpp"
 
 // Functions
 #include "ast/functions/ast_function_call.hpp"
@@ -23,11 +32,14 @@
 #include "ast/operators/ast_assignment.hpp"
 #include "ast/operators/ast_operators.hpp"
 #include "ast/operators/ast_var_assign.hpp"
+#include "ast/operators/ast_postfix.hpp"
+#include "ast/operators/ast_inequality.hpp"
 
 // Types
 #include "ast/types/ast_constant.hpp"
 #include "ast/types/ast_type_specifier.hpp"
 #include "ast/types/ast_variable.hpp"
+#include "ast/types/ast_entity_type.hpp"
 
 // Declarations
 #include "ast/ast_declaration.hpp"

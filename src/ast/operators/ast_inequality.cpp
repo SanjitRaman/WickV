@@ -1,4 +1,4 @@
-#include "ast_inequality.hpp"
+#include "ast/operators/ast_inequality.hpp"
 
 // -------------------------- GreaterThan --------------------------
 
