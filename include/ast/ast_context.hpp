@@ -6,13 +6,20 @@
 #include <utility>
 #include <vector>
 
-#include "ast/ast_entity_type.hpp"
+#include "ast/types/ast_entity_type.hpp"
 
 // An object of class Context is passed between AST nodes during compilation.
 // This can be used to pass around information about what's currently being
 // compiled (e.g. function scope and variable names).
 
 // Stores
+
+static int makeNameUnq = 0;
+
+static std::string makeName(std::string base)
+{
+    return "_" + base + "_" + std::to_string(makeNameUnq++);
+}
 
 struct variable
 {
@@ -54,7 +61,6 @@ class Context
 {
    protected:
     reg_file risc_regs;
-    int makeLabelUnq = 0;
     /* TODO decide what goes inside here */
    public:
     std::vector<std::unordered_map<std::string, variable>>
@@ -68,11 +74,6 @@ class Context
 
     int frame_size = 128;  // Size of stack frame
     int remaining_mem;     // Offset
-
-    std::string makeLabel(std::string base)
-    {
-        return "_" + base + "_" + std::to_string(makeLabelUnq++);
-    }
 
     void set_function_params(std::string function_name,
                              function_properties function_info)
@@ -108,7 +109,6 @@ class Context
         }
     }
 
-    // Change entity_type to data_type
     void createBinding(std::string id, entity_type type)
     {
         std::string offset = getMemory(INT_MEM);
@@ -118,63 +118,53 @@ class Context
         bindings[id] = newVar;
     }
 
-    std::string getOffset(std::string id)
-    {
-        if (bindings.find(id) != bindings.end())
-        {
-            return bindings[id].offset;
-        }
-        return "ERROR : getOffset";
-    }
-
-    std::string allocateReg(std::ostream &stream)
+    std::string allocateReg()
     {
         for (int i = 0; i < 32; i++)
         {
             if (risc_regs.getReg(i) == 0)
             {
                 risc_regs.setReg(i, 1);
-                std::string allocated_reg = "x" + std::to_string(i);
-                stream << "mv " << allocated_reg << ", zero" << std::endl;
-                return allocated_reg;
+                return "x" + std::to_string(i);
             }
-            return "";  // ERROR
         }
+        return "";  // ERROR
+    }
 
-        void deallocateReg(std::string reg)
-        {
-            int reg_num = std::stoi(reg.substr(1));
-            risc_regs.setReg(reg_num, 0);
-            std::cout << "Deallocating x" << reg_num << " "
-                      << risc_regs.getReg(reg_num) << std::endl;
-        }
+    void deallocateReg(std::string reg)
+    {
+        int reg_num = std::stoi(reg.substr(1));
+        risc_regs.setReg(reg_num, 0);
+        std::cout << "Deallocating x" << reg_num << " "
+                  << risc_regs.getReg(reg_num) << std::endl;
+    }
 
-        void CreateScope(std::ostream & stream)
-        {
-            // Store local variables, parameters and return type
-            scopes.push_back(bindings);
-            bindings.clear();            // Reset bindings for new scope
-            remaining_mem = frame_size;  // Resets offset
-            return_branches.push_back(
-                makeLabel("function_end"));  // Create a unique label for the
-                                             // end of the function
-            stream << "addi sp, sp, -" << frame_size << std::endl;
-        }
-        std::string getReturnLabel() { return return_branches.back(); }
+    void CreateScope(std::ostream &stream)
+    {
+        // Store local variables, parameters and return type
+        scopes.push_back(bindings);
+        bindings.clear();            // Reset bindings for new scope
+        remaining_mem = frame_size;  // Resets offset
+        return_branches.push_back(
+            makeName("function_end"));  // Create a unique label for the end of
+                                        // the function
+        stream << "addi sp, sp, -" << frame_size << std::endl;
+    }
+    std::string getReturnLabel() { return return_branches.back(); }
 
-        void ExitScope(std::ostream & stream)
-        {
-            // Pop the last scope
-            return_branches.pop_back();
-            bindings = scopes.back();
-            scopes.pop_back();
-            params.clear();  // The param offsets should be pushed into
-                             // functions straight after prolog
-            stream << "addi sp, sp, " << frame_size << std::endl;
-        }
+    void ExitScope(std::ostream &stream)
+    {
+        // Pop the last scope
+        return_branches.pop_back();
+        bindings = scopes.back();
+        scopes.pop_back();
+        params.clear();  // The param offsets should be pushed into functions
+                         // straight after prolog
+        stream << "addi sp, sp, " << frame_size << std::endl;
+    }
 
-        // Probs won't need
-        void AllocateStack(int num_bytes) {}
-    };
+    // Probs won't need
+    void AllocateStack(int num_bytes) {}
+};
 
 #endif
