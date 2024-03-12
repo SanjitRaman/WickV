@@ -10,7 +10,8 @@ enum entity_type
     INVALID,
     FUNCTION,
     VARIABLE,
-    VARIABLE_ASSIGN
+    VARIABLE_ASSIGN,
+    ARRAY
     // todo add more data types
 };
 

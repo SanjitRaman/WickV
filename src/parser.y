@@ -260,8 +260,8 @@ direct_declarator
         $$ = new Variable(*$1); //CHANGED FROM Identifier to Variable
         delete $1;
     }
+	| direct_declarator '[' constant_expression ']' { $$ = new ArrayDeclarator($1, $3); }
     /* | '(' declarator ')'
-    | direct_declarator '[' constant_expression ']'
     | direct_declarator '[' ']' */
     | direct_declarator '(' parameter_list ')' {
 		$$ = new DirectDeclarator($1, $3);

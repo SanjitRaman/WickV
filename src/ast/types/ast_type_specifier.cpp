@@ -13,6 +13,7 @@ entity_type TypeSpecifier::getType() const
     {
         return INTEGER;
     }
+    return INVALID; //TODO: Add more types
 }
 
 std::string TypeSpecifier::getId() const

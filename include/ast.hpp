@@ -47,6 +47,7 @@
 #include "ast/ast_identifier.hpp"
 #include "ast/ast_init_declarator.hpp"
 #include "ast/ast_init_declarator_list.hpp"
+#include "ast/ast_array_declarator.hpp"
 
 extern Node *ParseAST(std::string file_name);
 
