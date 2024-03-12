@@ -2,7 +2,7 @@
 
 CXXFLAGS += -std=c++20 -W -Wall -g -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -fsanitize=address -static-libasan -O0 -rdynamic --coverage -I include
 
-SOURCES := $(wildcard src/*.cpp)
+SOURCES := $(shell find src/ -type f -name "*.cpp")
 DEPENDENCIES := $(patsubst src/%.cpp,build/%.d,$(SOURCES))
 
 OBJECTS := $(patsubst src/%.cpp,build/%.o,$(SOURCES))

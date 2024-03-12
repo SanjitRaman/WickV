@@ -214,6 +214,10 @@ expression
 	/* | expression ',' assignment_expression */
 	;
 
+constant_expression
+	: conditional_expression { $$ = $1; }
+	;
+
 declaration
 	: declaration_specifiers ';' // Unsure what to do here
 	| declaration_specifiers init_declarator_list ';' { $$ = new Declaration($1, $2); } //(Set type of declaration here) //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
@@ -298,9 +302,14 @@ statement
 	| compound_statement {$$ = $1; }
 	| selection_statement {$$ = $1; }
 	| iteration_statement {$$ = $1; }
-	/* | labeled_statement */
+	| labeled_statement {$$ = $1;}
   	;
 
+labeled_statement
+	: CASE constant_expression ':' statement { $$ = new CaseStatement($2, $4); }
+	/* : IDENTIFIER ':' statement */
+	| DEFAULT ':' statement { $$ = new DefaultStatement($3); }
+	;
 
 compound_statement
 	: '{' '}' {
@@ -328,7 +337,7 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement { $$ = new IfStatement($3, $5); }
 	| IF '(' expression ')' statement ELSE statement { $$ = new IfElseStatement($3, $5, $7); }
-	/* | SWITCH '(' expression ')' statement */
+	| SWITCH '(' expression ')' statement { $$ = new SwitchStatement($3, $5); }
 	;
 
 iteration_statement
