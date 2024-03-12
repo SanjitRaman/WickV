@@ -93,10 +93,11 @@ postfix_expression
 	: primary_expression { $$ = $1; }
 	| postfix_expression '(' ')' { $$ = new FunctionCall($1); std::cout << "PostfixExpression: " << std::endl;}
 	| postfix_expression '(' argument_expression_list ')' { $$ = new FunctionCall($1, $3); }
+	| postfix_expression INC_OP {$$ = new PostfixOperator($1, "++"); }
+	| postfix_expression DEC_OP {$$ = new PostfixOperator($1, "--"); }
 	/* | postfix_expression '[' expression ']'
 	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
-	| postfix_expression INC_OP
 	| postfix_expression DEC_OP */
 	;
 
@@ -132,7 +133,9 @@ additive_expression
 	| additive_expression '+' multiplicative_expression {
 		$$ = new AddOperator($1, $3);
 	}
-	/* | additive_expression '-' multiplicative_expression */
+	| additive_expression '-' multiplicative_expression {
+		$$ = new SubtractOperator($1, $3);
+	}
 	;
 
 shift_expression
@@ -143,9 +146,9 @@ shift_expression
 
 relational_expression
 	: shift_expression { $$ = $1; }
-	/* | relational_expression '<' shift_expression
-	| relational_expression '>' shift_expression
-	| relational_expression LE_OP shift_expression
+	| relational_expression '>' shift_expression { $$ = new GreaterThan($1, $3); }
+	| relational_expression '<' shift_expression { $$ = new LessThan($1, $3); }
+	/* | relational_expression LE_OP shift_expression
 	| relational_expression GE_OP shift_expression */
 	;
 
@@ -209,6 +212,10 @@ assignment_operator
 expression
 	: assignment_expression { $$ = $1; }
 	/* | expression ',' assignment_expression */
+	;
+
+constant_expression
+	: conditional_expression { $$ = $1; }
 	;
 
 declaration
@@ -292,16 +299,22 @@ initializer_list
 statement
 	: jump_statement { $$ = $1; }
 	| expression_statement { $$ = $1; }
-	/* | labeled_statement
-	| compound_statement
-	| selection_statement
-	| iteration_statement
-	; */
+	| compound_statement {$$ = $1; }
+	| selection_statement {$$ = $1; }
+	| iteration_statement {$$ = $1; }
+	| labeled_statement {$$ = $1;}
+  	;
+
+labeled_statement
+	: CASE constant_expression ':' statement { $$ = new CaseStatement($2, $4); }
+	/* : IDENTIFIER ':' statement */
+	| DEFAULT ':' statement { $$ = new DefaultStatement($3); }
+	;
 
 compound_statement
 	: '{' '}' {
 		// TODO: correct this
-		$$ = nullptr;
+		$$ = new EmptyStatement();
 	}
 	| '{' statement_list '}' { $$ = $2; }
 	| '{' declaration_list '}' { $$ = $2; }
@@ -319,6 +332,19 @@ statement_list
 expression_statement
 	: ';'
 	| expression ';' { $$ = $1; }
+	;
+
+selection_statement
+	: IF '(' expression ')' statement { $$ = new IfStatement($3, $5); }
+	| IF '(' expression ')' statement ELSE statement { $$ = new IfElseStatement($3, $5, $7); }
+	| SWITCH '(' expression ')' statement { $$ = new SwitchStatement($3, $5); }
+	;
+
+iteration_statement
+	: WHILE '(' expression ')' statement { $$ = new WhileStatement($3, $5); }
+	| FOR '(' expression_statement expression_statement expression ')' statement { $$ = new ForStatement($3, $4, $5, $7); std::cout << "IterationStatement: " << std::endl;}
+	/* | DO statement WHILE '(' expression ')' ';' */
+	/* | FOR '(' expression_statement expression_statement ')' statement */
 	;
 
 jump_statement
