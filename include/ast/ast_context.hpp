@@ -73,6 +73,9 @@ class Context
         bindings;  // Bindings (Local variables) for current scope
     switch_properties switch_info;
 
+    bool fetchArrayIndex = false;
+    std::string ArrayIndexReg = "";
+
 
 
     int frame_size = 128;  // Size of stack frame
@@ -151,6 +154,38 @@ class Context
         }
     }
 
+
+    void addArray(std::string id, int array_size)
+    {
+        std::string offset;
+        //Binding created in InitDeclarator/Declaration
+        if (bindings[id].type == entity_type::INTEGER)
+        {
+            for (int i = 0; i < array_size - 1; i++)
+            {
+                offset = getMemory(INT_MEM);
+            }
+        }
+    }
+    void setFetchIndexReg(bool shouldFetch){
+        fetchArrayIndex = shouldFetch;
+        //If shouldFetch is true, then fetch the array index
+        //If shouldFetch is false, then don't fetch the array index
+    }
+
+    bool getFetchIndexReg(){
+        return fetchArrayIndex;
+    }
+
+    void setIndexReg(std::string index_reg){
+        ArrayIndexReg = index_reg;
+    }
+
+    std::string getIndexReg(){
+        return ArrayIndexReg;
+        //TODO: Maybe reset ArrayIndexReg to "" after use of this method???
+    }
+
     // Change entity_type to data_type
     void createBinding(std::string id, entity_type type)
     {
@@ -168,6 +203,15 @@ class Context
             return bindings[id].offset;
         }
         return "ERROR : getOffset";
+    }
+
+    entity_type getBindingType(std::string id)
+    {
+        if (bindings.find(id) != bindings.end())
+        {
+            return bindings[id].type;
+        }
+        return entity_type::INVALID;
     }
 
     std::string allocateReg(std::ostream &stream)

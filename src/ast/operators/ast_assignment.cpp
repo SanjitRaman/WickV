@@ -4,7 +4,17 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
 {
     std::string tempReg1 = context.allocateReg(stream);
     std::string tempReg2 = context.allocateReg(stream);
-    unary_expression_->EmitRISC(stream, context, tempReg1);
+
+    if (unary_expression_->getType() == entity_type::ARRAY)
+    {
+        context.setFetchIndexReg(true);
+        unary_expression_->EmitRISC(stream, context, tempReg1);
+        context.setFetchIndexReg(false);
+    }
+    else{
+        unary_expression_->EmitRISC(stream, context, tempReg1);
+    }
+
     assignment_expression_->EmitRISC(stream, context, tempReg2);
     if (assignment_operator_ == "=")
     {
@@ -61,13 +71,26 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
                << std::endl;
     }
     // For integer types
-    std::cout << "sw " << tempReg1 << ", "
+    if (unary_expression_->getType() == entity_type::ARRAY)
+    {
+        //TODO: to optimise, you could keep the address in a register from the beginning of function
+        std::string index_reg = context.getIndexReg();
+        stream << "sw " << tempReg1 << ", 0(" << index_reg << ")" << std::endl;
+        context.deallocateReg(index_reg);
+        context.setIndexReg("");
+    }
+    else{
+        std::cout << "sw " << tempReg1 << ", "
               << context.bindings.at(unary_expression_->getId()).offset
               << "(sp)" << std::endl;
-    stream << "sw " << tempReg1 << ", "
+        stream << "sw " << tempReg1 << ", "
            << context.bindings.at(unary_expression_->getId()).offset << "(sp)"
            << std::endl;
+    }
 
+
+    
+    
     context.deallocateReg(tempReg1);
     context.deallocateReg(tempReg2);
 }

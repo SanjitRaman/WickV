@@ -1,7 +1,8 @@
 #include "ast/ast_array_declarator.hpp"
 
 void ArrayDeclarator::EmitRISC(std::ostream &stream, Context &context) const
-{ 
+{
+    context.addArray(identifier_->getId(), size_->getValue());
 }
 
 void ArrayDeclarator::EmitRISC(std::ostream &stream, Context &context,

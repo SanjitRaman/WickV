@@ -20,6 +20,7 @@ class Node
     virtual void Print(std::ostream &stream) const = 0;
     virtual entity_type getType() const;
     virtual std::string getId() const;
+    virtual int getValue() const;
 };
 
 // Represents a list of nodes.

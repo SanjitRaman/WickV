@@ -59,3 +59,34 @@ void SubtractOperator::Print(std::ostream &stream) const
     op2_->Print(stream);
     stream << ")";
 }
+
+
+// ---------------------------- MultiplyOperator ----------------------------
+void MultiplyOperator::EmitRISC(std::ostream &stream, Context &context,
+                                 std::string destReg) const
+{
+    std::string op1_reg = context.allocateReg(stream);
+    op1_->EmitRISC(stream, context, op1_reg);
+    stream << "add " << destReg << ", " << op1_reg << ", zero"
+           << std::endl;
+    context.deallocateReg(op1_reg);
+    std::string op2_reg = context.allocateReg(stream);
+    op2_->EmitRISC(stream, context, op2_reg);
+    stream << "mul " << destReg << ", " << destReg << ", " << op2_reg
+           << std::endl;
+    context.deallocateReg(op2_reg);
+}
+
+void MultiplyOperator::EmitRISC(std::ostream &stream, Context &context) const {
+
+}
+
+void MultiplyOperator::Print(std::ostream &stream) const
+{
+    stream << "(";
+    op1_->Print(stream);
+    stream << " * ";
+    op2_->Print(stream);
+    stream << ")";
+}
+
