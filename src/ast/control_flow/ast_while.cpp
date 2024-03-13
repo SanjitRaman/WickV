@@ -11,6 +11,7 @@ void WhileStatement::EmitRISC(std::ostream &stream, Context &context) const
 
     std::string loopLabel = context.makeLabel("while");
     std::string endLabel = context.makeLabel("endwhile");
+    context.createLoop(loopLabel, endLabel);
 
     // Jump to the end label:
     stream << "j " << endLabel << std::endl;
@@ -30,6 +31,7 @@ void WhileStatement::EmitRISC(std::ostream &stream, Context &context) const
     // Emit the branch
     stream << "bnez " << destReg << ", " << loopLabel << std::endl;
 
+    context.exitLoop();
     //  Free the register
     context.deallocateReg(destReg);
 }

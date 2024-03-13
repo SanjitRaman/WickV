@@ -15,11 +15,16 @@ class ForStatement : public Node
    public:
     ForStatement(Node *start, Node *loop_condition, Node* increment, Node* for_statement)
         : start_(start), loop_condition_(loop_condition), increment_(increment), for_statement_(for_statement)  {};
+    ForStatement(Node *start, Node *loop_condition, Node* for_statement)
+        : start_(start), loop_condition_(loop_condition), increment_(nullptr), for_statement_(for_statement)  {};
+    
     virtual ~ForStatement()
     {
         delete start_;
         delete loop_condition_;
-        delete increment_;
+        if (increment_ != nullptr){
+            delete increment_;
+        }
         delete for_statement_;
     };
     virtual void EmitRISC(std::ostream &stream,

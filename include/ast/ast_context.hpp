@@ -20,6 +20,13 @@ struct switch_properties
     std::vector<std::string> default_labels;
 };
 
+struct loop_labels
+{
+    std::string startLabel;
+    std::string updateLabel;
+    std::string endLabel;
+};
+
 struct variable
 {
     std::string offset;
@@ -72,6 +79,8 @@ class Context
     std::unordered_map<std::string, variable>
         bindings;  // Bindings (Local variables) for current scope
     switch_properties switch_info;
+    std::string caseLabel = "";
+    std::vector<loop_labels> loop_info;
 
     bool fetchArrayIndex = false;
     std::string ArrayIndexReg = "";
@@ -85,11 +94,64 @@ class Context
     {
         return "_" + base + "_" + std::to_string(makeLabelUnq++);
     }
+    //For loops
+    void createLoop(std::string start, std::string end, std::string update)
+    {
+        loop_labels new_loop;
+        new_loop.startLabel = start;
+        new_loop.endLabel = end;
+        new_loop.updateLabel = update;
+        loop_info.push_back(new_loop);
+    }
+
+    //While loops
+    void createLoop(std::string start, std::string end)
+    {
+        loop_labels new_loop;
+        new_loop.startLabel = start;
+        new_loop.updateLabel = "";
+        new_loop.endLabel = end;
+        loop_info.push_back(new_loop);
+    }
+    std::string getLoopStart()
+    {
+        return loop_info.back().startLabel;
+    }
+    std::string getLoopEnd()
+    {
+        return loop_info.back().endLabel;
+    }
+
+    std::string getLoopUpdate()
+    {
+        return loop_info.back().updateLabel;
+    }
+
+    void exitLoop()
+    {
+        loop_info.pop_back();
+    }
+
 
     void InitialiseSwitch()
     {
         std::string switch_label = makeLabel("end_switch");
         switch_info.switch_labels.push_back(switch_label);
+        loop_labels new_switch;
+        new_switch.startLabel = "";
+        new_switch.updateLabel = "";
+        new_switch.endLabel = switch_label;
+        loop_info.push_back(new_switch);
+    }
+    void setCaseLabel()
+    {
+        std::string case_label = makeLabel("case_statement");
+        caseLabel = case_label;
+    }
+
+    std::string getCaseLabel()
+    {
+        return caseLabel;
     }
 
     std::string getSwitchLabel(){
@@ -103,6 +165,7 @@ class Context
             switch_info.default_labels.pop_back();
         }
         switch_info.switch_labels.pop_back();
+        loop_info.pop_back();
     }
 
     void setDefaultLabel()

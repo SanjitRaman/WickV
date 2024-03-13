@@ -330,7 +330,7 @@ statement_list
 	;
 
 expression_statement
-	: ';'
+	: ';' { $$ = new Semicolon();}
 	| expression ';' { $$ = $1; }
 	;
 
@@ -344,16 +344,23 @@ iteration_statement
 	: WHILE '(' expression ')' statement { $$ = new WhileStatement($3, $5); }
 	| FOR '(' expression_statement expression_statement expression ')' statement { $$ = new ForStatement($3, $4, $5, $7); std::cout << "IterationStatement: " << std::endl;}
 	/* | DO statement WHILE '(' expression ')' ';' */
-	/* | FOR '(' expression_statement expression_statement ')' statement */
+	| FOR '(' expression_statement expression_statement ')' statement { $$ = new ForStatement($3, $4, $6); }
 	;
 
 jump_statement
-	: RETURN ';' {
-		$$ = new ReturnStatement(nullptr);
+	: CONTINUE ';' {
+		$$ = new Continue();
+	}
+	| BREAK ';' {
+		$$ = new Break();
+	}
+	| RETURN ';' {
+		$$ = new ReturnStatement(nullptr); //TODO : Create 2 constructors if time
 	}
 	| RETURN expression ';' {
 		$$ = new ReturnStatement($2);
 	}
+	/* |  GOTO IDENTIFIER ';' */
 	;
 
 
