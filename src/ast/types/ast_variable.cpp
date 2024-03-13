@@ -23,7 +23,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
     }
     // If the variable is not present in bindings then it must be
     //   a local var which is yet to be initialised in the current scope
-    // TRY TO NOT USE THE BELOW CODE
+    // TODO : TRY TO NOT USE THE BELOW CODE
     else
     {
         context.createBinding(getId(), getType());

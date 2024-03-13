@@ -17,6 +17,12 @@ std::string Node::getId() const
     return "ERROR";  // Shouldn't go here
 }
 
+int Node::getValue() const
+{
+    return -1;  // Shouldn't go here
+}
+
+
 void NodeList::PushBack(Node *item) { nodes_.push_back(item); }
 
 void NodeList::EmitRISC(std::ostream &stream, Context &context) const

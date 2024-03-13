@@ -48,6 +48,10 @@
 #include "ast/ast_init_declarator.hpp"
 #include "ast/ast_init_declarator_list.hpp"
 
+//Arrays
+#include "ast/ast_array_declarator.hpp"
+#include "ast/ast_array_index.hpp"
+
 extern Node *ParseAST(std::string file_name);
 
 #endif

@@ -22,6 +22,15 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
             context.createBinding(node->getId(),
                                   declaration_specifiers_->getType());
         }
+        else if (node->getType() == entity_type::ARRAY)
+        {
+            std::cout << "ARRAY" << std::endl;
+            //Create binding here for array
+            context.createBinding(node->getId(),
+                                  declaration_specifiers_->getType());
+            //Call emit risc on array declarator
+            node->EmitRISC(stream, context);
+        }
     }
 }
 

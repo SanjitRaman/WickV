@@ -95,8 +95,8 @@ postfix_expression
 	| postfix_expression '(' argument_expression_list ')' { $$ = new FunctionCall($1, $3); }
 	| postfix_expression INC_OP {$$ = new PostfixOperator($1, "++"); }
 	| postfix_expression DEC_OP {$$ = new PostfixOperator($1, "--"); }
-	/* | postfix_expression '[' expression ']'
-	| postfix_expression '.' IDENTIFIER
+	| postfix_expression '[' expression ']' { $$ = new ArrayIndex($1, $3); }
+	/* | postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression DEC_OP */
 	;
@@ -260,8 +260,8 @@ direct_declarator
         $$ = new Variable(*$1); //CHANGED FROM Identifier to Variable
         delete $1;
     }
+	| direct_declarator '[' constant_expression ']' { $$ = new ArrayDeclarator($1, $3); }
     /* | '(' declarator ')'
-    | direct_declarator '[' constant_expression ']'
     | direct_declarator '[' ']' */
     | direct_declarator '(' parameter_list ')' {
 		$$ = new DirectDeclarator($1, $3);
