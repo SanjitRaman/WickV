@@ -123,8 +123,8 @@ cast_expression
 
 multiplicative_expression
 	: cast_expression { $$ = $1; }
-	/* | multiplicative_expression '*' cast_expression
-	| multiplicative_expression '/' cast_expression
+	| multiplicative_expression '*' cast_expression { $$ = new MultiplyOperator($1, $3);}
+	/* | multiplicative_expression '/' cast_expression
 	| multiplicative_expression '%' cast_expression */
 	;
 
