@@ -311,6 +311,7 @@ class Context
                 {
                     std::string tempReg = "x" + std::to_string(i);
                     stream << "sw " << tempReg << ", " << getMemory(INT_MEM) << "(sp)" << std::endl;
+                    risc_regs.setReg(i, 0); //TODO: check that this is valid
                     scopeRegs.push_back(tempReg);
                 }
             }
@@ -319,6 +320,7 @@ class Context
                 {
                     std::string tempReg = "x" + std::to_string(i);
                     stream << "sw " << tempReg << ", " << getMemory(INT_MEM) << "(sp)" << std::endl;
+                    risc_regs.setReg(i, 0); //TODO: check that this is valid
                     scopeRegs.push_back(tempReg);
                 }
             }
@@ -330,6 +332,7 @@ class Context
             int size = scopeRegs.size();
             for (int i=0; i<size; i++){
                 stream << "lw " << scopeRegs.back() << ", " << remaining_mem << "(sp)" << std::endl;
+                risc_regs.setReg(std::stoi(scopeRegs.back().substr(1)), 1);
                 scopeRegs.pop_back();
                 remaining_mem += INT_MEM;
             }
