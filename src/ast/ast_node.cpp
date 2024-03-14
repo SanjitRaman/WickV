@@ -14,7 +14,7 @@ entity_type Node::getType() const
 
 std::string Node::getId() const
 {
-    return "ERROR";  // Shouldn't go here
+    return "ERROR : NodegetId()";  // Shouldn't go here
 }
 
 int Node::getValue() const

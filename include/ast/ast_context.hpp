@@ -20,6 +20,13 @@ struct switch_properties
     std::vector<std::string> default_labels;
 };
 
+struct loop_labels
+{
+    std::string startLabel;
+    std::string updateLabel;
+    std::string endLabel;
+};
+
 struct variable
 {
     std::string offset;
@@ -69,9 +76,13 @@ class Context
                                                     // scope
     std::unordered_map<std::string, function_properties> functions;
     std::vector<std::string> return_branches;
+    std::vector<int> remaining_mem_stack;
     std::unordered_map<std::string, variable>
         bindings;  // Bindings (Local variables) for current scope
     switch_properties switch_info;
+    std::string caseLabel = "";
+    std::vector<loop_labels> loop_info;
+    std::vector<std::vector<std::string>> savedRegs; // For function calls
 
     bool fetchArrayIndex = false;
     std::string ArrayIndexReg = "";
@@ -79,17 +90,70 @@ class Context
 
 
     int frame_size = 128;  // Size of stack frame
-    int remaining_mem;     // Offset
+    int remaining_mem = frame_size;     // Offset
 
     std::string makeLabel(std::string base)
     {
         return "_" + base + "_" + std::to_string(makeLabelUnq++);
     }
+    //For loops
+    void createLoop(std::string start, std::string end, std::string update)
+    {
+        loop_labels new_loop;
+        new_loop.startLabel = start;
+        new_loop.endLabel = end;
+        new_loop.updateLabel = update;
+        loop_info.push_back(new_loop);
+    }
+
+    //While loops
+    void createLoop(std::string start, std::string end)
+    {
+        loop_labels new_loop;
+        new_loop.startLabel = start;
+        new_loop.updateLabel = "";
+        new_loop.endLabel = end;
+        loop_info.push_back(new_loop);
+    }
+    std::string getLoopStart()
+    {
+        return loop_info.back().startLabel;
+    }
+    std::string getLoopEnd()
+    {
+        return loop_info.back().endLabel;
+    }
+
+    std::string getLoopUpdate()
+    {
+        return loop_info.back().updateLabel;
+    }
+
+    void exitLoop()
+    {
+        loop_info.pop_back();
+    }
+
 
     void InitialiseSwitch()
     {
         std::string switch_label = makeLabel("end_switch");
         switch_info.switch_labels.push_back(switch_label);
+        loop_labels new_switch;
+        new_switch.startLabel = "";
+        new_switch.updateLabel = "";
+        new_switch.endLabel = switch_label;
+        loop_info.push_back(new_switch);
+    }
+    void setCaseLabel()
+    {
+        std::string case_label = makeLabel("case_statement");
+        caseLabel = case_label;
+    }
+
+    std::string getCaseLabel()
+    {
+        return caseLabel;
     }
 
     std::string getSwitchLabel(){
@@ -103,6 +167,7 @@ class Context
             switch_info.default_labels.pop_back();
         }
         switch_info.switch_labels.pop_back();
+        loop_info.pop_back();
     }
 
     void setDefaultLabel()
@@ -237,10 +302,48 @@ class Context
                       << risc_regs.getReg(reg_num) << std::endl;
         }
 
+        //For function calls (saving temp registers)
+        void saveRegs(std::ostream & stream){
+            std::vector<std::string> scopeRegs;
+            for (int i = 5; i < 8; i++)
+            {
+                if (risc_regs.getReg(i) == 1)
+                {
+                    std::string tempReg = "x" + std::to_string(i);
+                    stream << "sw " << tempReg << ", " << getMemory(INT_MEM) << "(sp)" << std::endl;
+                    risc_regs.setReg(i, 0); //TODO: check that this is valid
+                    scopeRegs.push_back(tempReg);
+                }
+            }
+            for (int i = 28; i < 32; i++){
+                if (risc_regs.getReg(i) == 1)
+                {
+                    std::string tempReg = "x" + std::to_string(i);
+                    stream << "sw " << tempReg << ", " << getMemory(INT_MEM) << "(sp)" << std::endl;
+                    risc_regs.setReg(i, 0); //TODO: check that this is valid
+                    scopeRegs.push_back(tempReg);
+                }
+            }
+            savedRegs.push_back(scopeRegs);
+        }
+
+        void restoreRegs(std::ostream & stream){
+            std::vector<std::string> scopeRegs = savedRegs.back();
+            int size = scopeRegs.size();
+            for (int i=0; i<size; i++){
+                stream << "lw " << scopeRegs.back() << ", " << remaining_mem << "(sp)" << std::endl;
+                risc_regs.setReg(std::stoi(scopeRegs.back().substr(1)), 1);
+                scopeRegs.pop_back();
+                remaining_mem += INT_MEM;
+            }
+            savedRegs.pop_back();
+        }
+
         void CreateScope(std::ostream & stream)
         {
             // Store local variables, parameters and return type
             scopes.push_back(bindings);
+            remaining_mem_stack.push_back(remaining_mem);
             bindings.clear();            // Reset bindings for new scope
             remaining_mem = frame_size;  // Resets offset
             return_branches.push_back(
@@ -258,6 +361,8 @@ class Context
             scopes.pop_back();
             params.clear();  // The param offsets should be pushed into
                              // functions straight after prolog
+            remaining_mem = remaining_mem_stack.back();
+            remaining_mem_stack.pop_back();
             stream << "addi sp, sp, " << frame_size << std::endl;
         }
 

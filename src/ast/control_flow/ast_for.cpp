@@ -6,21 +6,27 @@ void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
     start_->EmitRISC(stream, context);
 
     // TODO: probs can move this to where the condition is emitted
-    std::string destReg = context.allocateReg(stream); //Want to call this destReg? May be confusing?
+    std::string destReg = context.allocateReg(stream); //TODO:Want to call this destReg? May be confusing?
 
-    std::string loopLabel = context.makeLabel("for");
+    std::string startLabel = context.makeLabel("for");
     std::string endLabel = context.makeLabel("endfor");
-
+    std::string updateLabel = context.makeLabel("updatefor");
+    context.createLoop(startLabel, endLabel, updateLabel);
     // Jump to the end label:
     stream << "j " << endLabel << std::endl;
 
     // Emit the loop label:
-    stream << loopLabel << ":" << std::endl;
+    stream << startLabel << ":" << std::endl;
 
-    // Emit the while statement
+    // Emit the for statement
     for_statement_->EmitRISC(stream, context);
 
-    increment_->EmitRISC(stream, context);
+    // Emit the increment
+    stream << updateLabel << ":" << std::endl;
+    if (increment_ != nullptr){
+        increment_->EmitRISC(stream, context);
+    }
+    
 
     // Emit the end label
     stream << endLabel << ":" << std::endl;
@@ -29,9 +35,10 @@ void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
     loop_condition_->EmitRISC(stream, context, destReg);
 
     // Emit the branch
-    stream << "bnez " << destReg << ", " << loopLabel << std::endl;
+    stream << "bnez " << destReg << ", " << startLabel << std::endl;
 
     //  Free the register
+    context.exitLoop();
     context.deallocateReg(destReg); 
 }
 

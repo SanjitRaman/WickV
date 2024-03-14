@@ -154,8 +154,8 @@ relational_expression
 
 equality_expression
 	: relational_expression { $$ = $1; }
-	/* | equality_expression EQ_OP relational_expression
-	| equality_expression NE_OP relational_expression */
+	| equality_expression EQ_OP relational_expression { $$ = new Equality($1, $3); }
+	/* | equality_expression NE_OP relational_expression */
 	;
 
 and_expression
@@ -186,7 +186,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression { $$ = $1; }
-	/*| logical_or_expression '?' expression ':' conditional_expression */
+	| logical_or_expression '?' expression ':' conditional_expression { $$ = new Ternary($1, $3, $5); }
 
 	;
 
@@ -330,7 +330,7 @@ statement_list
 	;
 
 expression_statement
-	: ';'
+	: ';' { $$ = new Semicolon();}
 	| expression ';' { $$ = $1; }
 	;
 
@@ -344,16 +344,23 @@ iteration_statement
 	: WHILE '(' expression ')' statement { $$ = new WhileStatement($3, $5); }
 	| FOR '(' expression_statement expression_statement expression ')' statement { $$ = new ForStatement($3, $4, $5, $7); std::cout << "IterationStatement: " << std::endl;}
 	/* | DO statement WHILE '(' expression ')' ';' */
-	/* | FOR '(' expression_statement expression_statement ')' statement */
+	| FOR '(' expression_statement expression_statement ')' statement { $$ = new ForStatement($3, $4, $6); }
 	;
 
 jump_statement
-	: RETURN ';' {
-		$$ = new ReturnStatement(nullptr);
+	: CONTINUE ';' {
+		$$ = new Continue();
+	}
+	| BREAK ';' {
+		$$ = new Break();
+	}
+	| RETURN ';' {
+		$$ = new ReturnStatement(nullptr); //TODO : Create 2 constructors if time
 	}
 	| RETURN expression ';' {
 		$$ = new ReturnStatement($2);
 	}
+	/* |  GOTO IDENTIFIER ';' */
 	;
 
 

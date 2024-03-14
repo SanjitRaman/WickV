@@ -21,6 +21,9 @@
 #include "ast/control_flow/ast_switch_statement.hpp"
 #include "ast/control_flow/ast_multi_list.hpp"
 #include "ast/control_flow/ast_empty_statement.hpp"
+#include "ast/control_flow/ast_break.hpp"
+#include "ast/control_flow/ast_continue.hpp"
+#include "ast/control_flow/ast_semicolon.hpp"
 
 // Functions
 #include "ast/functions/ast_function_call.hpp"
@@ -34,6 +37,8 @@
 #include "ast/operators/ast_var_assign.hpp"
 #include "ast/operators/ast_postfix.hpp"
 #include "ast/operators/ast_inequality.hpp"
+#include "ast/operators/ast_equality.hpp"
+#include "ast/operators/ast_ternary.hpp"
 
 // Types
 #include "ast/types/ast_constant.hpp"
