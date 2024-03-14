@@ -45,6 +45,8 @@
 #include "ast/types/ast_type_specifier.hpp"
 #include "ast/types/ast_variable.hpp"
 #include "ast/types/ast_entity_type.hpp"
+#include "ast/types/ast_enum_specifier.hpp"
+#include "ast/types/ast_enumerator.hpp"
 
 // Declarations
 #include "ast/ast_declaration.hpp"
