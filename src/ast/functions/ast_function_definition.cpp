@@ -9,7 +9,8 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     stream << ".globl " << declarator_->getId() << std::endl;
 
     declarator_->EmitRISC(stream, context);
-
+    std::string ra_offset = context.getMemory(RA_MEM);
+    stream << "sw ra, " << ra_offset << "(sp)" << std::endl;
     if (compound_statement_ != nullptr)
     {
         compound_statement_->EmitRISC(stream, context);
@@ -17,8 +18,8 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     stream << context.getReturnLabel() << ":" << std::endl;
 
     // std::cout << "wassup" << std::endl;
+    stream << "lw ra, " << ra_offset << "(sp)" << std::endl;
     context.ExitScope(stream);
-
     stream << "ret" << std::endl;
     // Epilog
     // CreateEpilog();

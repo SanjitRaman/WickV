@@ -12,7 +12,7 @@ void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
     // Emit the case list
     context.setCaseLabel();
     case_list_->EmitRISC(stream, context, switch_reg);
-
+    std::cout << "I finish emitting all cases" << std::endl;
     context.deallocateReg(switch_reg);
     //put default here
     std::string defaultLabel = context.getDefaultLabel();

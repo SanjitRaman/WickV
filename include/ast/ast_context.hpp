@@ -76,11 +76,13 @@ class Context
                                                     // scope
     std::unordered_map<std::string, function_properties> functions;
     std::vector<std::string> return_branches;
+    std::vector<int> remaining_mem_stack;
     std::unordered_map<std::string, variable>
         bindings;  // Bindings (Local variables) for current scope
     switch_properties switch_info;
     std::string caseLabel = "";
     std::vector<loop_labels> loop_info;
+    std::vector<std::vector<std::string>> savedRegs; // For function calls
 
     bool fetchArrayIndex = false;
     std::string ArrayIndexReg = "";
@@ -88,7 +90,7 @@ class Context
 
 
     int frame_size = 128;  // Size of stack frame
-    int remaining_mem;     // Offset
+    int remaining_mem = frame_size;     // Offset
 
     std::string makeLabel(std::string base)
     {
@@ -300,10 +302,45 @@ class Context
                       << risc_regs.getReg(reg_num) << std::endl;
         }
 
+        //For function calls (saving temp registers)
+        void saveRegs(std::ostream & stream){
+            std::vector<std::string> scopeRegs;
+            for (int i = 5; i < 8; i++)
+            {
+                if (risc_regs.getReg(i) == 1)
+                {
+                    std::string tempReg = "x" + std::to_string(i);
+                    stream << "sw " << tempReg << ", " << getMemory(INT_MEM) << "(sp)" << std::endl;
+                    scopeRegs.push_back(tempReg);
+                }
+            }
+            for (int i = 28; i < 32; i++){
+                if (risc_regs.getReg(i) == 1)
+                {
+                    std::string tempReg = "x" + std::to_string(i);
+                    stream << "sw " << tempReg << ", " << getMemory(INT_MEM) << "(sp)" << std::endl;
+                    scopeRegs.push_back(tempReg);
+                }
+            }
+            savedRegs.push_back(scopeRegs);
+        }
+
+        void restoreRegs(std::ostream & stream){
+            std::vector<std::string> scopeRegs = savedRegs.back();
+            int size = scopeRegs.size();
+            for (int i=0; i<size; i++){
+                stream << "lw " << scopeRegs.back() << ", " << remaining_mem << "(sp)" << std::endl;
+                scopeRegs.pop_back();
+                remaining_mem += INT_MEM;
+            }
+            savedRegs.pop_back();
+        }
+
         void CreateScope(std::ostream & stream)
         {
             // Store local variables, parameters and return type
             scopes.push_back(bindings);
+            remaining_mem_stack.push_back(remaining_mem);
             bindings.clear();            // Reset bindings for new scope
             remaining_mem = frame_size;  // Resets offset
             return_branches.push_back(
@@ -321,6 +358,8 @@ class Context
             scopes.pop_back();
             params.clear();  // The param offsets should be pushed into
                              // functions straight after prolog
+            remaining_mem = remaining_mem_stack.back();
+            remaining_mem_stack.pop_back();
             stream << "addi sp, sp, " << frame_size << std::endl;
         }
 

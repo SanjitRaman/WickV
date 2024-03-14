@@ -30,7 +30,7 @@ void CaseStatement::EmitRISC(std::ostream &stream, Context &context,
     std::string nextCaseLabel = context.getCaseLabel();
     stream << "j " << nextCaseLabel << std::endl;
     //Branch to nextCaseLabel and set it in context
-
+    std::cout << "I put the endcaselabel here"  << std::endl;
     stream << endCaseLabel << ":" << std::endl; //
 }
 
