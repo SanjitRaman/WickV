@@ -38,11 +38,11 @@
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer  parameter_declaration
+%type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit
+%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list
 %type <parameter_list> parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
@@ -219,7 +219,7 @@ constant_expression
 	;
 
 declaration
-	: declaration_specifiers ';' // Unsure what to do here
+	: declaration_specifiers ';' {$$ = $1; }// Unsure what to do here
 	| declaration_specifiers init_declarator_list ';' { $$ = new Declaration($1, $2); } //(Set type of declaration here) //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
 	;
 
@@ -248,7 +248,35 @@ type_specifier
 	: INT {
 		$$ = new TypeSpecifier("int"); std::cout << "TypeSpecifier: " << std::endl;	
 	}
+	| enum_specifier { $$ = $1; } //This should be fine
+	/* | CHAR
+	| SHORT
+	| LONG
+	| FLOAT
+	| DOUBLE
+	| SIGNED
+	| UNSIGNED
+  	| struct_specifier
+	| TYPE_NAME */
+
 	;
+
+enum_specifier
+	: ENUM '{' enumerator_list '}' { $$ = new EnumSpecifier("", $3); }
+	| ENUM IDENTIFIER '{' enumerator_list '}' { $$ = new EnumSpecifier(*$2, $4); delete $2; }
+	| ENUM IDENTIFIER { $$ = new EnumSpecifier(*$2, nullptr); delete $2; }
+	;
+
+enumerator_list
+	: enumerator { $$ = new NodeList($1); }
+	| enumerator_list ',' enumerator { $1->PushBack($3); $$ = $1; }
+	;
+
+enumerator
+	: IDENTIFIER { $$ = new Enumerator(*$1); delete $1;}
+	| IDENTIFIER '=' constant_expression { $$ = new Enumerator(*$1, $3); delete $1;} //2 constructors for Enumerator
+	;
+
 
 declarator
 	: direct_declarator { $$ = $1; std::cout << "It's going to Declarator : direct_declarator" << std::endl;}

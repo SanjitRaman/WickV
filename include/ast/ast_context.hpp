@@ -33,6 +33,13 @@ struct variable
     entity_type type;
 };
 
+struct enum_vals
+{
+    std::string id;
+    std::unordered_map<std::string, int> enum_vals; //May not need to store in context
+};
+
+
 struct param
 {
     std::string offset;
@@ -84,9 +91,14 @@ class Context
     std::vector<loop_labels> loop_info;
     std::vector<std::vector<std::string>> savedRegs; // For function calls
 
+
     bool fetchArrayIndex = false;
     std::string ArrayIndexReg = "";
 
+    //Enum
+    int global_enum_val = -1;
+    std::vector<enum_vals> enum_info;
+    
 
 
     int frame_size = 128;  // Size of stack frame
@@ -185,6 +197,40 @@ class Context
         return switch_info.default_labels.back();
     }
 
+    //Enum
+    void createEnum(std::string id)
+    {
+        enum_vals new_enum;
+        new_enum.id = id;
+        enum_info.push_back(new_enum);
+    }
+
+    int setEnumVal(){
+        global_enum_val++;
+        return global_enum_val;
+    }
+
+    void resetEnumVal(){
+        global_enum_val = -1;
+    }
+
+    void addEnumVal(std::string id, int val)
+    {
+        enum_info.back().enum_vals[id] = val;
+    }
+
+    int getEnumVal(std::string id)
+    {
+        for (auto enum_specifier : enum_info)
+        {
+            if (enum_specifier.enum_vals.find(id) != enum_specifier.enum_vals.end())
+            {
+                return enum_specifier.enum_vals[id];
+            }
+        }
+        return -1;
+    }
+
     void set_function_params(std::string function_name,
                              function_properties function_info)
     {
@@ -260,6 +306,7 @@ class Context
         newVar.type = type;
         bindings[id] = newVar;
     }
+
 
     std::string getOffset(std::string id)
     {

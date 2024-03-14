@@ -1,16 +1,21 @@
-#ifndef AST_TYPE_SPECIFIER_HPP
-#define AST_TYPE_SPECIFIER_HPP
+#ifndef AST_ENUM_SPECIFIER_HPP
+#define AST_ENUM_SPECIFIER_HPP
 
 #include "ast/ast_node.hpp"
 
-class TypeSpecifier : public Node
+class EnumSpecifier : public Node
 {
    private:
-    std::string type_;
+    std::string identifier_;
+    NodeList* enumerator_list_;
 
    public:
-    TypeSpecifier(std::string type) : type_(type){};
-    virtual ~TypeSpecifier(){};
+    EnumSpecifier(std::string identifier, NodeList* enumerator_list) : identifier_(identifier), enumerator_list_(enumerator_list){};
+    virtual ~EnumSpecifier(){
+        if (enumerator_list_ != nullptr){
+            delete enumerator_list_;
+        }
+    };
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;
     virtual void EmitRISC(std::ostream &stream, Context &context,

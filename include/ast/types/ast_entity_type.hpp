@@ -11,7 +11,8 @@ enum entity_type
     FUNCTION,
     VARIABLE,
     VARIABLE_ASSIGN,
-    ARRAY
+    ARRAY,
+    ENUM_SPECIFIER
     // todo add more data types
 };
 
