@@ -219,7 +219,7 @@ constant_expression
 	;
 
 declaration
-	: declaration_specifiers ';' {$$ = $1; }// Unsure what to do here
+	: declaration_specifiers ';' { $$ = $1; }// Unsure what to do here
 	| declaration_specifiers init_declarator_list ';' { $$ = new Declaration($1, $2); } //(Set type of declaration here) //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
 	;
 
@@ -273,8 +273,8 @@ enumerator_list
 	;
 
 enumerator
-	: IDENTIFIER { $$ = new Enumerator(*$1); delete $1;}
-	| IDENTIFIER '=' constant_expression { $$ = new Enumerator(*$1, $3); delete $1;} //2 constructors for Enumerator
+	: IDENTIFIER { $$ = new Enumerator(*$1, nullptr); delete $1; std::cout << "goes to enumerator:identifier" << std::endl;}
+	| IDENTIFIER '=' constant_expression { $$ = new Enumerator(*$1, $3); delete $1; std::cout << "goes to enumerator:identifier = constant_expression" << std::endl;} //2 constructors for Enumerator
 	;
 
 

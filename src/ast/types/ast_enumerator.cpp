@@ -20,7 +20,7 @@ void Enumerator::EmitRISC(std::ostream &stream, Context &context,
 void Enumerator::Print(std::ostream &stream) const {
     std::cout << identifier_ << " : enumerator::print" << std::endl;
     stream << identifier_;
-    // std::cout << *constant_expression_ << " : enumerator::print" << std::endl;
+    std::cout << constant_expression_ << " : enumerator::print" << std::endl;
     if (constant_expression_ != nullptr)
     {
         std::cout << "Goes here for some reason : enumerator::print if statement" << std::endl;
@@ -33,6 +33,7 @@ void Enumerator::Print(std::ostream &stream) const {
 entity_type Enumerator::getType() const
 {
     //TODO: is this needed?
+    return entity_type::ENUMERATOR;
 }
 
 std::string Enumerator::getId() const

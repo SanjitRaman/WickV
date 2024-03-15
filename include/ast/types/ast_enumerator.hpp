@@ -11,7 +11,6 @@ class Enumerator : public Node
 
    public:
     Enumerator(std::string identifier, Node* constant_expression) : identifier_(identifier), constant_expression_(constant_expression){};
-    Enumerator(std::string identifier) : identifier_(identifier){};
     virtual ~Enumerator(){
         if (constant_expression_ != nullptr)
         {

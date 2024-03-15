@@ -12,7 +12,8 @@ enum entity_type
     VARIABLE,
     VARIABLE_ASSIGN,
     ARRAY,
-    ENUM_SPECIFIER
+    ENUM_SPECIFIER,
+    ENUMERATOR
     // todo add more data types
 };
 

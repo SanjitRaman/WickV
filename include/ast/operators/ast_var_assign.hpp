@@ -1,7 +1,6 @@
 #ifndef AST_VAR_ASSIGN_HPP
 #define AST_VAR_ASSIGN_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
 class VarAssign : public Node
