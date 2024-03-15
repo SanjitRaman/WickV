@@ -17,3 +17,7 @@ int IntConstant::getValue() const
 { 
     return value_; 
 }
+std::string IntConstant::getId() const
+{
+    return "ERROR";
+}

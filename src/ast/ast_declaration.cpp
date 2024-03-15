@@ -36,7 +36,7 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
             std::cout << "POINTER" << std::endl;
             //Create binding here for pointer
             context.createBinding(node->getId(),
-                                  declaration_specifiers_->getType());
+                                  declaration_specifiers_->getType(), true);
             //Do we need to specify that this is a pointer in context?
             //Call emit risc on pointer declarator
             // node->EmitRISC(stream, context);

@@ -7,7 +7,17 @@ void VarAssign::EmitRISC(std::ostream &stream, Context &context) const
     if (context.bindings.find(declarator_->getId()) != context.bindings.end())
     {
         // If it is then execute this code
-        std::string offset = context.bindings.at(declarator_->getId()).offset;
+        std::string offset = context.getOffset(declarator_->getId());
+        initializer_->EmitRISC(
+            stream, context,
+            varReg);  // As it is an assignment, it cannot be null
+        std::cout << "sw " << varReg << ", " << offset << "(sp)" << std::endl;
+        stream << "sw " << varReg << ", " << offset << "(sp)" << std::endl;
+    }
+    else if (context.params.find(declarator_->getId()) != context.params.end())
+    {
+        // If it is then execute this code
+        std::string offset = context.getOffset(declarator_->getId());
         initializer_->EmitRISC(
             stream, context,
             varReg);  // As it is an assignment, it cannot be null

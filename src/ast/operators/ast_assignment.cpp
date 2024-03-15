@@ -81,10 +81,10 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
     }
     else{
         std::cout << "sw " << tempReg1 << ", "
-              << context.bindings.at(unary_expression_->getId()).offset
+              << context.getOffset(unary_expression_->getId())
               << "(sp)" << std::endl;
         stream << "sw " << tempReg1 << ", "
-           << context.bindings.at(unary_expression_->getId()).offset << "(sp)"
+           << context.getOffset(unary_expression_->getId()) << "(sp)"
            << std::endl;
     }
 

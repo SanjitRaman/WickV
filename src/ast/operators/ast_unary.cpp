@@ -13,8 +13,9 @@ void Unary::EmitRISC(std::ostream &stream, Context &context,
         stream << "addi " << destReg << ", sp, " << offset << std::endl;
     }
     else if (unary_op_ == "*"){
+        std::cout << "Goes to Unary * " << std::endl;
         std::string offset = context.getOffset(cast_expression_->getId());
-        stream << "li " << destReg << ", " << offset << std::endl;
+        stream << "lw " << destReg << ", " << offset << "(sp)" << std::endl;
         stream << "lw " << destReg << ", 0" << "(" << destReg << ")" << std::endl;
         
     }
@@ -29,7 +30,10 @@ std::string Unary::getId() const
     return cast_expression_->getId();
 }
 
-void Unary::Print(std::ostream &stream) const {}
+void Unary::Print(std::ostream &stream) const {
+    stream << unary_op_;
+    cast_expression_->Print(stream);
+}
 // Try not to use below method
 //  void Unary::setType(entity_type type)
 //  {

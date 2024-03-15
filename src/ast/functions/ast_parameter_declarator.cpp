@@ -18,7 +18,10 @@ void ParameterDeclarator::EmitRISC(std::ostream &stream, Context &context,
 }
 entity_type ParameterDeclarator::getType() const
 {
-    return declaration_specifier_->getType();
+    //TODO: Change the COMMENTED line to the UNCOMMENTED line
+    //Change the uncommented line to the commented line
+    //return declaration_specifier_->getType();
+    return declarator_->getType();
 }
 
 std::string ParameterDeclarator::getId() const { return declarator_->getId(); }

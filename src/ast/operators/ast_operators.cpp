@@ -5,20 +5,57 @@
 void AddOperator::EmitRISC(std::ostream &stream, Context &context,
                            std::string destReg) const
 {
-    std::string op1_reg = context.allocateReg(stream);  //""
-    std::cout << op1_reg << std::endl;
-    std::cout << op1_->getId() << std::endl;
-    std::cout << op2_->getId() << std::endl;
-    op1_->EmitRISC(stream, context, op1_reg);
-    stream << "add " << destReg << ", " << op1_reg << ", zero"
+    if (context.getIsPointer(op1_->getId())){
+        std::string op2_reg = context.allocateReg(stream);
+        op2_->EmitRISC(stream, context, op2_reg);
+        stream << "addi " << destReg << ", " << destReg << ", " << INT_MEM
+               << std::endl; 
+        stream << "mul " << op2_reg << ", " << op2_reg << ", " << destReg
+               << std::endl;
+        stream << "add " << destReg << ", " << op2_reg << ", zero"
+               << std::endl;
+        context.deallocateReg(op2_reg);
+        std::string op1_reg = context.allocateReg(stream);
+        op1_->EmitRISC(stream, context, op1_reg);
+        stream << "add " << destReg << ", " << destReg << ", " << op1_reg
+               << std::endl;
+        context.deallocateReg(op1_reg);
+    }
+    else if (context.getIsPointer(op2_->getId())){
+        std::string op1_reg = context.allocateReg(stream);
+        op1_->EmitRISC(stream, context, op1_reg);
+        stream << "addi " << destReg << ", " << destReg << ", " << INT_MEM
+               << std::endl; 
+        stream << "mul " << op1_reg << ", " << op1_reg << ", " << destReg
+               << std::endl;
+        stream << "add " << destReg << ", " << op1_reg << ", zero"
+               << std::endl;
+        context.deallocateReg(op1_reg);
+        std::string op2_reg = context.allocateReg(stream);
+        op2_->EmitRISC(stream, context, op2_reg);
+        stream << "add " << destReg << ", " << destReg << ", " << op2_reg
+               << std::endl;
+        context.deallocateReg(op2_reg);
+    }
+    else{
+        std::string op1_reg = context.allocateReg(stream);  //""
+        std::cout << op1_reg << std::endl;
+        std::cout << op1_->getId() << std::endl;
+        std::cout << op2_->getId() << std::endl;
+        op1_->EmitRISC(stream, context, op1_reg);
+        stream << "add " << destReg << ", " << op1_reg << ", zero"
            << std::endl;
-    context.deallocateReg(op1_reg);
-    std::string op2_reg = context.allocateReg(stream);
-    std::cout << op2_reg << std::endl;
-    op2_->EmitRISC(stream, context, op2_reg);
-    stream << "add " << destReg << ", " << destReg << ", " << op2_reg
+        context.deallocateReg(op1_reg);
+        std::string op2_reg = context.allocateReg(stream);
+        std::cout << op2_reg << std::endl;
+        op2_->EmitRISC(stream, context, op2_reg);
+        stream << "add " << destReg << ", " << destReg << ", " << op2_reg
            << std::endl;
-    context.deallocateReg(op2_reg);
+        context.deallocateReg(op2_reg);
+    }
+
+
+    
 }
 
 void AddOperator::EmitRISC(std::ostream &stream, Context &context) const {}

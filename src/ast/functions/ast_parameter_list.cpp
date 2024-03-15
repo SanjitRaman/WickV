@@ -20,8 +20,13 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         i++;
         std::cout << "parameter: " << param->getId();
         std::cout << " type: " << param->getType() << std::endl;
-        context.update_params(param->getId(), param->getType(), offset);
-
+        if (param->getType() == entity_type::POINTER)
+        {
+            context.update_params(param->getId(), entity_type::INTEGER, offset, true);
+        }
+        else{
+            context.update_params(param->getId(), entity_type::INTEGER, offset);
+        }
         // node->EmitRISC(stream, context);
     }
 }

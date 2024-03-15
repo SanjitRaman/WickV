@@ -118,7 +118,7 @@ unary_expression
 
 unary_operator
 	: '&' { $$ = new std::string("&"); }
-	| '*'
+	| '*' { $$ = new std::string("*"); }
 	| '+'
 	| '-'
 	| '~'

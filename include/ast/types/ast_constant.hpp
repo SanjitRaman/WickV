@@ -18,6 +18,7 @@ class IntConstant : public Node
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
     int getValue() const override;
+    virtual std::string getId() const override;
 };
 
 #endif
