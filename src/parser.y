@@ -109,11 +109,20 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression { $$ = $1; }
+	| unary_operator cast_expression { $$ = new Unary{*$1, $2}; delete $1;} //Should return 
 	/* | INC_OP unary_expression
 	| DEC_OP unary_expression
-	| unary_operator cast_expression
 	| SIZEOF unary_expression
 	| SIZEOF '(' type_name ')' */
+	;
+
+unary_operator
+	: '&' { $$ = new std::string("&"); }
+	| '*'
+	| '+'
+	| '-'
+	| '~'
+	| '!'
 	;
 
 cast_expression
@@ -280,7 +289,7 @@ enumerator
 
 declarator
 	: direct_declarator { $$ = $1; std::cout << "It's going to Declarator : direct_declarator" << std::endl;}
-	/* | pointer direct_declarator */
+	| pointer direct_declarator { $$ = new PointerDeclarator($1, $2); std::cout << "It's going to Declarator : pointer direct_declarator" << std::endl;}
 	;
 //Only use DirectDeclarator for function defs
 direct_declarator
@@ -300,6 +309,12 @@ direct_declarator
 		std::cout << "DirectDeclarator: " << std::endl;
     }
     ;
+
+pointer
+	: '*' { $$ = new Pointer(); }
+	| '*' pointer
+	;
+
 
 parameter_list
 	: parameter_declaration {$$ = new ParameterList($1);}

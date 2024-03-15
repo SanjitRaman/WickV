@@ -39,6 +39,8 @@
 #include "ast/operators/ast_inequality.hpp"
 #include "ast/operators/ast_equality.hpp"
 #include "ast/operators/ast_ternary.hpp"
+#include "ast/operators/ast_unary.hpp"
+#include "ast/operators/ast_pointer.hpp"
 
 // Types
 #include "ast/types/ast_constant.hpp"
@@ -54,6 +56,7 @@
 #include "ast/ast_identifier.hpp"
 #include "ast/ast_init_declarator.hpp"
 #include "ast/ast_init_declarator_list.hpp"
+#include "ast/ast_pointer_declarator.hpp"
 
 //Arrays
 #include "ast/ast_array_declarator.hpp"

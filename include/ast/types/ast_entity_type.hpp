@@ -12,8 +12,13 @@ enum entity_type
     VARIABLE,
     VARIABLE_ASSIGN,
     ARRAY,
+<<<<<<< Updated upstream
     ENUM_SPECIFIER,
     ENUMERATOR
+=======
+    POINTER,
+    UNARY
+>>>>>>> Stashed changes
     // todo add more data types
 };
 
