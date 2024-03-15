@@ -22,7 +22,14 @@ void Unary::EmitRISC(std::ostream &stream, Context &context,
 
    
 }
-entity_type Unary::getType() const { return entity_type::UNARY; }
+entity_type Unary::getType() const { 
+    if (unary_op_ == "*"){
+        return entity_type::POINTER;
+    }
+    else {
+        return entity_type::UNARY;
+    }
+ }
 
 std::string Unary::getId() const
 {
