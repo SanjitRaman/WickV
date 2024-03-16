@@ -43,7 +43,7 @@
 #include "ast/operators/ast_pointer.hpp"
 
 // Types
-#include "ast/types/ast_constant.hpp"
+#include "ast/types/ast_constants.hpp"
 #include "ast/types/ast_type_specifier.hpp"
 #include "ast/types/ast_variable.hpp"
 #include "ast/types/ast_entity_type.hpp"

@@ -8,6 +8,12 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
                         std::string destReg) const
 {
     // This function should move into dest reg and load from memory
+    //TODO: Below is a way we can add support for floats (simply add floating_expr before "lw")
+    //std::string floating_repr = "";
+    //        if (datatype == "float" || datatype == "double" || datatype == "long double"){
+    //            floating_repr = "f";
+    //        }
+
 
     // Check parameter bindings
     int enum_val = context.getEnumVal(getId());

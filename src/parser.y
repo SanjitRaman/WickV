@@ -84,8 +84,8 @@ primary_expression
 	| INT_CONSTANT {
 		$$ = new IntConstant($1);
 	}
-    /* | FLOAT_CONSTANT
-	| STRING_LITERAL
+    | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
+	/* | STRING_LITERAL
 	| '(' expression ')' */
 	;
 
@@ -258,10 +258,10 @@ type_specifier
 		$$ = new TypeSpecifier("int"); std::cout << "TypeSpecifier: " << std::endl;	
 	}
 	| enum_specifier { $$ = $1; } //This should be fine
+	| FLOAT { $$ = new TypeSpecifier("float"); std::cout << "TypeSpecifier: " << std::endl; }
 	/* | CHAR
 	| SHORT
 	| LONG
-	| FLOAT
 	| DOUBLE
 	| SIGNED
 	| UNSIGNED
