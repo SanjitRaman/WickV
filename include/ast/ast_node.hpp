@@ -20,6 +20,7 @@ class Node
     virtual void Print(std::ostream &stream) const = 0;
     virtual entity_type getEntity() const;
     virtual data_type getType() const;
+    virtual data_type getType(Context &context) const;
     virtual std::string getId() const;
     virtual int getValue() const;
 };

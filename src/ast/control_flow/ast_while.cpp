@@ -7,7 +7,8 @@ void WhileStatement::EmitRISC(std::ostream &stream, Context &context) const
     std::cout << "Emitting while statement" << std::endl;
 
     // TODO: probs can move this to where the condition is emitted
-    std::string destReg = context.allocateReg(stream); //Want to call this destReg? May be confusing?
+    std::string destReg = context.allocateReg(
+        stream);  // Want to call this destReg? May be confusing?
 
     std::string loopLabel = context.makeLabel("while");
     std::string endLabel = context.makeLabel("endwhile");

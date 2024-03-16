@@ -8,6 +8,9 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
     stream << ".text" << std::endl;
     stream << ".globl " << declarator_->getId() << std::endl;
 
+    context.setFunctionReturnType(declarator_->getId(),
+                                  declaration_specifiers_->getType());
+
     declarator_->EmitRISC(stream, context);
     std::string ra_offset = context.getMemory(RA_MEM);
     stream << "sw ra, " << ra_offset << "(sp)" << std::endl;

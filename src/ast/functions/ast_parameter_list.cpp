@@ -3,7 +3,8 @@
 void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
 {
     std::unordered_map<std::string, entity_type> params;
-    int i = 0;
+    int i = 0;  // keep track of non-float argument registers.
+    int j = 0;  // keep track of float argument registers
     std::string offset;
     for (auto param : nodes_)
     {
@@ -11,20 +12,30 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         {
             continue;
         }
-        // params[param->getId()] = param->getEntity(); //so we know the offset in
-        // compound statement
+        // params[param->getId()] = param->getEntity(); //so we know the offset
+        // in compound statement
         offset = context.getMemory(INT_MEM);
-        stream << "sw a" << i << ", " << offset << "(sp)"
-               << std::endl;  // We know which register to use by order that
-                              // function declares parameters
-        i++;
+        if (param->getType() == data_type::_int)
+        {
+            stream << "sw a" << i << ", " << offset << "(sp)"
+                   << std::endl;  // We know which register to use by order that
+                                  // function declares parameters
+            i++;
+        }
+        else if (param->getType() == data_type::_float)
+        {
+            stream << "fsw.s fa" << j << ", " << offset << "(sp)" << std::endl;
+            j++;
+        }
         std::cout << "parameter: " << param->getId();
         std::cout << " type: " << param->getEntity() << std::endl;
         if (param->getEntity() == entity_type::POINTER)
         {
-            context.update_params(param->getId(), param->getType(), offset, true);
+            context.update_params(param->getId(), param->getType(), offset,
+                                  true);
         }
-        else{
+        else
+        {
             context.update_params(param->getId(), param->getType(), offset);
         }
         // node->EmitRISC(stream, context);

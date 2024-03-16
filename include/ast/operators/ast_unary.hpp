@@ -12,10 +12,7 @@ class Unary : public Node
    public:
     Unary(std::string unary_op, Node *cast_expression)
         : unary_op_(unary_op), cast_expression_(cast_expression){};
-    virtual ~Unary()
-    {
-        delete cast_expression_;
-    };
+    virtual ~Unary() { delete cast_expression_; };
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;
     virtual void EmitRISC(std::ostream &stream, Context &context,
@@ -23,6 +20,7 @@ class Unary : public Node
     virtual void Print(std::ostream &stream) const override;
     virtual entity_type getEntity()
         const override;  // may be overridden (return declarator_->getEntity())
+    virtual data_type getType(Context &context) const override;
     virtual std::string getId()
         const override;  // may be overridden (return declarator_->getId()) but
                          // shouldn't be necessary

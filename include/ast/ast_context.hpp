@@ -71,10 +71,33 @@ struct reg_file
     int getReg(int reg) { return Regs[reg]; }
 };
 
+struct float_reg_file
+{
+    int Regs_floats[32] = {
+        1,        // f0            zero        Zero
+        0,        // f1            ra          Return address
+        0,        // f2            sp          Stack pointer
+        0,        // f3            gp          Global pointer
+        0,        // f4            tp          Thread pointer
+        0, 0, 0,  // f5 - f7       t0 - t2     Temporary registers
+        1, 1,     // f8 - f9       s0 - s1     Callee-saved registers
+        1, 1, 1, 1, 1, 1, 1, 1,  // f10 - f17     a0 - a7     Argument registers
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0,       // f18 - f27     s2 - s11    Callee-saved registers
+        0, 0, 0, 0  // f28 - f31     t3 - t6     Temporary registers
+    };
+
+    void setFloatReg(int reg, int val) { Regs_floats[reg] = val; }
+
+    int getFloatReg(int reg) { return Regs_floats[reg]; }
+};
+
 class Context
 {
    protected:
     reg_file risc_regs;
+    float_reg_file risc_float_regs;
+
     int makeLabelUnq = 0;
     /* TODO decide what goes inside here */
    public:
@@ -82,7 +105,7 @@ class Context
         scopes;                                     // Stores symbol tables
     std::unordered_map<std::string, param> params;  // Clear params in exit
                                                     // scope
-    std::unordered_map<std::string, function_properties> functions;
+    std::unordered_map<std::string, data_type> function_return_types;
     std::vector<std::string> return_branches;
     std::vector<int> remaining_mem_stack;
     std::unordered_map<std::string, variable>
@@ -323,6 +346,10 @@ class Context
         {
             return bindings[id].type;
         }
+        else if (params.find(id) != params.end())
+        {
+            return params[id].type;
+        }
         return data_type::_INVALID;
     }
 
@@ -347,6 +374,29 @@ class Context
         risc_regs.setReg(reg_num, 0);
         std::cout << "Deallocating x" << reg_num << " "
                   << risc_regs.getReg(reg_num) << std::endl;
+    }
+
+    std::string allocateFloatReg(std::ostream &stream)
+    {
+        for (int i = 0; i < 32; i++)
+        {
+            if (risc_float_regs.getFloatReg(i) == 0)
+            {
+                risc_float_regs.setFloatReg(i, 1);
+                std::string allocated_reg = "f" + std::to_string(i);
+                stream << "fmv.s " << allocated_reg << ", f0" << std::endl;
+                return allocated_reg;
+            }
+        }
+        return "";  // ERROR
+    }
+
+    void deallocateFloatReg(std::string reg)
+    {
+        int reg_num = std::stoi(reg.substr(1));
+        risc_float_regs.setFloatReg(reg_num, 0);
+        std::cout << "Deallocating f" << reg_num << " "
+                  << risc_float_regs.getFloatReg(reg_num) << std::endl;
     }
 
     // For function calls (saving temp registers)
@@ -378,6 +428,8 @@ class Context
         savedRegs.push_back(scopeRegs);
     }
 
+    // TODO: save the float regs as well if time permits.
+
     void restoreRegs(std::ostream &stream)
     {
         std::vector<std::string> scopeRegs = savedRegs.back();
@@ -391,6 +443,21 @@ class Context
             remaining_mem += INT_MEM;
         }
         savedRegs.pop_back();
+    }
+
+    void setFunctionReturnType(std::string function_name, data_type return_type)
+    {
+        function_return_types[function_name] = return_type;
+    }
+
+    data_type getFunctionReturnType(std::string function_name)
+    {
+        if (function_return_types.find(function_name) !=
+            function_return_types.end())
+        {
+            return function_return_types[function_name];
+        }
+        return data_type::_INVALID;
     }
 
     void CreateScope(std::ostream &stream)

@@ -3,6 +3,8 @@
 
 #include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
+
+// Exclusively used for functions
 class DirectDeclarator : public Node
 {
    private:

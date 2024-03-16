@@ -17,6 +17,11 @@ data_type Node::getType() const
     return data_type::_INVALID;  // Shouldn't go here
 }
 
+data_type Node::getType(Context &context) const
+{
+    return data_type::_INVALID;  // Shouldn't go here
+}
+
 std::string Node::getId() const
 {
     return "ERROR : NodegetId()";  // Shouldn't go here

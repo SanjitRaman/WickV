@@ -63,3 +63,8 @@ void ArrayIndex::Print(std::ostream &stream) const
     index_->Print(stream);
     stream << "]";
 }
+
+data_type ArrayIndex::getType(Context &context) const
+{
+    return context.getBindingType(getId());
+}

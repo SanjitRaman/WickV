@@ -25,23 +25,29 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
         else if (node->getEntity() == entity_type::ARRAY)
         {
             std::cout << "ARRAY" << std::endl;
-            //Create binding here for array
+            // Create binding here for array
             context.createBinding(node->getId(),
                                   declaration_specifiers_->getType(), false);
-            //Call emit risc on array declarator
+            // Call emit risc on array declarator
             node->EmitRISC(stream, context);
         }
         else if (node->getEntity() == entity_type::POINTER)
         {
             std::cout << "POINTER" << std::endl;
-            //Create binding here for pointer
+            // Create binding here for pointer
             context.createBinding(node->getId(),
                                   declaration_specifiers_->getType(), true);
-            //Do we need to specify that this is a pointer in context?
-            //Call emit risc on pointer declarator
-            // node->EmitRISC(stream, context);
+            // Do we need to specify that this is a pointer in context?
+            // Call emit risc on pointer declarator
+            //  node->EmitRISC(stream, context);
         }
-        //TODO: Add pointer entity type here
+        else if (node->getEntity() == entity_type::FUNCTION)
+        {
+            std::cout << "FUNCTION" << std::endl;
+            context.setFunctionReturnType(node->getId(),
+                                          declaration_specifiers_->getType());
+        }
+        // TODO: Add pointer entity type here
     }
 }
 

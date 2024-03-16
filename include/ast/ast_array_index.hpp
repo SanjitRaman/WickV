@@ -23,6 +23,7 @@ class ArrayIndex : public Node
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
     virtual entity_type getEntity() const override;  // may be overridden
+    virtual data_type getType(Context &context) const override;
     virtual std::string getId() const override;
 };
 

@@ -33,7 +33,10 @@ void VarAssign::EmitRISC(std::ostream &stream, Context &context,
     // But if it is then assign the value then move to destReg (maybe call
     // var->emitRISC)
 }
-entity_type VarAssign::getEntity() const { return entity_type::VARIABLE_ASSIGN; }
+entity_type VarAssign::getEntity() const
+{
+    return entity_type::VARIABLE_ASSIGN;
+}
 
 std::string VarAssign::getId() const
 {

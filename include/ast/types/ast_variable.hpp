@@ -22,6 +22,9 @@ class Variable : public Node
     virtual void Print(std::ostream &stream) const override;
     virtual std::string getId() const override;
     virtual entity_type getEntity() const override;
+    virtual data_type getType() const override;
+    virtual data_type getType(Context &context) const override;
+    // screw this
     void setType(entity_type type);
 };
 
