@@ -9,29 +9,29 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
             continue;
         }
         std::cout << "DECLARATION" << std::endl;
-        if (node->getType() == entity_type::VARIABLE_ASSIGN)
+        if (node->getEntity() == entity_type::VARIABLE_ASSIGN)
         {
             std::cout << "VARASSIGN" << std::endl;
             context.createBinding(node->getId(),
-                                  declaration_specifiers_->getType());
+                                  declaration_specifiers_->getType(), false);
             node->EmitRISC(stream, context);
         }
-        else if (node->getType() == entity_type::VARIABLE)
+        else if (node->getEntity() == entity_type::VARIABLE)
         {
             std::cout << "VAR" << std::endl;
             context.createBinding(node->getId(),
-                                  declaration_specifiers_->getType());
+                                  declaration_specifiers_->getType(), false);
         }
-        else if (node->getType() == entity_type::ARRAY)
+        else if (node->getEntity() == entity_type::ARRAY)
         {
             std::cout << "ARRAY" << std::endl;
             //Create binding here for array
             context.createBinding(node->getId(),
-                                  declaration_specifiers_->getType());
+                                  declaration_specifiers_->getType(), false);
             //Call emit risc on array declarator
             node->EmitRISC(stream, context);
         }
-        else if (node->getType() == entity_type::POINTER)
+        else if (node->getEntity() == entity_type::POINTER)
         {
             std::cout << "POINTER" << std::endl;
             //Create binding here for pointer
@@ -54,7 +54,7 @@ void Declaration::Print(std::ostream &stream) const
     // TODO: Implement
 }
 
-entity_type Declaration::getType() const
+entity_type Declaration::getEntity() const
 {
-    return declaration_specifiers_->getType();
+    return declaration_specifiers_->getEntity();
 }

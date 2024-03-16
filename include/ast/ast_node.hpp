@@ -18,7 +18,8 @@ class Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const = 0;
     virtual void Print(std::ostream &stream) const = 0;
-    virtual entity_type getType() const;
+    virtual entity_type getEntity() const;
+    virtual data_type getType() const;
     virtual std::string getId() const;
     virtual int getValue() const;
 };

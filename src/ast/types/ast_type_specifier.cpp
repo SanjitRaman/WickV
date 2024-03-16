@@ -7,20 +7,36 @@ void TypeSpecifier::EmitRISC(std::ostream &stream, Context &context,
 }
 void TypeSpecifier::Print(std::ostream &stream) const { stream << type_; }
 
-entity_type TypeSpecifier::getType() const
+// This shouldn't be used ever.
+entity_type TypeSpecifier::getEntity() const
 {
-    if (type_ == "int")
-    {
-        return INTEGER;
-    }
-    else if (type_ == "float")
-    {
-        return FLOAT_VALUE;
-    }
-    return INVALID; //TODO: Add more types
+    std::cout << "TypeSpecifier::getEntity() should not be used anymore."
+              << std::endl;
+    // if (type_ == "int")
+    // {
+    //     return INTEGER;
+    // }
+    // else if (type_ == "float")
+    // {
+    //     return FLOAT_VALUE;
+    // }
+    return INVALID;  // TODO: Add more types
 }
 
 std::string TypeSpecifier::getId() const
 {
     return "type";  // The program should never enter this method
+}
+
+data_type TypeSpecifier::getType() const
+{
+    if (type_ == "int")
+    {
+        return data_type::_int;
+    }
+    else if (type_ == "float")
+    {
+        return data_type::_float;
+    }
+    return _INVALID;  // TODO: Add more types
 }

@@ -8,12 +8,12 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
                         std::string destReg) const
 {
     // This function should move into dest reg and load from memory
-    //TODO: Below is a way we can add support for floats (simply add floating_expr before "lw")
-    //std::string floating_repr = "";
-    //        if (datatype == "float" || datatype == "double" || datatype == "long double"){
+    // TODO: Below is a way we can add support for floats (simply add
+    // floating_expr before "lw") std::string floating_repr = "";
+    //        if (datatype == "float" || datatype == "double" || datatype ==
+    //        "long double"){
     //            floating_repr = "f";
     //        }
-
 
     // Check parameter bindings
     int enum_val = context.getEnumVal(getId());
@@ -28,25 +28,26 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
         stream << "lw " << destReg << ", " << context.getOffset(getId())
                << "(sp)" << std::endl;
     }
+    else if (enum_val != -1)
+    {
+        stream << "li " << destReg << ", " << enum_val << std::endl;
+    }
     // If the variable is not present in bindings then it must be
     //   a local var which is yet to be initialised in the current scope
     // TODO : TRY TO NOT USE THE BELOW CODE
-    else if (enum_val != -1){
-        stream << "li " << destReg << ", " << enum_val << std::endl;
-    }
-    else
-    {
-        context.createBinding(getId(), getType());
-        stream << "sw " << destReg << " " << context.getOffset(getId())
-               << "(sp)" << std::endl;
-    }
+    // else
+    // {
+    //     context.createBinding(getId(), getEntity());
+    //     stream << "sw " << destReg << " " << context.getOffset(getId())
+    //            << "(sp)" << std::endl;
+    // }
 
     // Check local var bindings (TODO)
 
     return;
 }
 // Try not to use below method
-entity_type Variable::getType() const
+entity_type Variable::getEntity() const
 {
     // return type_;
     return entity_type::VARIABLE;

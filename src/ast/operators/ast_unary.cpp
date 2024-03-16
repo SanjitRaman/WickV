@@ -22,7 +22,7 @@ void Unary::EmitRISC(std::ostream &stream, Context &context,
 
    
 }
-entity_type Unary::getType() const { 
+entity_type Unary::getEntity() const { 
     if (unary_op_ == "*"){
         return entity_type::POINTER;
     }

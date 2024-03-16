@@ -11,7 +11,7 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         {
             continue;
         }
-        // params[param->getId()] = param->getType(); //so we know the offset in
+        // params[param->getId()] = param->getEntity(); //so we know the offset in
         // compound statement
         offset = context.getMemory(INT_MEM);
         stream << "sw a" << i << ", " << offset << "(sp)"
@@ -19,13 +19,13 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
                               // function declares parameters
         i++;
         std::cout << "parameter: " << param->getId();
-        std::cout << " type: " << param->getType() << std::endl;
-        if (param->getType() == entity_type::POINTER)
+        std::cout << " type: " << param->getEntity() << std::endl;
+        if (param->getEntity() == entity_type::POINTER)
         {
-            context.update_params(param->getId(), entity_type::INTEGER, offset, true);
+            context.update_params(param->getId(), param->getType(), offset, true);
         }
         else{
-            context.update_params(param->getId(), entity_type::INTEGER, offset);
+            context.update_params(param->getId(), param->getType(), offset);
         }
         // node->EmitRISC(stream, context);
     }

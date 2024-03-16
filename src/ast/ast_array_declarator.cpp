@@ -10,7 +10,7 @@ void ArrayDeclarator::EmitRISC(std::ostream &stream, Context &context,
 {
 }
 
-entity_type ArrayDeclarator::getType() const { return entity_type::ARRAY; }
+entity_type ArrayDeclarator::getEntity() const { return entity_type::ARRAY; }
 
 std::string ArrayDeclarator::getId() const { return identifier_->getId(); }
 
