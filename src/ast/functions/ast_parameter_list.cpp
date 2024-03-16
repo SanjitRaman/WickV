@@ -24,7 +24,7 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         }
         else if (param->getType() == data_type::_float)
         {
-            stream << "fsw.s fa" << j << ", " << offset << "(sp)" << std::endl;
+            stream << "fsw fa" << j << ", " << offset << "(sp)" << std::endl;
             j++;
         }
         std::cout << "parameter: " << param->getId();

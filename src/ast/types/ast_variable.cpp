@@ -28,7 +28,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
         else if (var_type == data_type::_float)
         {
             // TODO: check that the destReg is a float register.
-            stream << "flw" << destReg << ", " << context.getOffset(getId())
+            stream << "flw " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }
         else
@@ -50,7 +50,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
         else if (var_type == data_type::_float)
         {
             // TODO: check that the destReg is a float register.
-            stream << "flw" << destReg << ", " << context.getOffset(getId())
+            stream << "flw " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }
         else

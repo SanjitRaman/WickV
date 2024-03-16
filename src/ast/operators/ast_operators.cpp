@@ -63,8 +63,7 @@ void AddOperator::EmitRISC(std::ostream &stream, Context &context,
             std::cout << op1_->getId() << std::endl;
             std::cout << op2_->getId() << std::endl;
             op1_->EmitRISC(stream, context, op1_reg);
-            stream << "fadd.s " << destReg << ", " << op1_reg << ", zero"
-                   << std::endl;
+            stream << "fmv.s " << destReg << ", " << op1_reg << std::endl;
             context.deallocateFloatReg(op1_reg);
             std::string op2_reg = context.allocateFloatReg(stream);
             std::cout << op2_reg << std::endl;

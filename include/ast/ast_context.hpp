@@ -384,7 +384,8 @@ class Context
             {
                 risc_float_regs.setFloatReg(i, 1);
                 std::string allocated_reg = "f" + std::to_string(i);
-                stream << "fmv.s " << allocated_reg << ", f0" << std::endl;
+                stream << "fsub.s " << allocated_reg << ", " << allocated_reg
+                       << ", " << allocated_reg << std::endl;
                 return allocated_reg;
             }
         }
