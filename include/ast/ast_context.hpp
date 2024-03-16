@@ -105,6 +105,8 @@ class Context
         scopes;                                     // Stores symbol tables
     std::unordered_map<std::string, param> params;  // Clear params in exit
                                                     // scope
+    std::vector<std::unordered_map<std::string, param>>
+        param_stack;  // Stores function parameters
     std::unordered_map<std::string, data_type> function_return_types;
     std::vector<std::string> return_branches;
     std::vector<int> remaining_mem_stack;
@@ -465,7 +467,10 @@ class Context
     {
         // Store local variables, parameters and return type
         scopes.push_back(bindings);
+        param_stack.push_back(params);
         remaining_mem_stack.push_back(remaining_mem);
+        params.clear();  // The param offsets should be pushed into
+                         // functions straight after prolog
         bindings.clear();            // Reset bindings for new scope
         remaining_mem = frame_size;  // Resets offset
         return_branches.push_back(
@@ -480,9 +485,9 @@ class Context
         // Pop the last scope
         return_branches.pop_back();
         bindings = scopes.back();
+        params = param_stack.back();
+        param_stack.pop_back();
         scopes.pop_back();
-        params.clear();  // The param offsets should be pushed into
-                         // functions straight after prolog
         remaining_mem = remaining_mem_stack.back();
         remaining_mem_stack.pop_back();
         stream << "addi sp, sp, " << frame_size << std::endl;
