@@ -96,8 +96,8 @@ postfix_expression
 	| postfix_expression INC_OP {$$ = new PostfixOperator($1, "++"); }
 	| postfix_expression DEC_OP {$$ = new PostfixOperator($1, "--"); }
 	| postfix_expression '[' expression ']' { $$ = new ArrayIndex($1, $3); }
-	/* | postfix_expression '.' IDENTIFIER
-	| postfix_expression PTR_OP IDENTIFIER
+	| postfix_expression '.' IDENTIFIER
+	/* | postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression DEC_OP */
 	;
 
@@ -204,6 +204,7 @@ assignment_expression
 	| unary_expression assignment_operator assignment_expression {$$ = new Assignment($1, *$2, $3); delete $2;} //Do I have to delete $2? */
 	;
 
+//TODO: Implement the rest of the assignment operators
 assignment_operator
 	: '=' { $$ = new std::string("="); }
 	| MUL_ASSIGN
@@ -260,15 +261,43 @@ type_specifier
 	| enum_specifier { $$ = $1; } //This should be fine
 	| FLOAT { $$ = new TypeSpecifier("float"); std::cout << "TypeSpecifier: " << std::endl; }
 	| DOUBLE { $$ = new TypeSpecifier("double"); std::cout << "TypeSpecifier: double" << std::endl; }
+	| struct_specifier { $$ = $1; }
 	/* | CHAR
 	| SHORT
 	| LONG
 	| SIGNED
 	| UNSIGNED
-  	| struct_specifier
 	| TYPE_NAME */
 
 	;
+
+struct_specifier
+	: STRUCT IDENTIFIER '{' struct_declaration_list '}'  { $$ = new StructSpecifier(*$2, $4); delete $2; }
+	/* | STRUCT '{' struct_declaration_list '}'
+	| STRUCT IDENTIFIER */
+
+struct_declaration_list
+	: struct_declaration { $$ = new NodeList($1); }
+	| struct_declaration_list struct_declaration { $1->PushBack($2); $$ = $1; }
+
+struct_declaration
+	: specifier_qualifier_list struct_declarator_list ';' { $$ = new StructDeclaration($1, $2); }
+//Name of global struct -> Name of the member variable and the type of the member variable
+specifier_qualifier_list
+	: type_specifier specifier_qualifier_list
+	| type_specifier { $$ = $1; } 
+
+struct_declarator_list
+	: struct_declarator { $$ = new NodeList($1); }
+	| struct_declarator_list ',' struct_declarator 
+
+
+struct_declarator
+	: declarator
+	/* | ':' constant_expression
+	| declarator ':' constant_expression */
+	;
+
 
 enum_specifier
 	: ENUM '{' enumerator_list '}' { $$ = new EnumSpecifier("", $3); }
