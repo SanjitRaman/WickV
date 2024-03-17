@@ -73,10 +73,11 @@ struct reg_file
 
 struct float_reg_file
 {
+    //TODO: Check if the float registers are correct
     int Regs_floats[32] = {
-        1,        // f0            zero        Zero
-        0,        // f1            ra          Return address
-        0,        // f2            sp          Stack pointer
+        0,        // f0            
+        0,        // f1            
+        0,        // f2            
         0,        // f3            gp          Global pointer
         0,        // f4            tp          Thread pointer
         0, 0, 0,  // f5 - f7       t0 - t2     Temporary registers

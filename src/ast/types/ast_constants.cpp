@@ -56,6 +56,7 @@ void FloatConstant::EmitRISC(std::ostream &stream, Context &context,
 
 void FloatConstant::Print(std::ostream &stream) const { stream << value_; }
 
+//TODO: Check this is compatible with all other classes
 int FloatConstant::getValue() const { 
     union FloatConversion converter;
     converter.f = value_;
