@@ -2,10 +2,12 @@
 
 std::string StructDeclaratorList::getId() const
 {
-    std::string id;
+    std::string id = "";
     for (auto node : getNodes())
     {
-        id += node->getId() + ",";
+        id.append(node->getId() + ",");
     }
     id = id.substr(0, id.length() - 1);
+
+    return id;
 }

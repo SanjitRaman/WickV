@@ -289,7 +289,7 @@ specifier_qualifier_list
 	| type_specifier { $$ = $1; } 
 
 struct_declarator_list
-	: struct_declarator { $$ = new NodeList($1); } //TODO: Change to a custom NodeList
+	: struct_declarator { $$ = new StructDeclaratorList($1); } //TODO: Change to a custom NodeList
 	| struct_declarator_list ',' struct_declarator 
 
 

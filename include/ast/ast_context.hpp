@@ -545,7 +545,6 @@ class Context
         {
             binding_id = instance_identifier + "." + member.first;
             createBinding(binding_id, member.second, false);
-            std::cout << "SANJIT " << binding_id << std::endl;
         }
     }
 
