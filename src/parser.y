@@ -110,8 +110,8 @@ argument_expression_list
 unary_expression
 	: postfix_expression { $$ = $1; }
 	| unary_operator cast_expression { $$ = new Unary{*$1, $2}; delete $1;} //Should return 
-	| SIZEOF unary_expression
-	| SIZEOF '(' type_name ')'
+	| SIZEOF unary_expression { $$ = new SizeOf($2); }
+	| SIZEOF '(' type_name ')' { $$ = new SizeOf($3); }
 	;
 	/* | INC_OP unary_expression
 	| DEC_OP unary_expression
