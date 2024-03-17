@@ -17,6 +17,8 @@ enum entity_type
     ENUMERATOR,
     POINTER,
     UNARY,
+    STRUCT_DEC,
+    STRUCT_SPECIFIER
     // todo add more entity types
 };
 

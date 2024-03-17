@@ -37,12 +37,12 @@
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
-%type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
+%type <node> init_declarator type_specifier struct_specifier struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list
+%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list struct_declaration_list
 %type <parameter_list> parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
@@ -96,8 +96,8 @@ postfix_expression
 	| postfix_expression INC_OP {$$ = new PostfixOperator($1, "++"); }
 	| postfix_expression DEC_OP {$$ = new PostfixOperator($1, "--"); }
 	| postfix_expression '[' expression ']' { $$ = new ArrayIndex($1, $3); }
-	/* | postfix_expression '.' IDENTIFIER
-	| postfix_expression PTR_OP IDENTIFIER
+	| postfix_expression '.' IDENTIFIER { $$ = new MemberAccess($1, *$3); delete $3; }
+	/* | postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression DEC_OP */
 	;
 
@@ -204,6 +204,7 @@ assignment_expression
 	| unary_expression assignment_operator assignment_expression {$$ = new Assignment($1, *$2, $3); delete $2;} //Do I have to delete $2? */
 	;
 
+//TODO: Implement the rest of the assignment operators
 assignment_operator
 	: '=' { $$ = new std::string("="); }
 	| MUL_ASSIGN
@@ -260,15 +261,44 @@ type_specifier
 	| enum_specifier { $$ = $1; } //This should be fine
 	| FLOAT { $$ = new TypeSpecifier("float"); std::cout << "TypeSpecifier: " << std::endl; }
 	| DOUBLE { $$ = new TypeSpecifier("double"); std::cout << "TypeSpecifier: double" << std::endl; }
+	| struct_specifier { $$ = $1; }
 	/* | CHAR
 	| SHORT
 	| LONG
 	| SIGNED
 	| UNSIGNED
-  	| struct_specifier
 	| TYPE_NAME */
 
 	;
+
+struct_specifier
+	: STRUCT IDENTIFIER '{' struct_declaration_list '}'  { $$ = new StructSpecifier(*$2, $4); delete $2; }
+	| STRUCT IDENTIFIER { $$ = new StructDec(*$2); delete $2; }
+	/* | STRUCT '{' struct_declaration_list '}' */
+	
+
+struct_declaration_list
+	: struct_declaration { $$ = new NodeList($1); }
+	| struct_declaration_list struct_declaration { $1->PushBack($2); $$ = $1; }
+
+struct_declaration
+	: specifier_qualifier_list struct_declarator_list ';' { $$ = new StructMember($1, $2); }
+//Name of global struct -> Name of the member variable and the type of the member variable
+specifier_qualifier_list
+	: type_specifier specifier_qualifier_list
+	| type_specifier { $$ = $1; } 
+
+struct_declarator_list
+	: struct_declarator { $$ = new StructDeclaratorList($1); } //TODO: Change to a custom NodeList
+	| struct_declarator_list ',' struct_declarator 
+
+
+struct_declarator
+	: declarator { $$ = $1;}
+	/* | ':' constant_expression
+	| declarator ':' constant_expression */
+	;
+
 
 enum_specifier
 	: ENUM '{' enumerator_list '}' { $$ = new EnumSpecifier("", $3); }

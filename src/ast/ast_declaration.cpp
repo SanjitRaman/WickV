@@ -16,6 +16,14 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
                                   declaration_specifiers_->getType(), false);
             node->EmitRISC(stream, context);
         }
+        // check if it is a struct type before it checks for member variables.
+        else if (declaration_specifiers_->getEntity() ==
+                 entity_type::STRUCT_DEC)
+        {
+            std::cout << "STRUCT_DEC" << std::endl;
+            context.createStructBindings(declaration_specifiers_->getId(),
+                                         node->getId());
+        }
         else if (node->getEntity() == entity_type::VARIABLE)
         {
             std::cout << "VAR" << std::endl;
