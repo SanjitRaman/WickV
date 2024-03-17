@@ -47,6 +47,12 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
             context.setFunctionReturnType(node->getId(),
                                           declaration_specifiers_->getType());
         }
+        else if (node->getEntity() == entity_type::STRUCT_DEC)
+        {
+            std::cout << "STRUCT_DEC" << std::endl;
+            context.createStructBindings(declaration_specifiers_->getId(),
+                                         node->getId());
+        }
         // TODO: Add pointer entity type here
     }
 }

@@ -37,12 +37,12 @@
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
-%type <node> init_declarator type_specifier struct_specifier struct_declaration_list struct_declaration specifier_qualifier_list struct_declarator_list
+%type <node> init_declarator type_specifier struct_specifier struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list
+%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list struct_declaration_list
 %type <parameter_list> parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
@@ -289,12 +289,12 @@ specifier_qualifier_list
 	| type_specifier { $$ = $1; } 
 
 struct_declarator_list
-	: struct_declarator { $$ = new Node($1); } //TODO: Change to a custom NodeList
+	: struct_declarator { $$ = new NodeList($1); } //TODO: Change to a custom NodeList
 	| struct_declarator_list ',' struct_declarator 
 
 
 struct_declarator
-	: declarator
+	: declarator { $$ = $1;}
 	/* | ':' constant_expression
 	| declarator ':' constant_expression */
 	;

@@ -1,18 +1,21 @@
-#ifndef AST_STRUCT_SPECIFIER_HPP
-#define AST_STRUCT_SPECIFIER_HPP
+#ifndef AST_MEMBER_ACCESS_HPP
+#define AST_MEMBER_ACCESS_HPP
 
 #include "ast/ast_node.hpp"
 
 class MemberAccess : public Node
 {
    private:
-    Node* struct_name_;
+    Node *struct_name_;
     std::string member_name_;
 
    public:
-    MemberAccess(Node* struct_name, std::string member_name ) : struct_name_(struct_name), member_name_(member_name){};
-    virtual ~MemberAccess() { 
-        if (struct_name_ != nullptr){
+    MemberAccess(Node *struct_name, std::string member_name)
+        : struct_name_(struct_name), member_name_(member_name){};
+    virtual ~MemberAccess()
+    {
+        if (struct_name_ != nullptr)
+        {
             delete struct_name_;
         }
     };

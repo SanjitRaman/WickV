@@ -73,11 +73,11 @@ struct reg_file
 
 struct float_reg_file
 {
-    //TODO: Check if the float registers are correct
+    // TODO: Check if the float registers are correct
     int Regs_floats[32] = {
-        0,        // f0            
-        0,        // f1            
-        0,        // f2            
+        0,        // f0
+        0,        // f1
+        0,        // f2
         0,        // f3            gp          Global pointer
         0,        // f4            tp          Thread pointer
         0, 0, 0,  // f5 - f7       t0 - t2     Temporary registers
@@ -125,9 +125,9 @@ class Context
     int global_enum_val = -1;
     std::vector<enum_vals> enum_info;
 
-    //Struct
-    std::unordered_map<std::string, std::unordered_map<std::string, data_type>> struct_info;
-
+    // Struct
+    std::unordered_map<std::string, std::unordered_map<std::string, data_type>>
+        struct_info;
 
     int frame_size = 128;            // Size of stack frame
     int remaining_mem = frame_size;  // Offset
@@ -278,9 +278,7 @@ class Context
         }
     }
 
-    void deallocateMemory(int mem_size) { 
-        remaining_mem += mem_size; 
-    }
+    void deallocateMemory(int mem_size) { remaining_mem += mem_size; }
 
     void addArray(std::string id, int array_size)
     {
@@ -317,17 +315,21 @@ class Context
         std::cout << "Creating binding for " << id << std::endl;
         std::cout << isPointer << std::endl;
         std::string offset;
-        if (type == data_type::_int){
+        if (type == data_type::_int)
+        {
             offset = getMemory(INT_MEM);
         }
-        else if (type == data_type::_float){
+        else if (type == data_type::_float)
+        {
             offset = getMemory(FLOAT_MEM);
         }
-        else if (type == data_type::_double){
+        else if (type == data_type::_double)
+        {
             offset = getMemory(DOUBLE_MEM);
         }
-        else{
-            offset = getMemory(INT_MEM); //Default, but shouldn't need
+        else
+        {
+            offset = getMemory(INT_MEM);  // Default, but shouldn't need
         }
         variable newVar;
         newVar.offset = offset;
@@ -490,8 +492,8 @@ class Context
         scopes.push_back(bindings);
         param_stack.push_back(params);
         remaining_mem_stack.push_back(remaining_mem);
-        params.clear();  // The param offsets should be pushed into
-                         // functions straight after prolog
+        params.clear();              // The param offsets should be pushed into
+                                     // functions straight after prolog
         bindings.clear();            // Reset bindings for new scope
         remaining_mem = frame_size;  // Resets offset
         return_branches.push_back(
@@ -515,7 +517,9 @@ class Context
     }
 
     // Structs
-    void InitialiseStruct(std::string id, std::unordered_map<std::string, data_type> struct_members)
+    void InitialiseStruct(
+        std::string id,
+        std::unordered_map<std::string, data_type> struct_members)
     {
         struct_info[id] = struct_members;
     }
@@ -525,7 +529,25 @@ class Context
         return struct_info[id];
     }
 
+    void createStructBindings(std::string struct_identifier,
+                              std::string instance_identifier)
+    {
+        // struct x z;
+        // create a struct instance of x callled z
+        // if x has members y
+        // then create bindings for z.y (and any others)
+        // so that other classes can access these instance fields.
+        std::unordered_map<std::string, data_type> struct_members =
+            getStructMembers(struct_identifier);
 
+        std::string binding_id;
+        for (auto &member : struct_members)
+        {
+            binding_id = instance_identifier + "." + member.first;
+            createBinding(binding_id, member.second, false);
+            std::cout << "SANJIT " << binding_id << std::endl;
+        }
+    }
 
     // Probs won't need
     void AllocateStack(int num_bytes) {}
