@@ -8,18 +8,24 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
                         std::string destReg) const
 {
     // This function should move into dest reg and load from memory
+    //TODO: Below is a way we can add support for floats (simply add floating_expr before "lw")
+    //std::string floating_repr = "";
+    //        if (datatype == "float" || datatype == "double" || datatype == "long double"){
+    //            floating_repr = "f";
+    //        }
+
 
     // Check parameter bindings
     int enum_val = context.getEnumVal(getId());
     if (context.params.find(getId()) != context.params.end())
     {
-        stream << "lw " << destReg << ", " << context.params[getId()].offset
+        stream << "lw " << destReg << ", " << context.getOffset(getId())
                << "(sp)" << std::endl;
     }
     // Check local var bindings
     else if (context.bindings.find(getId()) != context.bindings.end())
     {
-        stream << "lw " << destReg << ", " << context.bindings[getId()].offset
+        stream << "lw " << destReg << ", " << context.getOffset(getId())
                << "(sp)" << std::endl;
     }
     // If the variable is not present in bindings then it must be
@@ -31,7 +37,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
     else
     {
         context.createBinding(getId(), getType());
-        stream << "sw " << destReg << " " << context.bindings.at(getId()).offset
+        stream << "sw " << destReg << " " << context.getOffset(getId())
                << "(sp)" << std::endl;
     }
 

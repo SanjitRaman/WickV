@@ -79,12 +79,18 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
         context.deallocateReg(index_reg);
         context.setIndexReg("");
     }
+    else if (unary_expression_->getType() == entity_type::POINTER)
+    {
+        std::string offset = context.getOffset(unary_expression_->getId());
+        stream << "lw " << tempReg2 << ", " << offset << "(sp)" << std::endl;
+        stream << "sw " << tempReg1 << ", 0(" << tempReg2 << ")" << std::endl;
+    }
     else{
         std::cout << "sw " << tempReg1 << ", "
-              << context.bindings.at(unary_expression_->getId()).offset
+              << context.getOffset(unary_expression_->getId())
               << "(sp)" << std::endl;
         stream << "sw " << tempReg1 << ", "
-           << context.bindings.at(unary_expression_->getId()).offset << "(sp)"
+           << context.getOffset(unary_expression_->getId()) << "(sp)"
            << std::endl;
     }
 

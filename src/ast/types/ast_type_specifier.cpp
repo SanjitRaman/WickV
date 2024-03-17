@@ -13,6 +13,10 @@ entity_type TypeSpecifier::getType() const
     {
         return INTEGER;
     }
+    else if (type_ == "float")
+    {
+        return FLOAT_VALUE;
+    }
     return INVALID; //TODO: Add more types
 }
 

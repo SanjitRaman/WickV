@@ -31,6 +31,7 @@ struct variable
 {
     std::string offset;
     entity_type type;
+    bool isPointer;
 };
 
 struct enum_vals
@@ -44,6 +45,7 @@ struct param
 {
     std::string offset;
     entity_type type;
+    bool isPointer;
 };
 // Scope : store local var bindings in the memory scope
 
@@ -238,11 +240,12 @@ class Context
        // prolog)
 
     void update_params(std::string param_name, entity_type param_type,
-                       std::string param_offset)
+                       std::string param_offset, bool isPointer = false)
     {
         param new_param;
         new_param.type = param_type;
         new_param.offset = param_offset;
+        new_param.isPointer = isPointer;
         params[param_name] = new_param;
 
     }  // TODO: call to update params in parameter_list DONE
@@ -298,12 +301,15 @@ class Context
     }
 
     // Change entity_type to data_type
-    void createBinding(std::string id, entity_type type)
+    void createBinding(std::string id, entity_type type, bool isPointer = false)
     {
+        std::cout << "Creating binding for " << id << std::endl;
+        std::cout << isPointer << std::endl;
         std::string offset = getMemory(INT_MEM);
         variable newVar;
         newVar.offset = offset;
         newVar.type = type;
+        newVar.isPointer = isPointer;
         bindings[id] = newVar;
     }
 
@@ -314,7 +320,26 @@ class Context
         {
             return bindings[id].offset;
         }
+        else if (params.find(id) != params.end())
+        {
+            return params[id].offset;
+        }
         return "ERROR : getOffset";
+    }
+
+    bool getIsPointer(std::string id)
+    {
+        if (bindings.find(id) != bindings.end())
+        {
+            return bindings[id].isPointer;
+        }
+        else if (params.find(id) != params.end())
+        {
+            return params[id].isPointer;
+        }
+
+
+        return false;
     }
 
     entity_type getBindingType(std::string id)

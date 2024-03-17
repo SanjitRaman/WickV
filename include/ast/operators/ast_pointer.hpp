@@ -1,23 +1,23 @@
-#ifndef AST_CONSTANT_HPP
-#define AST_CONSTANT_HPP
+#ifndef AST_POINTER_HPP
+#define AST_POINTER_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
-class IntConstant : public Node
+// ---------------------- Pointer ----------------------
+class Pointer : public Node
 {
-   private:
-    int value_;
 
    public:
-    IntConstant(int value) : value_(value) {}
-
+    Pointer(){};
+    virtual ~Pointer()
+    {
+    };
+    // Do we need an evaluate?
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
-    int getValue() const override;
 };
 
 #endif

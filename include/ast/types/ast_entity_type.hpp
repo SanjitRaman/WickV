@@ -1,9 +1,9 @@
-#ifndef AST_entity_type_HPP
-#define AST_entity_type_HPP
+#ifndef AST_ENTITY_TYPE_HPP
+#define AST_ENTITY_TYPE_HPP
 
 const int INT_MEM = 4;
 const int RA_MEM = 4;
-
+//TODO: look into using the parser enum for data types
 enum entity_type
 {
     INTEGER,
@@ -13,8 +13,11 @@ enum entity_type
     VARIABLE_ASSIGN,
     ARRAY,
     ENUM_SPECIFIER,
-    ENUMERATOR
-    // todo add more data types
+    ENUMERATOR,
+    POINTER,
+    UNARY,
+    FLOAT_VALUE
+    // todo add more entity types
 };
 
 // MIGHT DELETE
