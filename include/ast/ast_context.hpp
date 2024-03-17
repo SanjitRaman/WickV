@@ -125,6 +125,10 @@ class Context
     int global_enum_val = -1;
     std::vector<enum_vals> enum_info;
 
+    //Struct
+    std::unordered_map<std::string, std::unordered_map<std::string, data_type>> struct_info;
+
+
     int frame_size = 128;            // Size of stack frame
     int remaining_mem = frame_size;  // Offset
 
@@ -509,6 +513,19 @@ class Context
         remaining_mem_stack.pop_back();
         stream << "addi sp, sp, " << frame_size << std::endl;
     }
+
+    // Structs
+    void InitialiseStruct(std::string id, std::unordered_map<std::string, data_type> struct_members)
+    {
+        struct_info[id] = struct_members;
+    }
+
+    std::unordered_map<std::string, data_type> getStructMembers(std::string id)
+    {
+        return struct_info[id];
+    }
+
+
 
     // Probs won't need
     void AllocateStack(int num_bytes) {}
