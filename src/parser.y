@@ -110,11 +110,12 @@ argument_expression_list
 unary_expression
 	: postfix_expression { $$ = $1; }
 	| unary_operator cast_expression { $$ = new Unary{*$1, $2}; delete $1;} //Should return 
+	| SIZEOF unary_expression { $$ = new SizeOf($2); }
+	| SIZEOF '(' type_name ')' { $$ = new SizeOf($3); }
+	;
 	/* | INC_OP unary_expression
 	| DEC_OP unary_expression
-	| SIZEOF unary_expression
-	| SIZEOF '(' type_name ')' */
-	;
+	*/
 
 unary_operator
 	: '&' { $$ = new std::string("&"); }
@@ -262,13 +263,13 @@ type_specifier
 	| FLOAT { $$ = new TypeSpecifier("float"); std::cout << "TypeSpecifier: " << std::endl; }
 	| DOUBLE { $$ = new TypeSpecifier("double"); std::cout << "TypeSpecifier: double" << std::endl; }
 	| struct_specifier { $$ = $1; }
-	/* | CHAR
+	| CHAR { $$ = new TypeSpecifier("char"); std::cout << "TypeSpecifier: char" << std::endl; }
+	/*
 	| SHORT
 	| LONG
 	| SIGNED
 	| UNSIGNED
 	| TYPE_NAME */
-
 	;
 
 struct_specifier
@@ -355,6 +356,11 @@ parameter_declaration
 	: declaration_specifiers declarator {$$ = new ParameterDeclarator($1, $2); std::cout << "ParameterDeclaration: " << std::endl;}
 	/* | declaration_specifiers abstract_declarator
 	| declaration_specifiers */
+	;
+
+type_name
+	: specifier_qualifier_list { $$ = $1; }
+	/* | specifier_qualifier_list abstract_declarator */
 	;
 
 initializer

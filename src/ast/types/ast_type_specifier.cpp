@@ -38,8 +38,34 @@ data_type TypeSpecifier::getType() const
     {
         return data_type::_float;
     }
-    else if (type_ == "double"){
+    else if (type_ == "double")
+    {
         return data_type::_double;
+    }
+    else if (type_ == "char")
+    {
+        return data_type::_char;
+    }
+    return _INVALID;  // TODO: Add more types
+}
+
+data_type TypeSpecifier::getType(Context &context) const
+{
+    if (type_ == "int")
+    {
+        return data_type::_int;
+    }
+    else if (type_ == "float")
+    {
+        return data_type::_float;
+    }
+    else if (type_ == "double")
+    {
+        return data_type::_double;
+    }
+    else if (type_ == "char")
+    {
+        return data_type::_char;
     }
     return _INVALID;  // TODO: Add more types
 }

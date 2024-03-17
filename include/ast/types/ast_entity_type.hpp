@@ -5,6 +5,8 @@ const int INT_MEM = 4;
 const int RA_MEM = 4;
 const int DOUBLE_MEM = 8;
 const int FLOAT_MEM = 4;
+const int CHAR_MEM = 1;
+
 // TODO: look into using the parser enum for data types
 enum entity_type
 {
@@ -18,7 +20,8 @@ enum entity_type
     POINTER,
     UNARY,
     STRUCT_DEC,
-    STRUCT_SPECIFIER
+    STRUCT_SPECIFIER,
+    SIZE_OF
     // todo add more entity types
 };
 
