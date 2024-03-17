@@ -263,13 +263,13 @@ type_specifier
 	| FLOAT { $$ = new TypeSpecifier("float"); std::cout << "TypeSpecifier: " << std::endl; }
 	| DOUBLE { $$ = new TypeSpecifier("double"); std::cout << "TypeSpecifier: double" << std::endl; }
 	| struct_specifier { $$ = $1; }
-	/* | CHAR
+	| CHAR { $$ = new TypeSpecifier("char"); std::cout << "TypeSpecifier: char" << std::endl; }
+	/*
 	| SHORT
 	| LONG
 	| SIGNED
 	| UNSIGNED
 	| TYPE_NAME */
-
 	;
 
 struct_specifier
