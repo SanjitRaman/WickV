@@ -23,6 +23,8 @@ class AddOperator : public Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
+
+    virtual data_type getType(Context &context) const override;
 };
 
 // ---------------------- SubtractOperator ----------------------
@@ -45,6 +47,8 @@ class SubtractOperator : public Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
+
+    virtual data_type getType(Context &context) const override;
 };
 
 #endif
@@ -69,4 +73,6 @@ class MultiplyOperator : public Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
+
+    virtual data_type getType(Context &context) const override;
 };

@@ -41,6 +41,7 @@
 #include "ast/operators/ast_ternary.hpp"
 #include "ast/operators/ast_unary.hpp"
 #include "ast/operators/ast_pointer.hpp"
+#include "ast/operators/ast_shift.hpp"
 
 // Types
 #include "ast/types/ast_constants.hpp"

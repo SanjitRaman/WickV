@@ -3,7 +3,7 @@
 // ---------------------------- Ternary ----------------------------
 
 void Ternary::EmitRISC(std::ostream &stream, Context &context,
-                           std::string destReg) const
+                       std::string destReg) const
 {
     std::string false_label = context.makeLabel("false_condition");
     std::string end_label = context.makeLabel("end_ternary");
@@ -29,5 +29,4 @@ void Ternary::Print(std::ostream &stream) const
     stream << " : ";
     false_expression_->Print(stream);
     stream << ")";
-    
 }

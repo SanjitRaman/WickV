@@ -3,10 +3,11 @@
 
 const int INT_MEM = 4;
 const int RA_MEM = 4;
-//TODO: look into using the parser enum for data types
+const int DOUBLE_MEM = 8;
+const int FLOAT_MEM = 4;
+// TODO: look into using the parser enum for data types
 enum entity_type
 {
-    INTEGER,
     INVALID,
     FUNCTION,
     VARIABLE,
@@ -16,8 +17,19 @@ enum entity_type
     ENUMERATOR,
     POINTER,
     UNARY,
-    FLOAT_VALUE
     // todo add more entity types
+};
+
+enum data_type
+{
+    _INVALID,
+    _int,
+    _void,
+    _unsigned,
+    _char,
+    _float,
+    _double
+    // _ptr TODO: somewhere else.
 };
 
 // MIGHT DELETE

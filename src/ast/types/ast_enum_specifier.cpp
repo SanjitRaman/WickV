@@ -21,7 +21,7 @@ void EnumSpecifier::Print(std::ostream &stream) const {
     stream << "}";
  }
 
-entity_type EnumSpecifier::getType() const
+entity_type EnumSpecifier::getEntity() const
 {
     return entity_type::ENUM_SPECIFIER;
 }

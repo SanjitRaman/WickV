@@ -7,11 +7,13 @@ class Enumerator : public Node
 {
    private:
     std::string identifier_;
-    Node* constant_expression_;
+    Node *constant_expression_;
 
    public:
-    Enumerator(std::string identifier, Node* constant_expression) : identifier_(identifier), constant_expression_(constant_expression){};
-    virtual ~Enumerator(){
+    Enumerator(std::string identifier, Node *constant_expression)
+        : identifier_(identifier), constant_expression_(constant_expression){};
+    virtual ~Enumerator()
+    {
         if (constant_expression_ != nullptr)
         {
             delete constant_expression_;
@@ -22,9 +24,10 @@ class Enumerator : public Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
-    virtual entity_type getType() const override;
+    virtual entity_type getEntity() const override;
+    virtual data_type getType() const override;
     virtual std::string getId() const override;
-    //TODO: Do we need getValue()
+    // TODO: Do we need getValue()
 };
 
 #endif

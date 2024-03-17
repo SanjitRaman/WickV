@@ -27,7 +27,7 @@ class Declaration : public Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
-    virtual entity_type getType() const override;  // may be overridden
+    virtual entity_type getEntity() const override;  // may be overridden
 };
 
 #endif

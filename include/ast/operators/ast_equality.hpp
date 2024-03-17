@@ -10,7 +10,7 @@ class Equality : public Node
     Node *relational_expression_;
 
    public:
-    Equality(Node *equality_expression, Node* relational_expression)
+    Equality(Node *equality_expression, Node *relational_expression)
         : equality_expression_(equality_expression),
           relational_expression_(relational_expression)
     {
@@ -25,6 +25,7 @@ class Equality : public Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
+    virtual data_type getType(Context &context) const override;
 };
 
 #endif

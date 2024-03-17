@@ -10,7 +10,7 @@ void PointerDeclarator::EmitRISC(std::ostream &stream, Context &context,
 {
 }
 
-entity_type PointerDeclarator::getType() const { return entity_type::POINTER; }
+entity_type PointerDeclarator::getEntity() const { return entity_type::POINTER; }
 
 std::string PointerDeclarator::getId() const { return identifier_->getId(); }
 

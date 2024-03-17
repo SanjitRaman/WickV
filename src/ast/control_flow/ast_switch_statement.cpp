@@ -14,7 +14,7 @@ void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
     case_list_->EmitRISC(stream, context, switch_reg);
     std::cout << "I finish emitting all cases" << std::endl;
     context.deallocateReg(switch_reg);
-    //put default here
+    // put default here
     std::string defaultLabel = context.getDefaultLabel();
     std::string switchLabel = context.getSwitchLabel();
     if (defaultLabel != "")
@@ -22,13 +22,14 @@ void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
         stream << "j " << defaultLabel << std::endl;
         context.ExitSwitch(true);
     }
-    else{
+    else
+    {
         context.ExitSwitch(false);
     }
     stream << context.getCaseLabel() << ":" << std::endl;
-    stream << switchLabel << ":" << std::endl;    
+    stream << switchLabel << ":" << std::endl;
 
-    //end switch here
+    // end switch here
 }
 
 void SwitchStatement::EmitRISC(std::ostream &stream, Context &context,

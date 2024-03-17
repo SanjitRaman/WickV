@@ -1,7 +1,6 @@
 #ifndef AST_CONTINUE_HPP
 #define AST_CONTINUE_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
 class Continue : public Node

@@ -85,8 +85,8 @@ primary_expression
 		$$ = new IntConstant($1);
 	}
     | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
-	/* | STRING_LITERAL
-	| '(' expression ')' */
+	| '(' expression ')' { $$ = $2; } /* TODO: check if this is correct way to parse */
+	/* | STRING_LITERAL */
 	;
 
 postfix_expression
@@ -120,7 +120,7 @@ unary_operator
 	: '&' { $$ = new std::string("&"); }
 	| '*' { $$ = new std::string("*"); }
 	| '+'
-	| '-'
+	| '-' { $$ = new std::string("-"); }
 	| '~'
 	| '!'
 	;
@@ -149,16 +149,16 @@ additive_expression
 
 shift_expression
 	: additive_expression { $$ = $1; }
-	/* | shift_expression LEFT_OP additive_expression
-	| shift_expression RIGHT_OP additive_expression */
+	| shift_expression LEFT_OP additive_expression { $$ = new LeftShift($1, $3); }
+	| shift_expression RIGHT_OP additive_expression { $$ = new RightShift($1, $3); std::cout << "ShiftExpression: RIGHT_OP" << std::endl;}
 	;
 
 relational_expression
 	: shift_expression { $$ = $1; }
 	| relational_expression '>' shift_expression { $$ = new GreaterThan($1, $3); }
 	| relational_expression '<' shift_expression { $$ = new LessThan($1, $3); }
-	/* | relational_expression LE_OP shift_expression
-	| relational_expression GE_OP shift_expression */
+	| relational_expression LE_OP shift_expression { $$ = new LessThanEqual($1, $3); }
+	| relational_expression GE_OP shift_expression { $$ = new GreaterThanEqual($1, $3); }
 	;
 
 equality_expression
@@ -209,7 +209,7 @@ assignment_operator
 	| MUL_ASSIGN
 	| DIV_ASSIGN
 	| MOD_ASSIGN
-	| ADD_ASSIGN
+	| ADD_ASSIGN { $$ = new std::string("+=");}
 	| SUB_ASSIGN
 	| LEFT_ASSIGN
 	| RIGHT_ASSIGN
@@ -259,10 +259,10 @@ type_specifier
 	}
 	| enum_specifier { $$ = $1; } //This should be fine
 	| FLOAT { $$ = new TypeSpecifier("float"); std::cout << "TypeSpecifier: " << std::endl; }
+	| DOUBLE { $$ = new TypeSpecifier("double"); std::cout << "TypeSpecifier: double" << std::endl; }
 	/* | CHAR
 	| SHORT
 	| LONG
-	| DOUBLE
 	| SIGNED
 	| UNSIGNED
   	| struct_specifier

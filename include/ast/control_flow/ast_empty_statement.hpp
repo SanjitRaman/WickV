@@ -1,7 +1,6 @@
 #ifndef AST_EMPTY_STATEMENT_HPP
 #define AST_EMPTY_STATEMENT_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
 class EmptyStatement : public Node

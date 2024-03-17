@@ -1,7 +1,6 @@
 #ifndef AST_WHILE_STATEMENT_HPP
 #define AST_WHILE_STATEMENT_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
 class WhileStatement : public Node

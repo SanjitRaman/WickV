@@ -7,9 +7,19 @@ Node::~Node()
         delete branch;
     }
 }
-entity_type Node::getType() const
+entity_type Node::getEntity() const
 {
     return INVALID;  // Shouldn't go here
+}
+
+data_type Node::getType() const
+{
+    return data_type::_INVALID;  // Shouldn't go here
+}
+
+data_type Node::getType(Context &context) const
+{
+    return data_type::_INVALID;  // Shouldn't go here
 }
 
 std::string Node::getId() const
@@ -21,7 +31,6 @@ int Node::getValue() const
 {
     return -1;  // Shouldn't go here
 }
-
 
 void NodeList::PushBack(Node *item) { nodes_.push_back(item); }
 

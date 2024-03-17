@@ -3,7 +3,8 @@
 void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
 {
     std::unordered_map<std::string, entity_type> params;
-    int i = 0;
+    int i = 0;  // keep track of non-float argument registers.
+    int j = 0;  // keep track of float argument registers
     std::string offset;
     for (auto param : nodes_)
     {
@@ -11,21 +12,38 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         {
             continue;
         }
-        // params[param->getId()] = param->getType(); //so we know the offset in
-        // compound statement
-        offset = context.getMemory(INT_MEM);
-        stream << "sw a" << i << ", " << offset << "(sp)"
-               << std::endl;  // We know which register to use by order that
-                              // function declares parameters
-        i++;
-        std::cout << "parameter: " << param->getId();
-        std::cout << " type: " << param->getType() << std::endl;
-        if (param->getType() == entity_type::POINTER)
+        // params[param->getId()] = param->getEntity(); //so we know the offset
+        // in compound statement
+        
+        if (param->getType() == data_type::_int)
         {
-            context.update_params(param->getId(), entity_type::INTEGER, offset, true);
+            offset = context.getMemory(INT_MEM);
+            stream << "sw a" << i << ", " << offset << "(sp)"
+                   << std::endl;  // We know which register to use by order that
+                                  // function declares parameters
+            i++;
         }
-        else{
-            context.update_params(param->getId(), entity_type::INTEGER, offset);
+        else if (param->getType() == data_type::_float)
+        {
+            offset = context.getMemory(FLOAT_MEM);
+            stream << "fsw fa" << j << ", " << offset << "(sp)" << std::endl;
+            j++;
+        }
+        else if (param->getType() == data_type::_double){
+            offset = context.getMemory(DOUBLE_MEM);
+            stream << "fsd fa" << j << ", " << offset << "(sp)" << std::endl;
+            j++;
+        }
+        std::cout << "parameter: " << param->getId();
+        std::cout << " type: " << param->getEntity() << std::endl;
+        if (param->getEntity() == entity_type::POINTER)
+        {
+            context.update_params(param->getId(), param->getType(), offset,
+                                  true);
+        }
+        else
+        {
+            context.update_params(param->getId(), param->getType(), offset);
         }
         // node->EmitRISC(stream, context);
     }

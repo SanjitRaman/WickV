@@ -2,11 +2,12 @@
 
 void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
-    //Initialise the for loop
+    // Initialise the for loop
     start_->EmitRISC(stream, context);
 
     // TODO: probs can move this to where the condition is emitted
-    std::string destReg = context.allocateReg(stream); //TODO:Want to call this destReg? May be confusing?
+    std::string destReg = context.allocateReg(
+        stream);  // TODO:Want to call this destReg? May be confusing?
 
     std::string startLabel = context.makeLabel("for");
     std::string endLabel = context.makeLabel("endfor");
@@ -23,10 +24,10 @@ void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
 
     // Emit the increment
     stream << updateLabel << ":" << std::endl;
-    if (increment_ != nullptr){
+    if (increment_ != nullptr)
+    {
         increment_->EmitRISC(stream, context);
     }
-    
 
     // Emit the end label
     stream << endLabel << ":" << std::endl;
@@ -39,11 +40,11 @@ void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
 
     //  Free the register
     context.exitLoop();
-    context.deallocateReg(destReg); 
+    context.deallocateReg(destReg);
 }
 
 void ForStatement::EmitRISC(std::ostream &stream, Context &context,
-                              std::string destReg) const
+                            std::string destReg) const
 {
 }
 

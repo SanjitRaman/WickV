@@ -1,7 +1,6 @@
 #ifndef AST_SWITCH_STATEMENT_HPP
 #define AST_SWITCH_STATEMENT_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
 class SwitchStatement : public Node

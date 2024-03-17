@@ -12,16 +12,6 @@ class Variable : public Node
    public:
     Variable(std::string &id_, std::string type = "") : Id_(id_)
     {
-        // create settype method later
-        if (type == "int")
-        {
-            type_ = INTEGER;
-        }
-        else
-        {
-            type_ = INVALID;
-        }
-
         std::cout << "Variable created with id: " << Id_ << std::endl;
     };
     virtual ~Variable(){};
@@ -31,7 +21,10 @@ class Variable : public Node
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
     virtual std::string getId() const override;
-    virtual entity_type getType() const override;
+    virtual entity_type getEntity() const override;
+    virtual data_type getType() const override;
+    virtual data_type getType(Context &context) const override;
+    // screw this
     void setType(entity_type type);
 };
 
