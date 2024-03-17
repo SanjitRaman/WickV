@@ -273,6 +273,10 @@ class Context
         }
     }
 
+    void deallocateMemory(int mem_size) { 
+        remaining_mem += mem_size; 
+    }
+
     void addArray(std::string id, int array_size)
     {
         std::string offset;
@@ -307,7 +311,19 @@ class Context
     {
         std::cout << "Creating binding for " << id << std::endl;
         std::cout << isPointer << std::endl;
-        std::string offset = getMemory(INT_MEM);
+        std::string offset;
+        if (type == data_type::_int){
+            offset = getMemory(INT_MEM);
+        }
+        else if (type == data_type::_float){
+            offset = getMemory(FLOAT_MEM);
+        }
+        else if (type == data_type::_double){
+            offset = getMemory(DOUBLE_MEM);
+        }
+        else{
+            offset = getMemory(INT_MEM); //Default, but shouldn't need
+        }
         variable newVar;
         newVar.offset = offset;
         newVar.type = type;

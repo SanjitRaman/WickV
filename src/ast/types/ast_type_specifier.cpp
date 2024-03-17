@@ -38,5 +38,8 @@ data_type TypeSpecifier::getType() const
     {
         return data_type::_float;
     }
+    else if (type_ == "double"){
+        return data_type::_double;
+    }
     return _INVALID;  // TODO: Add more types
 }

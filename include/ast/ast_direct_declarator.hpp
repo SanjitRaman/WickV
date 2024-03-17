@@ -1,7 +1,6 @@
 #ifndef AST_DIRECT_DECLARATOR_HPP
 #define AST_DIRECT_DECLARATOR_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
 // Exclusively used for functions

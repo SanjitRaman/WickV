@@ -16,6 +16,7 @@ void PostfixOperator::EmitRISC(std::ostream &stream, Context &context) const
     else if (op_ == "--")
     {
         // Implement decrement
+        stream << "addi " << tempReg << ", " << tempReg << ", -1" << std::endl;
     }
     stream << "sw " << tempReg << ", "
            << context.getOffset(primary_expression_->getId()) << "(sp)"

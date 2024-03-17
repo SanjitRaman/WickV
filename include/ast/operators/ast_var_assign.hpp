@@ -27,6 +27,7 @@ class VarAssign : public Node
     virtual std::string getId()
         const override;  // may be overridden (return declarator_->getId()) but
                          // shouldn't be necessary
+    virtual data_type getType(Context &context) const override;
     // void setType(entity_type type);
 };
 

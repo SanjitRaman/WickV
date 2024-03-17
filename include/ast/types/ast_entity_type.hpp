@@ -3,6 +3,8 @@
 
 const int INT_MEM = 4;
 const int RA_MEM = 4;
+const int DOUBLE_MEM = 8;
+const int FLOAT_MEM = 4;
 // TODO: look into using the parser enum for data types
 enum entity_type
 {

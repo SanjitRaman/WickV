@@ -1,7 +1,6 @@
 #ifndef AST_BREAK_HPP
 #define AST_BREAK_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
 class Break : public Node

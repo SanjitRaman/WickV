@@ -18,6 +18,26 @@ void Unary::EmitRISC(std::ostream &stream, Context &context,
         stream << "lw " << destReg << ", 0"
                << "(" << destReg << ")" << std::endl;
     }
+    else if (unary_op_ == "-")
+    {
+        if (getType(context) == data_type::_float || getType(context) == data_type::_double){
+            std::string op1_reg = context.allocateFloatReg(stream);
+            cast_expression_->EmitRISC(stream, context, op1_reg);
+            if (getType(context) == data_type::_float){
+                stream << "fsub.s " << destReg << ", " << op1_reg << ", zero" << std::endl;
+            }
+            else if (getType(context) == data_type::_double){
+                stream << "fsub.d " << destReg << ", " << op1_reg << ", zero" << std::endl;
+            }
+            context.deallocateFloatReg(op1_reg);
+        }
+        else if (getType(context) == data_type::_int){
+            std::string op1_reg = context.allocateReg(stream);
+            cast_expression_->EmitRISC(stream, context, op1_reg);
+            stream << "sub " << destReg << ", zero, " << op1_reg << std::endl;
+            context.deallocateReg(op1_reg);
+        }
+    }
 }
 entity_type Unary::getEntity() const
 {

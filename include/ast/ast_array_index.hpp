@@ -1,7 +1,6 @@
 #ifndef AST_ARRAY_INDEX_HPP
 #define AST_ARRAY_INDEX_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 class ArrayIndex : public Node
 {

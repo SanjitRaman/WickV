@@ -1,7 +1,6 @@
 #ifndef AST_ARRAY_DECLARATOR_HPP
 #define AST_ARRAY_DECLARATOR_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 class ArrayDeclarator : public Node
 {

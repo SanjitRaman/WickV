@@ -31,6 +31,11 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
             stream << "flw " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }
+        else if (var_type == data_type::_double)
+        {
+            stream << "fld " << destReg << ", " << context.getOffset(getId())
+                   << "(sp)" << std::endl;
+        }
         else
         {
             // defaults to the int implementation.
@@ -53,9 +58,14 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
             stream << "flw " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }
+        else if (var_type == data_type::_double)
+        {
+            stream << "fld " << destReg << ", " << context.getOffset(getId())
+                   << "(sp)" << std::endl;
+        }
         else
         {
-            // defaults to the int implementation.
+            // defaults to the int implementation, but shouldn't need
             stream << "lw " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }

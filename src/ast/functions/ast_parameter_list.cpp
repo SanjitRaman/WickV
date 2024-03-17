@@ -14,9 +14,10 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         }
         // params[param->getId()] = param->getEntity(); //so we know the offset
         // in compound statement
-        offset = context.getMemory(INT_MEM);
+        
         if (param->getType() == data_type::_int)
         {
+            offset = context.getMemory(INT_MEM);
             stream << "sw a" << i << ", " << offset << "(sp)"
                    << std::endl;  // We know which register to use by order that
                                   // function declares parameters
@@ -24,7 +25,13 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         }
         else if (param->getType() == data_type::_float)
         {
+            offset = context.getMemory(FLOAT_MEM);
             stream << "fsw fa" << j << ", " << offset << "(sp)" << std::endl;
+            j++;
+        }
+        else if (param->getType() == data_type::_double){
+            offset = context.getMemory(DOUBLE_MEM);
+            stream << "fsd fa" << j << ", " << offset << "(sp)" << std::endl;
             j++;
         }
         std::cout << "parameter: " << param->getId();

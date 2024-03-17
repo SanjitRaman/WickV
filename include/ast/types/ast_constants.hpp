@@ -5,7 +5,7 @@
 
 union FloatConversion
 {
-    int i;
+    int i; //Doesn't need to be unsigned?
     float f;
 };
 
