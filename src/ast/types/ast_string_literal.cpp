@@ -15,7 +15,7 @@ void StringLiteral::EmitRISC(std::ostream &stream, Context &context,
 entity_type StringLiteral::getEntity() const
 {
     // return type_;
-    return entity_type::STRING_LITERAL;
+    return entity_type::STRING_DEFINTION;
 }
 
 data_type StringLiteral::getType(Context &context) const
@@ -31,4 +31,7 @@ data_type StringLiteral::getType() const
 
 std::string StringLiteral::getId() const { return string_literal_; }
 
-void StringLiteral::Print(std::ostream &stream) const { stream << Id_; };
+void StringLiteral::Print(std::ostream &stream) const
+{
+    stream << string_literal_;
+};

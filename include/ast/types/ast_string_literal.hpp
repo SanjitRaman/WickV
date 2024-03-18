@@ -1,5 +1,5 @@
-#define AST_STRING_LITERAL_HPP
 #ifndef AST_STRING_LITERAL_HPP
+#define AST_STRING_LITERAL_HPP
 
 #include "ast/ast_node.hpp"
 
@@ -9,10 +9,8 @@ class StringLiteral : public Node
     std::string string_literal_;
 
    public:
-    StringLiteral(std::string string_literal) : string_literal_(string_literal)
-    {
-        std::cout << "StringLiteral created with id: " << Id_ << std::endl;
-    };
+    StringLiteral(std::string string_literal)
+        : string_literal_(string_literal){};
     virtual ~StringLiteral(){};
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;

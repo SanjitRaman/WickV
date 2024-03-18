@@ -330,6 +330,14 @@ class Context
         {
             offset = getMemory(DOUBLE_MEM);
         }
+        else if (type == data_type::_char && isPointer)
+        {
+            offset = getMemory(INT_MEM);
+        }
+        else if (type == data_type::_char && !isPointer)
+        {
+            offset = getMemory(CHAR_MEM);
+        }
         else
         {
             offset = getMemory(INT_MEM);  // Default, but shouldn't need

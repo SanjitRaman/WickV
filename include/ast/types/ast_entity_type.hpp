@@ -14,6 +14,7 @@ enum entity_type
     FUNCTION,
     VARIABLE,
     VARIABLE_ASSIGN,
+    POINTER_ASSIGN,
     ARRAY,
     ENUM_SPECIFIER,
     ENUMERATOR,
@@ -22,7 +23,7 @@ enum entity_type
     STRUCT_DEC,
     STRUCT_SPECIFIER,
     SIZE_OF,
-    STRING_LITERAL
+    STRING_DEFINTION
     // todo add more entity types
 };
 
