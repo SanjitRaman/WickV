@@ -25,7 +25,7 @@
   yytokentype  token;
 }
 
-%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL
+%token IDENTIFIER INT_CONSTANT FLOAT_CONSTANT STRING_LITERAL CHAR_LITERAL
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP AND_OP OR_OP
 %token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN ASSIGN
 %token TYPE_NAME TYPEDEF EXTERN STATIC AUTO REGISTER SIZEOF
@@ -47,9 +47,9 @@
 
 %type <string> unary_operator assignment_operator storage_class_specifier
 
-%type <number_int> INT_CONSTANT STRING_LITERAL
+%type <number_int> INT_CONSTANT
 %type <number_float> FLOAT_CONSTANT
-%type <string> IDENTIFIER
+%type <string> IDENTIFIER STRING_LITERAL CHAR_LITERAL
 
 
 %start ROOT
@@ -87,6 +87,7 @@ primary_expression
     | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
 	| '(' expression ')' { $$ = $2; } /* TODO: check if this is correct way to parse */
 	| STRING_LITERAL { $$ = new StringLiteral(*$1); delete $1; }
+	| CHAR_LITERAL { $$ = new CharLiteral(*$1); delete $1; }
 	;
 
 postfix_expression
@@ -254,7 +255,7 @@ init_declarator
 
 //Create bindings in Declaration for each init_declarator
 // Assign the value of the initializer to the declarator in VarAssign->EmitRISC()
-
+//Check all types are fully supported
 type_specifier
 	: INT {
 		$$ = new TypeSpecifier("int"); std::cout << "TypeSpecifier: " << std::endl;	
@@ -265,6 +266,7 @@ type_specifier
 	| struct_specifier { $$ = $1; }
 	| CHAR { $$ = new TypeSpecifier("char"); std::cout << "TypeSpecifier: char" << std::endl; }
 	| UNSIGNED { $$ = new TypeSpecifier("unsigned"); std::cout << "TypeSpecifier: unsigned" << std::endl; }
+	| VOID { $$ = new TypeSpecifier("void"); std::cout << "TypeSpecifier: void" << std::endl; }
 	/*
 	| SHORT
 	| LONG

@@ -7,18 +7,33 @@ void ArrayIndex::EmitRISC(std::ostream &stream, Context &context,
 {
     if (context.getIsPointer(getId()))
     {
-        std::string index_reg = context.allocateReg(stream);
-        index_->EmitRISC(stream, context, index_reg);
-        stream << "li " << destReg << ", " << INT_MEM << std::endl;
-        stream << "mul " << index_reg << ", " << index_reg << ", " << destReg
-               << std::endl;
-        stream << "lw " << destReg << ", " << context.getOffset(getId())
-               << "(sp)" << std::endl;
-        stream << "add " << index_reg << ", " << destReg << ", " << index_reg
-               << std::endl;
-        stream << "lw " << destReg << ", 0(" << index_reg << ")" << std::endl;
-        // TODO: Check if we need to setIndexReg in context
-        context.deallocateReg(index_reg);
+        if (context.getBindingType(getId()) == data_type::_char){
+            std::string index_reg = context.allocateReg(stream);
+            index_->EmitRISC(stream, context, index_reg);
+            context.getOffset(getId());
+            stream << "lw " << destReg << ", " << context.getOffset(getId())
+                   << "(sp)" << std::endl;
+            stream << "add " << index_reg << ", " << destReg << ", " << index_reg
+                     << std::endl;
+            stream << "lbu " << destReg << ", 0(" << index_reg << ")" << std::endl;
+            context.deallocateReg(index_reg); 
+        }
+        else {
+            std::string index_reg = context.allocateReg(stream);
+            index_->EmitRISC(stream, context, index_reg);
+            stream << "li " << destReg << ", " << INT_MEM << std::endl;
+            stream << "mul " << index_reg << ", " << index_reg << ", " << destReg
+                << std::endl;
+            stream << "lw " << destReg << ", " << context.getOffset(getId())
+                << "(sp)" << std::endl;
+            stream << "add " << index_reg << ", " << destReg << ", " << index_reg
+                << std::endl;
+            stream << "lw " << destReg << ", 0(" << index_reg << ")" << std::endl;
+            // TODO: Check if we need to setIndexReg in context
+            context.deallocateReg(index_reg);
+
+        }
+        
     }
     else
     {

@@ -26,7 +26,7 @@ data_type StringLiteral::getType(Context &context) const
 data_type StringLiteral::getType() const
 {
     // shouldn't go here
-    return data_type::_INVALID;
+    return data_type::_char;
 }
 
 std::string StringLiteral::getId() const { return string_literal_; }

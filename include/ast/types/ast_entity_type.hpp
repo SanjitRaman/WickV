@@ -23,7 +23,8 @@ enum entity_type
     STRUCT_DEC,
     STRUCT_SPECIFIER,
     SIZE_OF,
-    STRING_DEFINTION
+    STRING_DEFINTION,
+    CHAR_DEFINITION
     // todo add more entity types
 };
 

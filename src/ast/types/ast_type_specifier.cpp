@@ -50,6 +50,10 @@ data_type TypeSpecifier::getType() const
     {
         return data_type::_unsigned;
     }
+    else if (type_ == "void")
+    {
+        return data_type::_void;
+    }
     return _INVALID;  // TODO: Add more types
 }
 
