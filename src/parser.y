@@ -86,7 +86,7 @@ primary_expression
 	}
     | FLOAT_CONSTANT {$$ = new FloatConstant($1);}
 	| '(' expression ')' { $$ = $2; } /* TODO: check if this is correct way to parse */
-	/* | STRING_LITERAL */
+	| STRING_LITERAL { $$ = new StringLiteral(*$1); delete $1; }
 	;
 
 postfix_expression

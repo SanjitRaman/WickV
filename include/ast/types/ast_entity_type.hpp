@@ -21,7 +21,8 @@ enum entity_type
     UNARY,
     STRUCT_DEC,
     STRUCT_SPECIFIER,
-    SIZE_OF
+    SIZE_OF,
+    STRING_LITERAL
     // todo add more entity types
 };
 

@@ -118,6 +118,9 @@ class Context
     std::vector<loop_labels> loop_info;
     std::vector<std::vector<std::string>> savedRegs;  // For function calls
 
+    // Strings
+    std::unordered_map<std::string, std::string> string_headers;
+
     bool fetchArrayIndex = false;
     std::string ArrayIndexReg = "";
 
@@ -546,6 +549,20 @@ class Context
         {
             binding_id = instance_identifier + "." + member.first;
             createBinding(binding_id, member.second, false);
+        }
+    }
+
+    void addStringHeader(std::string header_branch, std::string string_literal)
+    {
+        string_headers[header_branch] = string_literal;
+    }
+
+    void printHeader(std::ostream &stream)
+    {
+        for (auto &header : string_headers)
+        {
+            stream << header.first << ":" << std::endl;
+            stream << "    .string " << header.second << std::endl;
         }
     }
 
