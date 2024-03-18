@@ -264,11 +264,11 @@ type_specifier
 	| DOUBLE { $$ = new TypeSpecifier("double"); std::cout << "TypeSpecifier: double" << std::endl; }
 	| struct_specifier { $$ = $1; }
 	| CHAR { $$ = new TypeSpecifier("char"); std::cout << "TypeSpecifier: char" << std::endl; }
+	| UNSIGNED { $$ = new TypeSpecifier("unsigned"); std::cout << "TypeSpecifier: unsigned" << std::endl; }
 	/*
 	| SHORT
 	| LONG
 	| SIGNED
-	| UNSIGNED
 	| TYPE_NAME */
 	;
 

@@ -501,6 +501,7 @@ class Context
                                          // end of the function
         stream << "addi sp, sp, -" << frame_size << std::endl;
     }
+
     std::string getReturnLabel() { return return_branches.back(); }
 
     void ExitScope(std::ostream &stream)

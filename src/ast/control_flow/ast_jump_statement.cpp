@@ -33,6 +33,15 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
             stream << "fmv.d fa0, " << tempReturn << std::endl;
             context.deallocateFloatReg(tempReturn);
         }
+        else if (expression_->getType(context) == data_type::_unsigned){
+            // Allocate temp register
+            std::string tempReturn = context.allocateReg(stream);
+            expression_->EmitRISC(
+                stream, context,
+                tempReturn);  // store the return value in a0 register
+            stream << "mv a0, " << tempReturn << std::endl;
+            context.deallocateReg(tempReturn);
+        }
     }
     // stream << "ret" << std::endl;
     // Move a0, free register

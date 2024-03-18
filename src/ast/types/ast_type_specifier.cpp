@@ -46,6 +46,10 @@ data_type TypeSpecifier::getType() const
     {
         return data_type::_char;
     }
+    else if (type_ == "unsigned")
+    {
+        return data_type::_unsigned;
+    }
     return _INVALID;  // TODO: Add more types
 }
 
@@ -66,6 +70,10 @@ data_type TypeSpecifier::getType(Context &context) const
     else if (type_ == "char")
     {
         return data_type::_char;
+    }
+    else if (type_ == "unsigned")
+    {
+        return data_type::_unsigned;
     }
     return _INVALID;  // TODO: Add more types
 }
