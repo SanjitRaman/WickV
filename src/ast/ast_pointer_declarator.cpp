@@ -2,6 +2,8 @@
 
 void PointerDeclarator::EmitRISC(std::ostream &stream, Context &context) const
 {
+    //TODO: Check if it is a function
+    identifier_->EmitRISC(stream, context);
     
 }
 

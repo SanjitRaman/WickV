@@ -25,7 +25,7 @@ entity_type TypeSpecifier::getEntity() const
 
 std::string TypeSpecifier::getId() const
 {
-    return "type";  // The program should never enter this method
+    return type_;  // For typedef
 }
 
 data_type TypeSpecifier::getType() const
@@ -49,6 +49,10 @@ data_type TypeSpecifier::getType() const
     else if (type_ == "unsigned")
     {
         return data_type::_unsigned;
+    }
+    else if (type_ == "void")
+    {
+        return data_type::_void;
     }
     return _INVALID;  // TODO: Add more types
 }

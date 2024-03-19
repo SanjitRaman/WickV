@@ -16,6 +16,13 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
                                   declaration_specifiers_->getType(), false);
             node->EmitRISC(stream, context);
         }
+        else if (node->getEntity() == entity_type::POINTER_ASSIGN)
+        {
+            std::cout << "POINTERASSIGN" << std::endl;
+            context.createBinding(node->getId(),
+                                  declaration_specifiers_->getType(), true);
+            node->EmitRISC(stream, context);
+        }
         // check if it is a struct type before it checks for member variables.
         else if (declaration_specifiers_->getEntity() ==
                  entity_type::STRUCT_DEC)
@@ -42,12 +49,22 @@ void Declaration::EmitRISC(std::ostream &stream, Context &context) const
         else if (node->getEntity() == entity_type::POINTER)
         {
             std::cout << "POINTER" << std::endl;
-            // Create binding here for pointer
-            context.createBinding(node->getId(),
-                                  declaration_specifiers_->getType(), true);
-            // Do we need to specify that this is a pointer in context?
-            // Call emit risc on pointer declarator
-            //  node->EmitRISC(stream, context);
+
+            if (declaration_specifiers_->getType() == data_type::_char)
+            {
+                context.createBinding(node->getId(),
+                                      declaration_specifiers_->getType(),
+                                      true);  // TODO check that passing
+            }
+            else
+            {
+                // Create binding here for pointer
+                context.createBinding(node->getId(),
+                                      declaration_specifiers_->getType(), true);
+                // Do we need to specify that this is a pointer in context?
+                // Call emit risc on pointer declarator
+                //  node->EmitRISC(stream, context);
+            }
         }
         else if (node->getEntity() == entity_type::FUNCTION)
         {

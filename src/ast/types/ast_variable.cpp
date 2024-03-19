@@ -36,6 +36,15 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
             stream << "fld " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }
+        else if (var_type == data_type::_char && context.getIsPointer(getId())){
+            stream << "lw " << destReg << ", " << context.getOffset(getId())
+                   << "(sp)" << std::endl;
+        }
+        else if (var_type == data_type::_char)
+        {
+            stream << "lbu " << destReg << ", " << context.getOffset(getId())
+                   << "(sp)" << std::endl;
+        }
         else
         {
             // defaults to the int implementation.

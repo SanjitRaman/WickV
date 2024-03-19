@@ -10,13 +10,28 @@ void Unary::EmitRISC(std::ostream &stream, Context &context,
         std::string offset = context.getOffset(cast_expression_->getId());
         stream << "addi " << destReg << ", sp, " << offset << std::endl;
     }
+    //TODO: Implement more types
     else if (unary_op_ == "*")
     {
-        std::cout << "Goes to Unary * " << std::endl;
-        std::string offset = context.getOffset(cast_expression_->getId());
-        stream << "lw " << destReg << ", " << offset << "(sp)" << std::endl;
-        stream << "lw " << destReg << ", 0"
+        if (getType(context) == data_type::_float || getType(context) == data_type::_double){
+            std::cout << "Goes to Unary * " << std::endl;
+            std::string offset = context.getOffset(cast_expression_->getId());
+            stream << "flw " << destReg << ", " << offset << "(sp)" << std::endl;
+            stream << "flw " << destReg << ", 0"
                << "(" << destReg << ")" << std::endl;
+        }
+        else if (getType(context) == data_type::_int){
+            std::cout << "Goes to Unary * " << std::endl;
+            std::string offset = context.getOffset(cast_expression_->getId());
+            stream << "lw " << destReg << ", " << offset << "(sp)" << std::endl;
+            stream << "lw " << destReg << ", 0"
+               << "(" << destReg << ")" << std::endl;
+        }
+        else if (getType(context) == data_type::_char){
+            std::string offset = context.getOffset(cast_expression_->getId());
+            stream << "lw " << destReg << ", " << offset << "(sp)" << std::endl;
+            stream << "lbu " << destReg << ", 0(" << destReg << ")" << std::endl;
+        }
     }
     else if (unary_op_ == "-")
     {

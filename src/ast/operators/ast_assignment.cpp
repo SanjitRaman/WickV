@@ -18,6 +18,10 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
     {
         tempReg1 = context.allocateReg(stream);
     }
+    else if (result_type == data_type::_char)
+    {
+        tempReg1 = context.allocateReg(stream);
+    }
 
 
     if (assignment_expression_->getType(context) == data_type::_float)
@@ -29,6 +33,10 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
         tempReg2 = context.allocateFloatReg(stream);
     }
     else if (assignment_expression_->getType(context) == data_type::_int)
+    {
+        tempReg2 = context.allocateReg(stream);
+    }
+    else if (assignment_expression_->getType(context) == data_type::_char)
     {
         tempReg2 = context.allocateReg(stream);
     }
