@@ -25,7 +25,7 @@ entity_type TypeSpecifier::getEntity() const
 
 std::string TypeSpecifier::getId() const
 {
-    return "type";  // The program should never enter this method
+    return type_;  // For typedef
 }
 
 data_type TypeSpecifier::getType() const

@@ -7,6 +7,7 @@
 %code requires{
     #include "ast.hpp"
 
+	extern void update_type_map(std::string identifier, std::string type);
     extern Node *g_root;
     extern FILE *yyin;
     int yylex(void);
@@ -36,13 +37,13 @@
 %type <node> external_declaration function_definition primary_expression postfix_expression
 %type <node> unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
-%type <node> conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
+%type <node> conditional_expression assignment_expression expression constant_expression declaration
 %type <node> init_declarator type_specifier struct_specifier struct_declaration specifier_qualifier_list struct_declarator_list
 %type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
 %type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
 
-%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list struct_declaration_list
+%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list struct_declaration_list declaration_specifiers
 %type <parameter_list> parameter_list
 
 %type <string> unary_operator assignment_operator storage_class_specifier
@@ -237,11 +238,10 @@ declaration
 
 declaration_specifiers
 	   : type_specifier { $$ = $1; std::cout << "DeclarationSpecifier: " << std::endl; }
+	   /*| storage_class_specifier declaration_specifiers { if (*$1 == "typedef") { update_type_map($2->getNodes()[1]->getId(), $2->getNodes()[0]->getId()) } delete $1; } */
+	   /* | type_specifier declaration_specifiers  { $$ = $2; $2->PushBack($1); } */
 	;
 	/* : storage_class_specifier */
-	/* | storage_class_specifier declaration_specifiers */
-	
-	/* | type_specifier declaration_specifiers */
 
 init_declarator_list
 	: init_declarator { $$ = new InitDeclaratorList($1); } //Node (Declaration)
@@ -252,6 +252,15 @@ init_declarator
 	: declarator {std::cout << "Could be an error with InitDeclarator" ;$$ = new InitDeclarator($1); std::cout << "It's going to InitDeclarator : declarator" << std::endl; }//create a declaration (just var, or function def might be fine) here with the declarator variable
 	| declarator '=' initializer {$$ = new VarAssign($1, $3); } // () Create a declaration here with the declarator variable and the initializer - type is set in Declaration
 	;
+
+storage_class_specifier
+	: TYPEDEF {$$ = new std::string("typedef"); }
+	| EXTERN
+	| STATIC
+	| AUTO
+	| REGISTER
+	;
+
 
 //Create bindings in Declaration for each init_declarator
 // Assign the value of the initializer to the declarator in VarAssign->EmitRISC()
@@ -267,13 +276,14 @@ type_specifier
 	| CHAR { $$ = new TypeSpecifier("char"); std::cout << "TypeSpecifier: char" << std::endl; }
 	| UNSIGNED { $$ = new TypeSpecifier("unsigned"); std::cout << "TypeSpecifier: unsigned" << std::endl; }
 	| VOID { $$ = new TypeSpecifier("void"); std::cout << "TypeSpecifier: void" << std::endl; }
+	| TYPE_NAME {  }
 	/*
 	| SHORT
 	| LONG
 	| SIGNED
-	| TYPE_NAME */
+	
 	;
-
+*/
 struct_specifier
 	: STRUCT IDENTIFIER '{' struct_declaration_list '}'  { $$ = new StructSpecifier(*$2, $4); delete $2; }
 	| STRUCT IDENTIFIER { $$ = new StructDec(*$2); delete $2; }

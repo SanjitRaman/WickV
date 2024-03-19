@@ -7,6 +7,26 @@
   extern "C" int fileno(FILE *stream);
 
   #include "parser.tab.hpp"
+  #include <string>
+  #include <unordered_map>
+  std::unordered_map<std::string, std::string> type_mapping;
+  void update_type_map(std::string identifier, std::string type){
+		type_map[identifier] = type;
+	}
+  auto check_type_map (std::string identifier){
+		if (type_map.count(identifier)){
+			if 		(type_map[identifier] == "void")		{ return(VOID);}
+			else if (type_map[identifier] == "int")			{ return(INT); }
+			else if (type_map[identifier] == "long")		{ return(LONG); }
+			else if (type_map[identifier] == "short")		{ return(SHORT); }
+			else if (type_map[identifier] == "double")		{ return(DOUBLE); }
+			else if (type_map[identifier] == "float")		{ return(FLOAT); }
+			else if (type_map[identifier] == "char")		{ return(CHAR); }
+			else 	{std::cerr<< "Aliasing unknown datatype"<<std::endl; exit(1);}	//This shouldn't happen lol
+		}
+		return IDENTIFIER;
+	}
+
 %}
 
 D	  [0-9]
@@ -52,7 +72,7 @@ IS  (u|U|l|L)*
 "volatile"	{return(VOLATILE);}
 "while"			{return(WHILE);}
 
-{L}({L}|{D})*		{yylval.string = new std::string(yytext); return(IDENTIFIER);}
+{L}({L}|{D})*		{yylval.string = new std::string(yytext); return check_type_map(std::string(yytext));}
 
 0[xX]{H}+{IS}?		{yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
 0{D}+{IS}?		    {yylval.number_int = (int)strtol(yytext, NULL, 0); return(INT_CONSTANT);}
