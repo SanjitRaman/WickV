@@ -10,11 +10,12 @@ void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
         stream);  // TODO:Want to call this destReg? May be confusing?
 
     std::string startLabel = context.makeLabel("for");
-    std::string endLabel = context.makeLabel("endfor");
+    std::string conditionLabel = context.makeLabel("condition");
     std::string updateLabel = context.makeLabel("updatefor");
+    std::string endLabel = context.makeLabel("endfor");
     context.createLoop(startLabel, endLabel, updateLabel);
     // Jump to the end label:
-    stream << "j " << endLabel << std::endl;
+    stream << "j " << conditionLabel << std::endl;
 
     // Emit the loop label:
     stream << startLabel << ":" << std::endl;
@@ -30,7 +31,8 @@ void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
     }
 
     // Emit the end label
-    stream << endLabel << ":" << std::endl;
+    
+    stream << conditionLabel << ":" << std::endl;
 
     // Emit the condition
     loop_condition_->EmitRISC(stream, context, destReg);
@@ -39,6 +41,7 @@ void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
     stream << "bnez " << destReg << ", " << startLabel << std::endl;
 
     //  Free the register
+    stream << endLabel << ":" << std::endl;
     context.exitLoop();
     context.deallocateReg(destReg);
 }
