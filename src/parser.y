@@ -211,7 +211,7 @@ assignment_expression
 assignment_operator
 	: '=' { $$ = new std::string("="); }
 	| MUL_ASSIGN
-	| DIV_ASSIGN
+	| DIV_ASSIGN {$$ = new std::string("/=");}
 	| MOD_ASSIGN
 	| ADD_ASSIGN { $$ = new std::string("+=");}
 	| SUB_ASSIGN
