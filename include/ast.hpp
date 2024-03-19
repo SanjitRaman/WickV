@@ -59,6 +59,7 @@
 #include "ast/types/ast_char_literal.hpp"
 #include "ast/types/ast_type_specifier.hpp"
 #include "ast/types/ast_variable.hpp"
+#include "ast/types/ast_typedef.hpp"
 
 // Declarations
 #include "ast/ast_declaration.hpp"

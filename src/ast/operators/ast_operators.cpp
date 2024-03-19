@@ -7,9 +7,22 @@ void AddOperator::EmitRISC(std::ostream &stream, Context &context,
 {
     if (context.getIsPointer(op1_->getId()))
     {
+        int mem_index = INT_MEM;
+        if (context.getBindingType(op1_->getId()) == data_type::_int){
+            mem_index = INT_MEM;
+        }
+        else if (context.getBindingType(op1_->getId()) == data_type::_float){
+            mem_index = FLOAT_MEM;
+        }
+        else if (context.getBindingType(op1_->getId()) == data_type::_double){
+            mem_index = DOUBLE_MEM;
+        }
+        else if (context.getBindingType(op1_->getId()) == data_type::_char){
+            mem_index = CHAR_MEM;
+        }
         std::string op2_reg = context.allocateReg(stream);
         op2_->EmitRISC(stream, context, op2_reg);
-        stream << "addi " << destReg << ", " << destReg << ", " << INT_MEM
+        stream << "addi " << destReg << ", " << destReg << ", " << mem_index
                << std::endl;
         stream << "mul " << op2_reg << ", " << op2_reg << ", " << destReg
                << std::endl;
@@ -23,9 +36,22 @@ void AddOperator::EmitRISC(std::ostream &stream, Context &context,
     }
     else if (context.getIsPointer(op2_->getId()))
     {
+        int mem_index = INT_MEM;
+        if (context.getBindingType(op2_->getId()) == data_type::_int){
+            mem_index = INT_MEM;
+        }
+        else if (context.getBindingType(op2_->getId()) == data_type::_float){
+            mem_index = FLOAT_MEM;
+        }
+        else if (context.getBindingType(op2_->getId()) == data_type::_double){
+            mem_index = DOUBLE_MEM;
+        }
+        else if (context.getBindingType(op2_->getId()) == data_type::_char){
+            mem_index = CHAR_MEM;
+        }
         std::string op1_reg = context.allocateReg(stream);
         op1_->EmitRISC(stream, context, op1_reg);
-        stream << "addi " << destReg << ", " << destReg << ", " << INT_MEM
+        stream << "addi " << destReg << ", " << destReg << ", " << mem_index
                << std::endl;
         stream << "mul " << op1_reg << ", " << op1_reg << ", " << destReg
                << std::endl;

@@ -14,7 +14,7 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         }
         // params[param->getId()] = param->getEntity(); //so we know the offset
         // in compound statement
-        
+        //TODO: Check all types have been implemented 
         if (param->getType() == data_type::_int)
         {
             offset = context.getMemory(INT_MEM);
@@ -34,6 +34,17 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
             stream << "fsd fa" << j << ", " << offset << "(sp)" << std::endl;
             j++;
         }
+        else if (param->getType() == data_type::_char && param->getEntity() == entity_type::POINTER){
+            offset = context.getMemory(INT_MEM);
+            stream << "sw a" << i << ", " << offset << "(sp)" << std::endl;
+            i++;
+        }
+        else if (param->getType() == data_type::_char){
+            offset = context.getMemory(CHAR_MEM);
+            stream << "sb a" << i << ", " << offset << "(sp)" << std::endl;
+            i++;
+        }
+
         std::cout << "parameter: " << param->getId();
         std::cout << " type: " << param->getEntity() << std::endl;
         if (param->getEntity() == entity_type::POINTER)

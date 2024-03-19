@@ -39,14 +39,14 @@
 %type <node> equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression
 %type <node> conditional_expression assignment_expression expression constant_expression declaration
 %type <node> init_declarator type_specifier struct_specifier struct_declaration specifier_qualifier_list struct_declarator_list
-%type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration
+%type <node> struct_declarator enum_specifier enumerator declarator direct_declarator pointer  parameter_declaration declaration_specifiers
 %type <node> identifier_list type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement
-%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement
+%type <node> compound_statement expression_statement selection_statement iteration_statement jump_statement storage_class_specifier
 
-%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list struct_declaration_list declaration_specifiers
+%type <nodes> statement_list declaration_list init_declarator_list argument_expression_list translation_unit enumerator_list struct_declaration_list 
 %type <parameter_list> parameter_list
 
-%type <string> unary_operator assignment_operator storage_class_specifier
+%type <string> unary_operator assignment_operator
 
 %type <number_int> INT_CONSTANT
 %type <number_float> FLOAT_CONSTANT
@@ -233,11 +233,20 @@ constant_expression
 
 declaration
 	: declaration_specifiers ';' { $$ = $1; }// Unsure what to do here
-	| declaration_specifiers init_declarator_list ';' { $$ = new Declaration($1, $2); } //(Set type of declaration here) //use a for loop here to set the type of each declaration (in declaration, set the type of each init_declarator)
+	| declaration_specifiers init_declarator_list ';' 
+	{if ($1->getEntity() == entity_type::TYPEDEF_DEC){ 
+			update_type_map($2->getNodes()[0]->getId(), $1->getId());
+			std::cout << "DeclarationSpecifier: typedef" << std::endl;
+		}
+		else{
+			$$ = new Declaration($1, $2);
+		} 
+	} 
 	;
 
 declaration_specifiers
 	   : type_specifier { $$ = $1; std::cout << "DeclarationSpecifier: " << std::endl; }
+	   | storage_class_specifier declaration_specifiers { $$ = new TypedefDeclaration($1, $2); std::cout << "DeclarationSpecifier: " << std::endl; }
 	   /*| storage_class_specifier declaration_specifiers { if (*$1 == "typedef") { update_type_map($2->getNodes()[1]->getId(), $2->getNodes()[0]->getId()) } delete $1; } */
 	   /* | type_specifier declaration_specifiers  { $$ = $2; $2->PushBack($1); } */
 	;
@@ -254,7 +263,7 @@ init_declarator
 	;
 
 storage_class_specifier
-	: TYPEDEF {$$ = new std::string("typedef"); }
+	: TYPEDEF {$$ = new Typedef("typedef"); }
 	| EXTERN
 	| STATIC
 	| AUTO
@@ -270,13 +279,14 @@ type_specifier
 		$$ = new TypeSpecifier("int"); std::cout << "TypeSpecifier: " << std::endl;	
 	}
 	| enum_specifier { $$ = $1; } //This should be fine
-	| FLOAT { $$ = new TypeSpecifier("float"); std::cout << "TypeSpecifier: " << std::endl; }
+	| FLOAT { $$ = new TypeSpecifier("float"); std::cout << "TypeSpecifier: float" << std::endl; }
 	| DOUBLE { $$ = new TypeSpecifier("double"); std::cout << "TypeSpecifier: double" << std::endl; }
 	| struct_specifier { $$ = $1; }
 	| CHAR { $$ = new TypeSpecifier("char"); std::cout << "TypeSpecifier: char" << std::endl; }
 	| UNSIGNED { $$ = new TypeSpecifier("unsigned"); std::cout << "TypeSpecifier: unsigned" << std::endl; }
 	| VOID { $$ = new TypeSpecifier("void"); std::cout << "TypeSpecifier: void" << std::endl; }
-	| TYPE_NAME {  }
+	;
+	/* | TYPE_NAME {  } */
 	/*
 	| SHORT
 	| LONG

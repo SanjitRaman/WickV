@@ -11,17 +11,17 @@
   #include <unordered_map>
   std::unordered_map<std::string, std::string> type_mapping;
   void update_type_map(std::string identifier, std::string type){
-		type_map[identifier] = type;
+		type_mapping[identifier] = type;
 	}
   auto check_type_map (std::string identifier){
-		if (type_map.count(identifier)){
-			if 		(type_map[identifier] == "void")		{ return(VOID);}
-			else if (type_map[identifier] == "int")			{ return(INT); }
-			else if (type_map[identifier] == "long")		{ return(LONG); }
-			else if (type_map[identifier] == "short")		{ return(SHORT); }
-			else if (type_map[identifier] == "double")		{ return(DOUBLE); }
-			else if (type_map[identifier] == "float")		{ return(FLOAT); }
-			else if (type_map[identifier] == "char")		{ return(CHAR); }
+		if (type_mapping.count(identifier)){
+			if 		(type_mapping[identifier] == "void")		{ return(VOID);}
+			else if (type_mapping[identifier] == "int")			{ return(INT); }
+			else if (type_mapping[identifier] == "long")		{ return(LONG); }
+			else if (type_mapping[identifier] == "short")		{ return(SHORT); }
+			else if (type_mapping[identifier] == "double")		{ return(DOUBLE); }
+			else if (type_mapping[identifier] == "float")		{ return(FLOAT); }
+			else if (type_mapping[identifier] == "char")		{ return(CHAR); }
 			else 	{std::cerr<< "Aliasing unknown datatype"<<std::endl; exit(1);}	//This shouldn't happen lol
 		}
 		return IDENTIFIER;
