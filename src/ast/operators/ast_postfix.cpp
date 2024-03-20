@@ -3,8 +3,10 @@
 void PostfixOperator::EmitRISC(std::ostream &stream, Context &context,
                                std::string destReg) const
 {
+    // todo support other types such as float, double, char, unsigned
     std::string tempReg = context.allocateReg(stream);
     primary_expression_->EmitRISC(stream, context, tempReg);
+    stream << "mv " << destReg << ", " << tempReg << std::endl;
     if (op_ == "++")
     {
         stream << "addi " << tempReg << ", " << tempReg << ", 1" << std::endl;
@@ -17,8 +19,6 @@ void PostfixOperator::EmitRISC(std::ostream &stream, Context &context,
     stream << "sw " << tempReg << ", "
            << context.getOffset(primary_expression_->getId()) << "(sp)"
            << std::endl;
-
-    stream << "mv " << destReg << ", " << tempReg << std::endl;
     context.deallocateReg(tempReg);
 }
 
@@ -51,5 +51,6 @@ void PostfixOperator::Print(std::ostream &stream) const
 
 data_type PostfixOperator::getType(Context &context) const
 {
+    // TODO: change for different types.
     return data_type::_int;
 }
