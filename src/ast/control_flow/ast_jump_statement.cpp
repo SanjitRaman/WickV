@@ -51,6 +51,9 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
                 stream, context,
                 tempReturn);  // store the return value in a0 register
             stream << "mv a0, " << tempReturn << std::endl;
+            if (!context.getIsPointer(expression_->getId())){ //TODO: Check all expressions
+                stream << "andi a0, a0, 0xff" << std::endl;
+            }
             context.deallocateReg(tempReturn);
         }
     }

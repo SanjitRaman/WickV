@@ -220,3 +220,27 @@ class LogicalOrOperator : public Node
 
     virtual data_type getType(Context &context) const override;
 };
+
+// -------------------------- ModulusOperator --------------------------
+
+class ModulusOperator : public Node
+{
+   private:
+    Node *op1_;
+    Node *op2_;
+
+   public:
+    ModulusOperator(Node *op1, Node *op2) : op1_(op1), op2_(op2){};
+    virtual ~ModulusOperator()
+    {
+        delete op1_;
+        delete op2_;
+    };
+    virtual void EmitRISC(std::ostream &stream,
+                          Context &context) const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context,
+                          std::string destReg) const override;
+    virtual void Print(std::ostream &stream) const override;
+
+    virtual data_type getType(Context &context) const override;
+};

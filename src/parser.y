@@ -136,8 +136,8 @@ cast_expression
 multiplicative_expression
 	: cast_expression { $$ = $1; }
 	| multiplicative_expression '*' cast_expression { $$ = new MultiplyOperator($1, $3);}
-	/* | multiplicative_expression '/' cast_expression
-	| multiplicative_expression '%' cast_expression */
+	| multiplicative_expression '/' cast_expression { $$ = new DivideOperator($1, $3); }
+	| multiplicative_expression '%' cast_expression { $$ = new ModulusOperator($1, $3); }
 	;
 
 additive_expression
@@ -167,33 +167,33 @@ relational_expression
 equality_expression
 	: relational_expression { $$ = $1; }
 	| equality_expression EQ_OP relational_expression { $$ = new Equality($1, $3); }
-	/* | equality_expression NE_OP relational_expression */
+	| equality_expression NE_OP relational_expression { $$ = new NotEqual($1, $3); }
 	;
 
 and_expression
 	: equality_expression { $$ = $1; }
-	/* 	| and_expression '&' equality_expression */
+	| and_expression '&' equality_expression { $$ = new BitwiseAndOperator($1, $3); }
 	;
 
 exclusive_or_expression
 	: and_expression { $$ = $1; }
-	/* 	| exclusive_or_expression '^' and_expression */
+	| exclusive_or_expression '^' and_expression { $$ = new BitwiseXorOperator($1, $3); }
 	;
 
 inclusive_or_expression
 	: exclusive_or_expression { $$ = $1; }
-    /* | inclusive_or_expression '|' exclusive_or_expression */
+    | inclusive_or_expression '|' exclusive_or_expression { $$ = new BitwiseOrOperator($1, $3); }
 
 	;
 
 logical_and_expression
 	: inclusive_or_expression { $$ = $1; }
-	/* 	| logical_and_expression AND_OP inclusive_or_expression */
+	| logical_and_expression AND_OP inclusive_or_expression { $$ = new LogicalAndOperator($1, $3); }
 	;
 
 logical_or_expression
 	: logical_and_expression { $$ = $1; }
-	/* 	| logical_or_expression OR_OP logical_and_expression */
+	| logical_or_expression OR_OP logical_and_expression { $$ = new LogicalOrOperator($1, $3);}
 	;
 
 conditional_expression
@@ -210,18 +210,18 @@ assignment_expression
 //TODO: Implement the rest of the assignment operators
 assignment_operator
 	: '=' { $$ = new std::string("="); }
-	| MUL_ASSIGN
+	| MUL_ASSIGN { $$ = new std::string("*="); }
 	| DIV_ASSIGN {$$ = new std::string("/=");}
-	| MOD_ASSIGN
+	| MOD_ASSIGN { $$ = new std::string("%=");}
 	| ADD_ASSIGN { $$ = new std::string("+=");}
-	| SUB_ASSIGN
-	| LEFT_ASSIGN
-	| RIGHT_ASSIGN
-	| AND_ASSIGN
-	| XOR_ASSIGN
-	| OR_ASSIGN
+	| SUB_ASSIGN { $$ = new std::string("-=");}
+	| LEFT_ASSIGN { $$ = new std::string("<<=");}
+	| RIGHT_ASSIGN { $$ = new std::string(">>=");}
+	| AND_ASSIGN { $$ = new std::string("&=");}
+	| XOR_ASSIGN { $$ = new std::string("^=");}
+	| OR_ASSIGN { $$ = new std::string("|=");}
 	;
-
+//TODO: What I am supposed to do here
 expression
 	: assignment_expression { $$ = $1; }
 	/* | expression ',' assignment_expression */

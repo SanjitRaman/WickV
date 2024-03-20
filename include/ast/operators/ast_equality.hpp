@@ -28,4 +28,29 @@ class Equality : public Node
     virtual data_type getType(Context &context) const override;
 };
 
+class NotEqual : public Node
+{
+   private:
+    Node *equality_expression_;
+    Node *relational_expression_;
+
+   public:
+    NotEqual(Node *equality_expression, Node *relational_expression)
+        : equality_expression_(equality_expression),
+          relational_expression_(relational_expression)
+    {
+    }
+    virtual ~NotEqual()
+    {
+        delete equality_expression_;
+        delete relational_expression_;
+    };
+    virtual void EmitRISC(std::ostream &stream,
+                          Context &context) const override;
+    virtual void EmitRISC(std::ostream &stream, Context &context,
+                          std::string destReg) const override;
+    virtual void Print(std::ostream &stream) const override;
+    virtual data_type getType(Context &context) const override;
+};
+
 #endif
