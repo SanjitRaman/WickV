@@ -44,22 +44,23 @@
 #include "ast/operators/ast_operators.hpp"
 #include "ast/operators/ast_pointer.hpp"
 #include "ast/operators/ast_postfix.hpp"
+#include "ast/operators/ast_prefix.hpp"
 #include "ast/operators/ast_shift.hpp"
 #include "ast/operators/ast_ternary.hpp"
 #include "ast/operators/ast_unary.hpp"
 #include "ast/operators/ast_var_assign.hpp"
 
 // Types
+#include "ast/types/ast_char_literal.hpp"
 #include "ast/types/ast_constants.hpp"
 #include "ast/types/ast_entity_type.hpp"
 #include "ast/types/ast_enum_specifier.hpp"
 #include "ast/types/ast_enumerator.hpp"
 #include "ast/types/ast_sizeof.hpp"
 #include "ast/types/ast_string_literal.hpp"
-#include "ast/types/ast_char_literal.hpp"
 #include "ast/types/ast_type_specifier.hpp"
-#include "ast/types/ast_variable.hpp"
 #include "ast/types/ast_typedef.hpp"
+#include "ast/types/ast_variable.hpp"
 
 // Declarations
 #include "ast/ast_declaration.hpp"

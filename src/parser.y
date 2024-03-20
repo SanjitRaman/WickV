@@ -114,10 +114,10 @@ unary_expression
 	| unary_operator cast_expression { $$ = new Unary{*$1, $2}; delete $1;} //Should return 
 	| SIZEOF unary_expression { $$ = new SizeOf($2); }
 	| SIZEOF '(' type_name ')' { $$ = new SizeOf($3); }
+	| INC_OP unary_expression {$$ = new PrefixOperator($2, "++"); }
+	| DEC_OP unary_expression {$$ = new PrefixOperator($2, "--"); }
 	;
-	/* | INC_OP unary_expression
-	| DEC_OP unary_expression
-	*/
+	
 
 unary_operator
 	: '&' { $$ = new std::string("&"); }
