@@ -26,7 +26,9 @@ enum entity_type
     STRING_DEFINTION,
     CHAR_DEFINITION,
     TYPEDEF_IDENTIFIER,
-    TYPEDEF_DEC
+    TYPEDEF_DEC,
+    CASE,
+    DEFAULT
     // todo add more entity types
 };
 

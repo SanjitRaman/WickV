@@ -15,8 +15,10 @@
 
 struct switch_properties
 {
-    std::vector<std::string> switch_labels;
-    std::vector<std::string> default_labels;
+    std::string switch_label;
+    std::string default_label;
+    std::vector<std::string> case_labels;
+    bool emit_cond;
 };
 
 struct loop_labels
@@ -113,8 +115,7 @@ class Context
     std::vector<int> remaining_mem_stack;
     std::unordered_map<std::string, variable>
         bindings;  // Bindings (Local variables) for current scope
-    switch_properties switch_info;
-    std::string caseLabel = "";
+    std::vector<switch_properties> switch_info;
     std::vector<loop_labels> loop_info;
     std::vector<std::vector<std::string>> savedRegs;  // For function calls
 
@@ -168,47 +169,55 @@ class Context
     void InitialiseSwitch()
     {
         std::string switch_label = makeLabel("end_switch");
-        switch_info.switch_labels.push_back(switch_label);
-        loop_labels new_switch;
-        new_switch.startLabel = "";
-        new_switch.updateLabel = "";
-        new_switch.endLabel = switch_label;
-        loop_info.push_back(new_switch);
+        switch_properties new_switch;
+        new_switch.switch_label = switch_label;
+        new_switch.default_label = "";
+        new_switch.emit_cond = false;
+        switch_info.push_back(new_switch);
+        loop_labels new_switch_loop;
+        new_switch_loop.startLabel = "";
+        new_switch_loop.updateLabel = "";
+        new_switch_loop.endLabel = switch_label;
+        loop_info.push_back(new_switch_loop);
     }
-    void setCaseLabel()
+    void setDefaultLabel(){
+        switch_info.back().default_label = makeLabel("default_statement");
+    }
+
+    std::string getDefaultLabel(){
+        return switch_info.back().default_label;
+    }
+
+    std::string setCaseLabel()
     {
         std::string case_label = makeLabel("case_statement");
-        caseLabel = case_label;
+        switch_info.back().case_labels.push_back(case_label);
+        return case_label;
     }
 
-    std::string getCaseLabel() { return caseLabel; }
+    std::string getCaseLabel() {
+        std::string case_label = switch_info.back().case_labels[0];
+        switch_info.back().case_labels.erase(switch_info.back().case_labels.begin());
+        return case_label;
+    }
 
-    std::string getSwitchLabel() { return switch_info.switch_labels.back(); }
+    std::string getSwitchLabel() { return switch_info.back().switch_label; }
 
-    void ExitSwitch(bool is_default = false)
+    void setCaseCond(bool emit_cond){
+        switch_info.back().emit_cond = emit_cond;
+    }
+
+    bool getCaseCond(){
+        return switch_info.back().emit_cond;
+    }
+
+    void ExitSwitch()
     {
-        if (is_default)
-        {
-            switch_info.default_labels.pop_back();
-        }
-        switch_info.switch_labels.pop_back();
+        switch_info.pop_back();
         loop_info.pop_back();
     }
 
-    void setDefaultLabel()
-    {
-        std::string default_statement = makeLabel("default");
-        switch_info.default_labels.push_back(default_statement);
-    }
-
-    std::string getDefaultLabel()
-    {
-        if (switch_info.default_labels.empty())
-        {
-            return "";
-        }
-        return switch_info.default_labels.back();
-    }
+    
 
     // Enum
     void createEnum(std::string id)

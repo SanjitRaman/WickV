@@ -9,25 +9,26 @@ void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
 
     expression_->EmitRISC(stream, context, switch_reg);
 
-    // Emit the case list
-    context.setCaseLabel();
-    case_list_->EmitRISC(stream, context, switch_reg);
+    context.setCaseCond(true);
+    for (auto &case_statement : case_list_->getNodes())
+    {
+        if (case_statement->getEntity() == entity_type::CASE || case_statement->getEntity() == entity_type::DEFAULT){
+            case_statement->EmitRISC(stream, context, switch_reg);
+        }
+    }
+    if (context.getDefaultLabel() != ""){
+        stream << "j " << context.getDefaultLabel()  << std::endl;
+    }
+    context.setCaseCond(false);
+    for (auto &case_statement : case_list_->getNodes())
+    {
+        case_statement->EmitRISC(stream, context, switch_reg);
+    }
+    stream << context.getSwitchLabel() << ":" << std::endl;
+
     std::cout << "I finish emitting all cases" << std::endl;
     context.deallocateReg(switch_reg);
-    // put default here
-    std::string defaultLabel = context.getDefaultLabel();
-    std::string switchLabel = context.getSwitchLabel();
-    if (defaultLabel != "")
-    {
-        stream << "j " << defaultLabel << std::endl;
-        context.ExitSwitch(true);
-    }
-    else
-    {
-        context.ExitSwitch(false);
-    }
-    stream << context.getCaseLabel() << ":" << std::endl;
-    stream << switchLabel << ":" << std::endl;
+    context.ExitSwitch();
 
     // end switch here
 }

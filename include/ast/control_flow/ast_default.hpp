@@ -1,7 +1,7 @@
 #ifndef AST_DEFAULT_HPP
 #define AST_DEFAULT_HPP
 
-#include "ast/ast_context.hpp"
+
 #include "ast/ast_node.hpp"
 
 class DefaultStatement : public Node
@@ -20,6 +20,7 @@ class DefaultStatement : public Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
+    entity_type getEntity() const override;
 
    private:
     Node *statement_;
