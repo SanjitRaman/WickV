@@ -1,7 +1,6 @@
 #ifndef AST_SEMICOLON_HPP
 #define AST_SEMICOLON_HPP
 
-#include "ast/ast_context.hpp"
 #include "ast/ast_node.hpp"
 
 class Semicolon : public Node

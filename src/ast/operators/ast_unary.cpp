@@ -13,11 +13,18 @@ void Unary::EmitRISC(std::ostream &stream, Context &context,
     //TODO: Implement more types
     else if (unary_op_ == "*")
     {
-        if (getType(context) == data_type::_float || getType(context) == data_type::_double){
+        if (getType(context) == data_type::_float){
             std::cout << "Goes to Unary * " << std::endl;
             std::string offset = context.getOffset(cast_expression_->getId());
             stream << "flw " << destReg << ", " << offset << "(sp)" << std::endl;
             stream << "flw " << destReg << ", 0"
+               << "(" << destReg << ")" << std::endl;
+        }
+        else if (getType(context) == data_type::_double){
+            std::cout << "Goes to Unary * " << std::endl;
+            std::string offset = context.getOffset(cast_expression_->getId());
+            stream << "fld " << destReg << ", " << offset << "(sp)" << std::endl;
+            stream << "fld " << destReg << ", 0"
                << "(" << destReg << ")" << std::endl;
         }
         else if (getType(context) == data_type::_int){

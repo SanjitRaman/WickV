@@ -1,7 +1,7 @@
 #ifndef AST_FUNCTION_DEFINITION_HPP
 #define AST_FUNCTION_DEFINITION_HPP
 
-#include "ast/ast_context.hpp"
+
 #include "ast/ast_node.hpp"
 class FunctionDefinition : public Node
 {

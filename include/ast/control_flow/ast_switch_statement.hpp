@@ -6,7 +6,7 @@
 class SwitchStatement : public Node
 {
    public:
-    SwitchStatement(Node *expression, Node *case_list)
+    SwitchStatement(Node *expression, NodeList *case_list)
         : expression_(expression), case_list_(case_list){};
 
     virtual ~SwitchStatement()
@@ -23,7 +23,7 @@ class SwitchStatement : public Node
 
    private:
     Node *expression_;
-    Node *case_list_;
+    NodeList *case_list_;
 };
 
 #endif

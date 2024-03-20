@@ -5,29 +5,18 @@ void CaseStatement::EmitRISC(std::ostream &stream, Context &context) const {}
 void CaseStatement::EmitRISC(std::ostream &stream, Context &context,
                              std::string destReg) const
 {
-    std::cout << "I come to Case" << std::endl;
-    std::string endCaseLabel = context.makeLabel("end_case");
-    std::string expression_reg = context.allocateReg(stream);
-    std::cout << "I come to expression_" << std::endl;
-    expression_->EmitRISC(stream, context, expression_reg);
-    std::cout << "I leave to expression_" << std::endl;
-    stream << "bne " << destReg << ", " << expression_reg << ", "
-           << endCaseLabel << std::endl;
-
-    context.deallocateReg(expression_reg);
-
-    // getNextCaseLabel from previous emitrisc and put here
-    std::string currentCaseLabel = context.getCaseLabel();
-    stream << currentCaseLabel << ":" << std::endl;
-    std::cout << "I come to statement_" << std::endl;
-    statement_->EmitRISC(stream, context);
-    std::cout << "I leave to statement_" << std::endl;
-    context.setCaseLabel();
-    std::string nextCaseLabel = context.getCaseLabel();
-    stream << "j " << nextCaseLabel << std::endl;
-    // Branch to nextCaseLabel and set it in context
-    std::cout << "I put the endcaselabel here" << std::endl;
-    stream << endCaseLabel << ":" << std::endl;  //
+    if (context.getCaseCond()){
+        std::string case_label = context.setCaseLabel();
+        std::string cond_reg = context.allocateReg(stream);
+        expression_->EmitRISC(stream, context, cond_reg);
+        stream << "beq " << cond_reg << ", " << destReg << ", " << case_label << std::endl;
+        context.deallocateReg(cond_reg);
+    }
+    else{
+        std::string case_label = context.getCaseLabel();
+        stream << case_label << ":" << std::endl;
+        statement_->EmitRISC(stream, context);
+    }
 }
 
 void CaseStatement::Print(std::ostream &stream) const
@@ -37,4 +26,9 @@ void CaseStatement::Print(std::ostream &stream) const
     stream << ": ";
     statement_->Print(stream);
     stream << std::endl;
+}
+
+entity_type CaseStatement::getEntity() const
+{
+    return entity_type::CASE;
 }

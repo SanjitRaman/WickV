@@ -11,11 +11,12 @@ void WhileStatement::EmitRISC(std::ostream &stream, Context &context) const
         stream);  // Want to call this destReg? May be confusing?
 
     std::string loopLabel = context.makeLabel("while");
-    std::string endLabel = context.makeLabel("endwhile");
-    context.createLoop(loopLabel, endLabel);
+    std::string updateLabel = context.makeLabel("update_while");
+    std::string endLabel = context.makeLabel("end_while");
+    context.createLoop(updateLabel, endLabel);
 
-    // Jump to the end label:
-    stream << "j " << endLabel << std::endl;
+    // Jump to the update label:
+    stream << "j " << updateLabel << std::endl;
 
     // Emit the loop label:
     stream << loopLabel << ":" << std::endl;
@@ -23,15 +24,15 @@ void WhileStatement::EmitRISC(std::ostream &stream, Context &context) const
     // Emit the while statement
     while_statement_->EmitRISC(stream, context);
 
-    // Emit the end label
-    stream << endLabel << ":" << std::endl;
+    // Emit the update label
+    stream << updateLabel << ":" << std::endl;
 
     // Emit the condition
     condition_->EmitRISC(stream, context, destReg);
 
     // Emit the branch
     stream << "bnez " << destReg << ", " << loopLabel << std::endl;
-
+    stream << endLabel << ":" << std::endl;
     context.exitLoop();
     //  Free the register
     context.deallocateReg(destReg);
