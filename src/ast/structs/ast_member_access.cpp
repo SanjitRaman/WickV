@@ -5,10 +5,12 @@ void MemberAccess::EmitRISC(std::ostream &stream, Context &context,
                             std::string destReg) const
 {
     std::string offset = context.getOffset(getId());
-    if (getType(context) == data_type::_float ||
-        getType(context) == data_type::_double)
+    if (getType(context) == data_type::_float)
     {
         stream << "flw  " << destReg << ", " << offset << "(sp)" << std::endl;
+    }
+    else if (getType(context) == data_type::_double){
+        stream << "fld  " << destReg << ", " << offset << "(sp)" << std::endl;
     }
     else
     {

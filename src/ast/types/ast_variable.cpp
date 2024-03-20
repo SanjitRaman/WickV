@@ -20,6 +20,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
     if (context.params.find(getId()) != context.params.end())
     {
         data_type var_type = context.getBindingType(getId());
+        //std::cout << "Variable type: " << var_type << std::endl;
         if (var_type == data_type::_int)
         {
             stream << "lw " << destReg << ", " << context.getOffset(getId())
@@ -37,6 +38,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
                    << "(sp)" << std::endl;
         }
         else if (var_type == data_type::_char && context.getIsPointer(getId())){
+            std::cout << "Goes to Char * " << std::endl;
             stream << "lw " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }
@@ -72,9 +74,19 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
             stream << "fld " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }
+        else if (var_type == data_type::_char && context.getIsPointer(getId())){
+            std::cout << "Goes to Char * " << std::endl;
+            stream << "lw " << destReg << ", " << context.getOffset(getId())
+                   << "(sp)" << std::endl;
+        }
+        else if (var_type == data_type::_char)
+        {
+            stream << "lbu " << destReg << ", " << context.getOffset(getId())
+                   << "(sp)" << std::endl;
+        }
         else
         {
-            // defaults to the int implementation, but shouldn't need
+            // defaults to the int implementation.
             stream << "lw " << destReg << ", " << context.getOffset(getId())
                    << "(sp)" << std::endl;
         }

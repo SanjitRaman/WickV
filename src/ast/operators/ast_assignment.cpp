@@ -195,6 +195,11 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
             std::string offset = context.getOffset(unary_expression_->getId());
             stream << "fsw " << tempReg1 << ", " << offset << "(sp)" << std::endl;
         }
+        else if (result_type == data_type::_char)
+        {
+            std::string offset = context.getOffset(unary_expression_->getId());
+            stream << "sb " << tempReg1 << ", " << offset << "(sp)" << std::endl;
+        }
         else
         {
             std::string offset = context.getOffset(unary_expression_->getId());

@@ -9,7 +9,7 @@ int f()
     y += i;
   }
   y += 1;
-  int z = y % 2;
+  int z = 1;
   y -= z;
   return y;
 }
