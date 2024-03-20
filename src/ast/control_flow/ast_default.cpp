@@ -26,5 +26,5 @@ void DefaultStatement::Print(std::ostream &stream) const {
 
 entity_type DefaultStatement::getEntity() const
 {
-    return entity_type::DEFAULT;
+    return entity_type::DEFAULT_STATEMENT;
 }

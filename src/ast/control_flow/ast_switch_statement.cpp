@@ -12,7 +12,7 @@ void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
     context.setCaseCond(true);
     for (auto &case_statement : case_list_->getNodes())
     {
-        if (case_statement->getEntity() == entity_type::CASE || case_statement->getEntity() == entity_type::DEFAULT){
+        if (case_statement->getEntity() == entity_type::CASE_STATEMENT || case_statement->getEntity() == entity_type::DEFAULT_STATEMENT){
             case_statement->EmitRISC(stream, context, switch_reg);
         }
     }

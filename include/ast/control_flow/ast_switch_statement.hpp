@@ -6,8 +6,10 @@
 class SwitchStatement : public Node
 {
    public:
-    SwitchStatement(Node *expression, NodeList *case_list)
-        : expression_(expression), case_list_(case_list){};
+    SwitchStatement(Node *expression, Node *case_list)
+        : expression_(expression){
+            case_list_ = dynamic_cast<NodeList*>(case_list); //Should always work
+        };
 
     virtual ~SwitchStatement()
     {

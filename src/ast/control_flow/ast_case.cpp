@@ -30,5 +30,5 @@ void CaseStatement::Print(std::ostream &stream) const
 
 entity_type CaseStatement::getEntity() const
 {
-    return entity_type::CASE;
+    return entity_type::CASE_STATEMENT;
 }

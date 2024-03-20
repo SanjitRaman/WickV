@@ -27,8 +27,8 @@ enum entity_type
     CHAR_DEFINITION,
     TYPEDEF_IDENTIFIER,
     TYPEDEF_DEC,
-    CASE,
-    DEFAULT
+    CASE_STATEMENT,
+    DEFAULT_STATEMENT
     // todo add more entity types
 };
 
