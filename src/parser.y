@@ -99,8 +99,7 @@ postfix_expression
 	| postfix_expression DEC_OP {$$ = new PostfixOperator($1, "--"); }
 	| postfix_expression '[' expression ']' { $$ = new ArrayIndex($1, $3); }
 	| postfix_expression '.' IDENTIFIER { $$ = new MemberAccess($1, *$3); delete $3; }
-	/* | postfix_expression PTR_OP IDENTIFIER
-	| postfix_expression DEC_OP */
+	/* | postfix_expression PTR_OP IDENTIFIER */
 	;
 
 //Should just be a node list
@@ -122,10 +121,10 @@ unary_expression
 unary_operator
 	: '&' { $$ = new std::string("&"); }
 	| '*' { $$ = new std::string("*"); }
-	| '+'
+	| '+' { $$ = new std::string("+"); }
 	| '-' { $$ = new std::string("-"); }
-	| '~'
-	| '!'
+	| '~'  { $$ = new std::string("~"); }
+	| '!' { $$ = new std::string("!"); }
 	;
 
 cast_expression
@@ -444,7 +443,7 @@ selection_statement
 iteration_statement
 	: WHILE '(' expression ')' statement { $$ = new WhileStatement($3, $5); }
 	| FOR '(' expression_statement expression_statement expression ')' statement { $$ = new ForStatement($3, $4, $5, $7); std::cout << "IterationStatement: " << std::endl;}
-	/* | DO statement WHILE '(' expression ')' ';' */
+	| DO statement WHILE '(' expression ')' ';' { $$ = new DoWhileStatement($2, $5); }
 	| FOR '(' expression_statement expression_statement ')' statement { $$ = new ForStatement($3, $4, $6); }
 	;
 

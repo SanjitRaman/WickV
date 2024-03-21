@@ -1,6 +1,5 @@
 int f() {
     int i = 0;
-    // Loop with multiple statements
     do {
         ++i;
         i++;
