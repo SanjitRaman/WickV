@@ -4,7 +4,7 @@ void VarAssign::EmitRISC(std::ostream &stream, Context &context) const
 {
     std::string varReg;
     // Assume the binding exists
-    if (context.bindings.find(declarator_->getId()) != context.bindings.end())
+    if (context.getOffset(declarator_->getId()) != "null")
     {
         // If it is then execute this code
         if (getType(context) == data_type::_int)

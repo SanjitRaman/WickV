@@ -55,7 +55,7 @@ void Variable::EmitRISC(std::ostream &stream, Context &context,
         }
     }
     // Check local var bindings
-    else if (context.bindings.find(getId()) != context.bindings.end())
+    else if (context.getOffset(getId()) != "null")
     {
         data_type var_type = context.getBindingType(getId());
         if (var_type == data_type::_int)

@@ -46,3 +46,8 @@ void SwitchStatement::Print(std::ostream &stream) const
     case_list_->Print(stream);
     stream << std::endl;
 }
+
+entity_type SwitchStatement::getEntity() const
+{
+    return entity_type::SWITCH_STATEMENT;
+}

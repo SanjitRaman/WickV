@@ -360,40 +360,60 @@ class Context
 
     std::string getOffset(std::string id)
     {
-        if (bindings.find(id) != bindings.end())
-        {
-            return bindings[id].offset;
-        }
-        else if (params.find(id) != params.end())
+        if (params.find(id) != params.end())
         {
             return params[id].offset;
         }
-        return "ERROR : getOffset";
+        else if (bindings.find(id) != bindings.end())
+        {
+            return bindings[id].offset;
+        }
+        for (auto scope = scopes.rbegin(); scope != scopes.rend(); ++scope)
+        {
+            if ((*scope).find(id) != (*scope).end())
+            {
+                return (*scope)[id].offset;
+            }
+        }
+        return "null";
     }
 
     bool getIsPointer(std::string id)
     {
+        if (params.find(id) != params.end())
+        {
+            return params[id].isPointer;
+        }
         if (bindings.find(id) != bindings.end())
         {
             return bindings[id].isPointer;
         }
-        else if (params.find(id) != params.end())
+        for (auto scope = scopes.rbegin(); scope != scopes.rend(); ++scope)
         {
-            return params[id].isPointer;
+            if ((*scope).find(id) != (*scope).end())
+            {
+                return (*scope)[id].isPointer;
+            }
         }
-
         return false;
     }
 
     data_type getBindingType(std::string id)
     {
+        if (params.find(id) != params.end())
+        {
+            return params[id].type;
+        }
         if (bindings.find(id) != bindings.end())
         {
             return bindings[id].type;
         }
-        else if (params.find(id) != params.end())
+        for (auto scope = scopes.rbegin(); scope != scopes.rend(); ++scope)
         {
-            return params[id].type;
+            if ((*scope).find(id) != (*scope).end())
+            {
+                return (*scope)[id].type;
+            }
         }
         return data_type::_INVALID;
     }
@@ -506,15 +526,11 @@ class Context
         return data_type::_INVALID;
     }
 
-    void CreateScope(std::ostream &stream)
-    {
-        // Store local variables, parameters and return type
-        scopes.push_back(bindings);
+    void EnterFunction(std::ostream &stream){
         param_stack.push_back(params);
         remaining_mem_stack.push_back(remaining_mem);
         params.clear();              // The param offsets should be pushed into
                                      // functions straight after prolog
-        bindings.clear();            // Reset bindings for new scope
         remaining_mem = frame_size;  // Resets offset
         return_branches.push_back(
             makeLabel("function_end"));  // Create a unique label for the
@@ -522,19 +538,29 @@ class Context
         stream << "addi sp, sp, -" << frame_size << std::endl;
     }
 
+    void CreateScope()
+    {
+        // Store local variables, parameters and return type
+        scopes.push_back(bindings);
+        bindings.clear();            // Reset bindings for new scope
+    }
+
     std::string getReturnLabel() { return return_branches.back(); }
 
-    void ExitScope(std::ostream &stream)
-    {
-        // Pop the last scope
+    void ExitFunction(std::ostream &stream){
         return_branches.pop_back();
-        bindings = scopes.back();
         params = param_stack.back();
         param_stack.pop_back();
-        scopes.pop_back();
         remaining_mem = remaining_mem_stack.back();
         remaining_mem_stack.pop_back();
         stream << "addi sp, sp, " << frame_size << std::endl;
+    }
+
+    void ExitScope()
+    {
+        // Pop the last scope
+        bindings = scopes.back();
+        scopes.pop_back();
     }
 
     // Structs

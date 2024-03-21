@@ -22,7 +22,7 @@ void FunctionDefinition::EmitRISC(std::ostream &stream, Context &context) const
 
     // std::cout << "wassup" << std::endl;
     stream << "lw ra, " << ra_offset << "(sp)" << std::endl;
-    context.ExitScope(stream);
+    context.ExitFunction(stream);
     stream << "ret" << std::endl;
     // Epilog
     // CreateEpilog();

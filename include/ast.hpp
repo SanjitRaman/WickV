@@ -23,6 +23,7 @@
 #include "ast/control_flow/ast_semicolon.hpp"
 #include "ast/control_flow/ast_switch_statement.hpp"
 #include "ast/control_flow/ast_while.hpp"
+#include "ast/control_flow/ast_scope.hpp"
 
 // Functions
 #include "ast/functions/ast_function_call.hpp"

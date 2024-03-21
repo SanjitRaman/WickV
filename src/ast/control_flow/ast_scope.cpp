@@ -1,8 +1,8 @@
-#include "ast/control_flow/ast_multi_list.hpp"
+#include "ast/control_flow/ast_scope.hpp"
 
-void MultiList::EmitRISC(std::ostream &stream, Context &context) const
+void Scope::EmitRISC(std::ostream &stream, Context &context) const
 {
-    std::cout << "MultiList Goes to emitrisc without destReg" << std::endl;
+    std::cout << "Scope Goes to emitrisc without destReg" << std::endl;
     context.CreateScope();
     for (auto node : nodes_)
     {
@@ -14,13 +14,13 @@ void MultiList::EmitRISC(std::ostream &stream, Context &context) const
     }
     context.ExitScope();
 }
-void MultiList::EmitRISC(std::ostream &stream, Context &context,
+void Scope::EmitRISC(std::ostream &stream, Context &context,
                          std::string destReg) const
 {
-    std::cout << "MultiList Goes to emitrisc with destreg" << std::endl;
+    std::cout << "Scope Goes to emitrisc with destreg" << std::endl;
 }
 
-void MultiList::Print(std::ostream &stream) const
+void Scope::Print(std::ostream &stream) const
 {
     stream << "{" << std::endl;
     for (auto node : nodes_)
@@ -34,9 +34,8 @@ void MultiList::Print(std::ostream &stream) const
     stream << "}" << std::endl;
 }
 
-
-entity_type MultiList::getEntity() const
+entity_type Scope::getEntity() const
 {
-    return entity_type::MULTI_LIST;
+    return entity_type::SCOPE;
 }
 
