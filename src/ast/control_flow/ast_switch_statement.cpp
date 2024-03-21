@@ -2,6 +2,10 @@
 
 void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
+    if (case_list_ == nullptr)
+    {
+        return;
+    }
     std::string switch_reg = context.allocateReg(stream);
 
     // Emit the expression

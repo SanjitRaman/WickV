@@ -14,7 +14,9 @@ class SwitchStatement : public Node
     virtual ~SwitchStatement()
     {
         delete expression_;
-        delete case_list_;
+        if (case_list_ != nullptr){
+            delete case_list_;
+        }
     };
 
     virtual void EmitRISC(std::ostream &stream,
