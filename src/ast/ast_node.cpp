@@ -60,7 +60,6 @@ void NodeList::EmitRISC(std::ostream &stream, Context &context,
 
 void NodeList::Print(std::ostream &stream) const
 {
-    stream << "{\n" << std::endl;
     for (auto node : nodes_)
     {
         if (node == nullptr)
@@ -69,6 +68,5 @@ void NodeList::Print(std::ostream &stream) const
         }
         node->Print(stream);
     }
-    stream << "}\n" << std::endl;
 }
 const std::vector<Node *> &NodeList::getNodes() const { return nodes_; }

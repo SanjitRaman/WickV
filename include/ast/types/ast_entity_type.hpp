@@ -28,7 +28,10 @@ enum entity_type
     TYPEDEF_IDENTIFIER,
     TYPEDEF_DEC,
     CASE_STATEMENT,
-    DEFAULT_STATEMENT
+    DEFAULT_STATEMENT,
+    SCOPE,
+    MULTI_LIST,
+    SWITCH_STATEMENT
     // todo add more entity types
 };
 

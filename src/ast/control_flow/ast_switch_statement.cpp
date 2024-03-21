@@ -2,6 +2,10 @@
 
 void SwitchStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
+    if (case_list_ == nullptr)
+    {
+        return;
+    }
     std::string switch_reg = context.allocateReg(stream);
 
     // Emit the expression
@@ -45,4 +49,9 @@ void SwitchStatement::Print(std::ostream &stream) const
     stream << ") ";
     case_list_->Print(stream);
     stream << std::endl;
+}
+
+entity_type SwitchStatement::getEntity() const
+{
+    return entity_type::SWITCH_STATEMENT;
 }

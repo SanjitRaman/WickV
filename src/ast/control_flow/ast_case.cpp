@@ -21,6 +21,7 @@ void CaseStatement::EmitRISC(std::ostream &stream, Context &context,
 
 void CaseStatement::Print(std::ostream &stream) const
 {
+    std::cout << "Printing case statement" << std::endl;
     stream << "case ";
     expression_->Print(stream);
     stream << ": ";

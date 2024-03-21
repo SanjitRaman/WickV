@@ -417,8 +417,8 @@ compound_statement
 		// TODO: correct this
 		$$ = new EmptyStatement();
 	}
-	| '{' statement_list '}' { $$ = $2; }
-	| '{' declaration_list '}' { $$ = $2; }
+	| '{' statement_list '}' { $$ = new Scope($2); }
+	| '{' declaration_list '}' { $$ = new Scope($2); }
 	| '{' declaration_list statement_list '}' { $$ = new MultiList($2, $3); } //May need to change
 	;
 declaration_list
@@ -438,7 +438,7 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement { $$ = new IfStatement($3, $5); }
 	| IF '(' expression ')' statement ELSE statement { $$ = new IfElseStatement($3, $5, $7); }
-	| SWITCH '(' expression ')' statement { $$ = new SwitchStatement($3, $5); }
+	| SWITCH '(' expression ')' statement { std::cout << "Goes to switch" << std::endl; $$ = new SwitchStatement($3, $5); std::cout << "SelectionStatement: " << std::endl;}
 	;
 
 iteration_statement
