@@ -32,8 +32,9 @@ enum entity_type
     SCOPE,
     MULTI_LIST,
     SWITCH_STATEMENT,
-    SEMICOLON
-    // todo add more entity types
+    SEMICOLON,
+    POINTER_DEREFERENCE,
+    POINTER_ADDRESS
 };
 
 enum data_type

@@ -175,25 +175,58 @@ void Assignment::EmitRISC(std::ostream &stream, Context &context) const
     // For integer types
     if (unary_expression_->getEntity() == entity_type::ARRAY)
     {
-        // TODO: to optimise, you could keep the address in a register from the
-        // beginning of function
         std::string index_reg = context.getIndexReg();
-        stream << "sw " << tempReg1 << ", 0(" << index_reg << ")" << std::endl;
+        if (result_type == data_type::_float)
+        {
+            stream << "fsw " << tempReg1 << ", 0(" << index_reg << ")" << std::endl;
+        }
+        else if (result_type == data_type::_double)
+        {
+            stream << "fsd " << tempReg1 << ", 0(" << index_reg << ")" << std::endl;
+        }
+        else if (result_type == data_type::_char)
+        {
+            stream << "sb " << tempReg1 << ", 0(" << index_reg << ")" << std::endl;
+        }
+        else
+        {
+            stream << "sw " << tempReg1 << ", 0(" << index_reg << ")" << std::endl;
+        }
         context.deallocateReg(index_reg);
         context.setIndexReg("");
     }
-    else if (unary_expression_->getEntity() == entity_type::POINTER)
+    else if (unary_expression_->getEntity() == entity_type::POINTER_DEREFERENCE)
     {
         std::string offset = context.getOffset(unary_expression_->getId());
         stream << "lw " << tempReg2 << ", " << offset << "(sp)" << std::endl;
-        stream << "sw " << tempReg1 << ", 0(" << tempReg2 << ")" << std::endl;
+        if (result_type == data_type::_float)
+        {
+            stream << "fsw " << tempReg1 << ", 0(" << tempReg2 << ")" << std::endl;
+        }
+        else if (result_type == data_type::_double)
+        {
+            stream << "fsd " << tempReg1 << ", 0(" << tempReg2 << ")" << std::endl;
+        }
+        else if (result_type == data_type::_char)
+        {
+            stream << "sb " << tempReg1 << ", 0(" << tempReg2 << ")" << std::endl;
+        }
+        else
+        {
+            stream << "sw " << tempReg1 << ", 0(" << tempReg2 << ")" << std::endl;
+        }
     }
     else
     {
-        if (result_type == data_type::_float || result_type == data_type::_double)
+        if (result_type == data_type::_float)
         {
             std::string offset = context.getOffset(unary_expression_->getId());
             stream << "fsw " << tempReg1 << ", " << offset << "(sp)" << std::endl;
+        }
+        else if (result_type == data_type::_double)
+        {
+            std::string offset = context.getOffset(unary_expression_->getId());
+            stream << "fsd " << tempReg1 << ", " << offset << "(sp)" << std::endl;
         }
         else if (result_type == data_type::_char)
         {
