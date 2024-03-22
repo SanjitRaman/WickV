@@ -31,7 +31,8 @@ enum entity_type
     DEFAULT_STATEMENT,
     SCOPE,
     MULTI_LIST,
-    SWITCH_STATEMENT
+    SWITCH_STATEMENT,
+    SEMICOLON
     // todo add more entity types
 };
 

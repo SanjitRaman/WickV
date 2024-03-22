@@ -18,6 +18,16 @@ void MultiList::EmitRISC(std::ostream &stream, Context &context,
                          std::string destReg) const
 {
     std::cout << "MultiList Goes to emitrisc with destreg" << std::endl;
+    context.CreateScope();
+    for (auto node : nodes_)
+    {
+        if (node == nullptr)
+        {
+            continue;
+        }
+        node->EmitRISC(stream, context, destReg);
+    }
+    context.ExitScope();
 }
 
 void MultiList::Print(std::ostream &stream) const

@@ -4,8 +4,9 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
 {
     if (expression_ != nullptr)
     {
-        //TODO: Check all return types
-        //TODO: Add an else statement to check for unknown return type (just assume int case)
+        // TODO: Check all return types
+        // TODO: Add an else statement to check for unknown return type (just
+        // assume int case)
         if (expression_->getType(context) == data_type::_int)
         {
             // Allocate temp register
@@ -26,7 +27,8 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
             stream << "fmv.s fa0, " << tempReturn << std::endl;
             context.deallocateFloatReg(tempReturn);
         }
-        else if (expression_->getType(context) == data_type::_double){
+        else if (expression_->getType(context) == data_type::_double)
+        {
             // Allocate temp register
             std::string tempReturn = context.allocateFloatReg(stream);
             expression_->EmitRISC(
@@ -35,7 +37,8 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
             stream << "fmv.d fa0, " << tempReturn << std::endl;
             context.deallocateFloatReg(tempReturn);
         }
-        else if (expression_->getType(context) == data_type::_unsigned){
+        else if (expression_->getType(context) == data_type::_unsigned)
+        {
             // Allocate temp register
             std::string tempReturn = context.allocateReg(stream);
             expression_->EmitRISC(
@@ -44,16 +47,28 @@ void ReturnStatement::EmitRISC(std::ostream &stream, Context &context) const
             stream << "mv a0, " << tempReturn << std::endl;
             context.deallocateReg(tempReturn);
         }
-        else if (expression_->getType(context) == data_type::_char){
+        else if (expression_->getType(context) == data_type::_char)
+        {
             // Allocate temp register
             std::string tempReturn = context.allocateReg(stream);
             expression_->EmitRISC(
                 stream, context,
                 tempReturn);  // store the return value in a0 register
             stream << "mv a0, " << tempReturn << std::endl;
-            if (!context.getIsPointer(expression_->getId())){ //TODO: Check all expressions
+            if (!context.getIsPointer(expression_->getId()))
+            {  // TODO: Check all expressions
                 stream << "andi a0, a0, 0xff" << std::endl;
             }
+            context.deallocateReg(tempReturn);
+        }
+        else
+        {
+            // Allocate temp register
+            std::string tempReturn = context.allocateReg(stream);
+            expression_->EmitRISC(
+                stream, context,
+                tempReturn);  // store the return value in a0 register
+            stream << "mv a0, " << tempReturn << std::endl;
             context.deallocateReg(tempReturn);
         }
     }

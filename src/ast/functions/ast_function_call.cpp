@@ -4,14 +4,46 @@ void FunctionCall::EmitRISC(std::ostream &stream, Context &context) const
 {
     std::cout << "goes to 2 params" << std::endl;
     // For up to 8 arguments
+    std::string tempArgReg;
     if (argument_expression_list_ != nullptr)
     {
         int i = 0;
+        int j = 0;
         for (auto arg : argument_expression_list_->getNodes())
         {
-            std::string argReg = "a" + std::to_string(i);
-            arg->EmitRISC(stream, context, argReg);
-            i++;
+            if (arg->getType(context) == data_type::_float || arg->getType(context) == data_type::_double)
+            {
+                std::string argFloatReg = "fa" + std::to_string(j);
+                arg->EmitRISC(stream, context, argFloatReg);
+                j++;
+                continue;
+            }
+            else if (arg->getType(context) == data_type::_char){
+                if (i > 7){
+                    tempArgReg = context.allocateReg(stream);
+                    arg->EmitRISC(stream, context, tempArgReg);
+                    stream << "sb " << tempArgReg << ", " << i << "(sp)" << std::endl;
+                    context.deallocateReg(tempArgReg);
+                }
+                else{
+                    std::string argReg = "a" + std::to_string(i);
+                    arg->EmitRISC(stream, context, argReg);
+                }
+                i++;
+            }
+            else {
+                if (i > 7){
+                    tempArgReg = context.allocateReg(stream);
+                    arg->EmitRISC(stream, context, tempArgReg);
+                    stream << "sw " << tempArgReg << ", " << (i-7) * 4 << "(sp)" << std::endl;
+                    context.deallocateReg(tempArgReg);
+                }
+                else{
+                    std::string argReg = "a" + std::to_string(i);
+                    arg->EmitRISC(stream, context, argReg);
+                }
+                i++;
+            }
         }
     }
 
