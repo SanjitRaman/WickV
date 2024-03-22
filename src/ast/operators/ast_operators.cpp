@@ -5,7 +5,7 @@
 void AddOperator::EmitRISC(std::ostream &stream, Context &context,
                            std::string destReg) const
 {
-    if (context.getIsPointer(op1_->getId()))
+    if ((context.getIsPointer(op1_->getId()) && op1_->getEntity() != POINTER_DEREFERENCE) || op1_->getEntity() == POINTER_ADDRESS)
     {
         int mem_index = INT_MEM;
         if (context.getBindingType(op1_->getId()) == data_type::_int)
@@ -38,7 +38,7 @@ void AddOperator::EmitRISC(std::ostream &stream, Context &context,
                << std::endl;
         context.deallocateReg(op1_reg);
     }
-    else if (context.getIsPointer(op2_->getId()))
+    else if ((context.getIsPointer(op2_->getId()) && op2_->getEntity() != POINTER_DEREFERENCE) || op2_->getEntity() == POINTER_ADDRESS)
     {
         int mem_index = INT_MEM;
         if (context.getBindingType(op2_->getId()) == data_type::_int)
@@ -178,7 +178,7 @@ void SubtractOperator::EmitRISC(std::ostream &stream, Context &context,
                                 std::string destReg) const
 {
     // Your code here
-    if (context.getIsPointer(op1_->getId()))
+    if ((context.getIsPointer(op1_->getId()) && op1_->getEntity() != POINTER_DEREFERENCE) || op1_->getEntity() == POINTER_ADDRESS)
     {
         int mem_index = INT_MEM;
         if (context.getBindingType(op1_->getId()) == data_type::_int)
@@ -211,7 +211,7 @@ void SubtractOperator::EmitRISC(std::ostream &stream, Context &context,
                << std::endl;
         context.deallocateReg(op1_reg);
     }
-    else if (context.getIsPointer(op2_->getId()))
+    else if ((context.getIsPointer(op2_->getId()) && op1_->getEntity() != POINTER_DEREFERENCE) || op2_->getEntity() == POINTER_ADDRESS)
     {
         int mem_index = INT_MEM;
         if (context.getBindingType(op2_->getId()) == data_type::_int)
@@ -397,6 +397,17 @@ void MultiplyOperator::EmitRISC(std::ostream &stream, Context &context,
                << std::endl;
         context.deallocateReg(op2_reg);
     }
+    else {
+        std::string op1_reg = context.allocateReg(stream);
+        op1_->EmitRISC(stream, context, op1_reg);
+        stream << "add " << destReg << ", " << op1_reg << ", zero" << std::endl;
+        context.deallocateReg(op1_reg);
+        std::string op2_reg = context.allocateReg(stream);
+        op2_->EmitRISC(stream, context, op2_reg);
+        stream << "mul " << destReg << ", " << destReg << ", " << op2_reg
+               << std::endl;
+        context.deallocateReg(op2_reg);
+    }
 }
 
 void MultiplyOperator::EmitRISC(std::ostream &stream, Context &context) const {}
@@ -472,6 +483,17 @@ void DivideOperator::EmitRISC(std::ostream &stream, Context &context,
     }
     else if (getType(context) == data_type::_char)
     {
+        std::string op1_reg = context.allocateReg(stream);
+        op1_->EmitRISC(stream, context, op1_reg);
+        stream << "add " << destReg << ", " << op1_reg << ", zero" << std::endl;
+        context.deallocateReg(op1_reg);
+        std::string op2_reg = context.allocateReg(stream);
+        op2_->EmitRISC(stream, context, op2_reg);
+        stream << "div " << destReg << ", " << destReg << ", " << op2_reg
+               << std::endl;
+        context.deallocateReg(op2_reg);
+    }
+    else {
         std::string op1_reg = context.allocateReg(stream);
         op1_->EmitRISC(stream, context, op1_reg);
         stream << "add " << destReg << ", " << op1_reg << ", zero" << std::endl;
@@ -673,7 +695,6 @@ data_type ModulusOperator::getType(Context &context) const
 }
 
 // -------------------------- LogicalAndOperator --------------------------
-// TODO: for pointers?
 void LogicalAndOperator::EmitRISC(std::ostream &stream, Context &context,
                                   std::string destReg) const
 {
@@ -789,7 +810,6 @@ data_type LogicalAndOperator::getType(Context &context) const
 }
 
 // -------------------------- LogicalOrOperator --------------------------
-// TODO: Check
 void LogicalOrOperator::EmitRISC(std::ostream &stream, Context &context,
                                  std::string destReg) const
 {

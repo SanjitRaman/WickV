@@ -96,7 +96,11 @@ entity_type Unary::getEntity() const
 {
     if (unary_op_ == "*")
     {
-        return entity_type::POINTER;
+        return entity_type::POINTER_DEREFERENCE;
+    }
+    else if (unary_op_ == "&")
+    {
+        return entity_type::POINTER_ADDRESS;
     }
     else
     {
@@ -123,5 +127,11 @@ void Unary::Print(std::ostream &stream) const
 
 data_type Unary::getType(Context &context) const
 {
-    return cast_expression_->getType(context);
+    if (unary_op_ == "*"){
+        return cast_expression_->getType(context);
+    }
+    else{
+        return cast_expression_->getType(context);
+    }
+    
 }

@@ -6,7 +6,11 @@ void SizeOf::EmitRISC(std::ostream &stream, Context &context,
                       std::string destReg) const
 {
     data_type type = expression_->getType(context);
-    if (type == data_type::_int)
+    if (context.getIsPointer(expression_->getId()))
+    {
+        stream << "li " << destReg << ", " << INT_MEM << std::endl;
+    }
+    else if (type == data_type::_int)
     {
         stream << "li " << destReg << ", " << INT_MEM << std::endl;
     }
