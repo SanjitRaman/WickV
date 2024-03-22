@@ -13,6 +13,7 @@ class Semicolon : public Node
     virtual void EmitRISC(std::ostream &stream, Context &context,
                           std::string destReg) const override;
     virtual void Print(std::ostream &stream) const override;
+    virtual entity_type getEntity() const override;
 };
 
 #endif

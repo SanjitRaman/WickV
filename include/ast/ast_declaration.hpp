@@ -17,10 +17,7 @@ class Declaration : public Node
     virtual ~Declaration()
     {
         delete declaration_specifiers_;
-        if (init_declaration_list_ != nullptr)
-        {
-            delete init_declaration_list_;
-        }
+        delete init_declaration_list_;
     };
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;

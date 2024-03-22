@@ -15,12 +15,29 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         // params[param->getId()] = param->getEntity(); //so we know the offset
         // in compound statement
         //TODO: Check all types have been implemented 
-        if (param->getType() == data_type::_int)
-        {
-            offset = context.getMemory(INT_MEM);
-            stream << "sw a" << i << ", " << offset << "(sp)"
+        if (param->getEntity() == entity_type::POINTER){
+            if (i <= 7){
+                offset = context.getMemory(INT_MEM);
+                stream << "sw a" << i << ", " << offset << "(sp)"
                    << std::endl;  // We know which register to use by order that
                                   // function declares parameters
+            }
+            else{
+                offset = std::to_string(((i-7) * 4) + 128);
+            }
+            i++;
+        }
+        else if (param->getType() == data_type::_int)
+        {
+            if (i <= 7){
+                offset = context.getMemory(INT_MEM);
+                stream << "sw a" << i << ", " << offset << "(sp)"
+                   << std::endl;  // We know which register to use by order that
+                                  // function declares parameters
+            }
+            else{
+                offset = std::to_string((i-7) * 4 + 128);
+            }
             i++;
         }
         else if (param->getType() == data_type::_float)
@@ -34,14 +51,16 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
             stream << "fsd fa" << j << ", " << offset << "(sp)" << std::endl;
             j++;
         }
-        else if (param->getType() == data_type::_char && param->getEntity() == entity_type::POINTER){
-            offset = context.getMemory(INT_MEM);
-            stream << "sw a" << i << ", " << offset << "(sp)" << std::endl;
-            i++;
-        }
         else if (param->getType() == data_type::_char){
-            offset = context.getMemory(CHAR_MEM);
-            stream << "sb a" << i << ", " << offset << "(sp)" << std::endl;
+            if (i <= 7){
+                offset = context.getMemory(CHAR_MEM);
+                stream << "sb a" << i << ", " << offset << "(sp)"
+                   << std::endl;  // We know which register to use by order that
+                                  // function declares parameters
+            }
+            else{
+                offset = std::to_string(((i-7) * 4) + 128);
+            }
             i++;
         }
 
@@ -54,7 +73,7 @@ void ParameterList::EmitRISC(std::ostream &stream, Context &context) const
         }
         else
         {
-            context.update_params(param->getId(), param->getType(), offset);
+            context.update_params(param->getId(), param->getType(), offset, false);
         }
         // node->EmitRISC(stream, context);
     }

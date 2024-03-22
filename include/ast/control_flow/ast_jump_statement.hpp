@@ -9,7 +9,11 @@ class ReturnStatement : public Node
 
    public:
     ReturnStatement(Node *expression) : expression_(expression) {}
-    virtual ~ReturnStatement() { delete expression_; };
+    virtual ~ReturnStatement() {
+        if (expression_ != nullptr){
+            delete expression_;
+        } 
+    };
 
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;

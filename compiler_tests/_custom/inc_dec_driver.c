@@ -2,6 +2,5 @@ int g();
 
 int main()
 {
-    int x;
-    return !(g()==1);
+    return !(g()==58);
 }

@@ -444,7 +444,7 @@ iteration_statement
 	: WHILE '(' expression ')' statement { $$ = new WhileStatement($3, $5); }
 	| FOR '(' expression_statement expression_statement expression ')' statement { $$ = new ForStatement($3, $4, $5, $7); std::cout << "IterationStatement: " << std::endl;}
 	| DO statement WHILE '(' expression ')' ';' { $$ = new DoWhileStatement($2, $5); }
-	| FOR '(' expression_statement expression_statement ')' statement { $$ = new ForStatement($3, $4, $6); }
+	| FOR '(' expression_statement expression_statement ')' statement { $$ = new ForStatement($3, $4, nullptr, $6); }
 	;
 
 jump_statement

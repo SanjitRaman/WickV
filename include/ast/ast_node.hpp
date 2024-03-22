@@ -34,14 +34,13 @@ class NodeList : public Node
    public:
     NodeList(Node *first_node) : nodes_({first_node}) {}
 
-    ~NodeList()
+    virtual ~NodeList()
     {
         for (auto node : nodes_)
         {
             delete node;
         }
     }
-
     void PushBack(Node *item);
     virtual void EmitRISC(std::ostream &stream,
                           Context &context) const override;

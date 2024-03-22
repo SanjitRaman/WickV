@@ -35,8 +35,14 @@ void ForStatement::EmitRISC(std::ostream &stream, Context &context) const
     stream << conditionLabel << ":" << std::endl;
 
     // Emit the condition
-    loop_condition_->EmitRISC(stream, context, destReg);
-
+    if (loop_condition_->getEntity() == entity_type::SEMICOLON)
+    {
+        stream << "addi " << destReg << ", zero, 1" << std::endl;
+    }
+    else
+    {
+        loop_condition_->EmitRISC(stream, context, destReg);
+    }
     // Emit the branch
     stream << "bnez " << destReg << ", " << startLabel << std::endl;
 
@@ -58,7 +64,9 @@ void ForStatement::Print(std::ostream &stream) const
     stream << "; ";
     loop_condition_->Print(stream);
     stream << "; ";
-    increment_->Print(stream);
+    if (increment_ != nullptr){
+        increment_->Print(stream);
+    }
     stream << ") ";
     for_statement_->Print(stream);
     stream << std::endl;
