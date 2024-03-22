@@ -102,7 +102,6 @@ class Context
     float_reg_file risc_float_regs;
 
     int makeLabelUnq = 0;
-    /* TODO decide what goes inside here */
    public:
     std::vector<std::unordered_map<std::string, variable>>
         scopes;                                     // Stores symbol tables
@@ -229,7 +228,19 @@ class Context
 
     int setEnumVal()
     {
+        bool found = true;
         global_enum_val++;
+        while (found){
+            found = false;
+            for (auto const& pair : enum_info.back().enum_vals)
+            {
+                if (pair.second == global_enum_val){
+                    found = true;
+                    global_enum_val++;
+                    break;
+                }
+            }
+        }
         return global_enum_val;
     }
 
@@ -253,11 +264,6 @@ class Context
         return -1;
     }
 
-    void set_function_params(std::string function_name,
-                             function_properties function_info)
-    {
-    }  // TODO: Implement to update params (call in function_definition after
-       // prolog)
 
     void update_params(std::string param_name, data_type param_type,
                        std::string param_offset, bool isPointer = false)
@@ -268,14 +274,8 @@ class Context
         new_param.isPointer = isPointer;
         params[param_name] = new_param;
 
-    }  // TODO: call to update params in parameter_list DONE
+    } 
 
-    // TODO: delete later.
-    void set_local_vars(std::string function_name, std::string var_name,
-                        entity_type var_type)
-    {
-        std::cout << "set_local_vars should not be called" << std::endl;
-    }  // TODO : set bindings (may not need to link to function)
 
     std::string getMemory(int mem_size)
     {
@@ -301,7 +301,35 @@ class Context
             for (int i = 0; i < array_size - 1; i++)
             {
                 offset =
-                    getMemory(INT_MEM);  // TODO: don't use INT_MEM by default
+                    getMemory(INT_MEM); 
+            }
+        }
+        else if (bindings[id].type == data_type::_float)
+        {
+            for (int i = 0; i < array_size - 1; i++)
+            {
+                offset = getMemory(FLOAT_MEM);
+            }
+        }
+        else if (bindings[id].type == data_type::_double)
+        {
+            for (int i = 0; i < array_size - 1; i++)
+            {
+                offset = getMemory(DOUBLE_MEM);
+            }
+        }
+        else if (bindings[id].type == data_type::_char)
+        {
+            for (int i = 0; i < array_size - 1; i++)
+            {
+                offset = getMemory(CHAR_MEM);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < array_size - 1; i++)
+            {
+                offset = getMemory(INT_MEM);  // Default, but shouldn't need
             }
         }
     }

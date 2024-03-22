@@ -21,3 +21,9 @@ void ArrayDeclarator::Print(std::ostream &stream) const
     size_->Print(stream);
     stream << "]";
 }
+
+
+data_type ArrayDeclarator::getType(Context &context) const
+{
+    return context.getBindingType(identifier_->getId());
+}

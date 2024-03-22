@@ -7,7 +7,7 @@ const int DOUBLE_MEM = 8;
 const int FLOAT_MEM = 4;
 const int CHAR_MEM = 1;
 
-// TODO: look into using the parser enum for data types
+
 enum entity_type
 {
     INVALID,
@@ -45,16 +45,7 @@ enum data_type
     _char,
     _float,
     _double
-    // _ptr TODO: somewhere else.
 };
 
-// MIGHT DELETE
-struct function_properties
-{
-    std::unordered_map<std::string, entity_type>
-        funct_params;         //(change : just storing identifiers) //Change to
-                              //<string, param>
-    entity_type return_type;  // todo
-};
 
 #endif

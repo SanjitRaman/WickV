@@ -23,6 +23,7 @@ class ArrayDeclarator : public Node
     virtual void Print(std::ostream &stream) const override;
     virtual entity_type getEntity() const override;  // may be overridden
     virtual std::string getId() const override;
+    virtual data_type getType(Context &context) const override;
 };
 
 #endif

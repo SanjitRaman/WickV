@@ -49,12 +49,47 @@ void ArrayIndex::EmitRISC(std::ostream &stream, Context &context,
             stream << "mul " << index_reg << ", " << index_reg << ", "
                    << destReg << std::endl;
         }
+        else if (context.getBindingType(getId()) == data_type::_float){
+            stream << "li " << destReg << ", " << FLOAT_MEM << std::endl;
+            stream << "mul " << index_reg << ", " << index_reg << ", "
+                   << destReg << std::endl;
+        }
+        else if (context.getBindingType(getId()) == data_type::_double){
+            stream << "li " << destReg << ", " << FLOAT_MEM << std::endl;
+            stream << "mul " << index_reg << ", " << index_reg << ", "
+                   << destReg << std::endl;
+        }
+        else if (context.getBindingType(getId()) == data_type::_char){
+            stream << "li " << destReg << ", " << CHAR_MEM << std::endl;
+            stream << "mul " << index_reg << ", " << index_reg << ", "
+                   << destReg << std::endl;
+        }
+        else{
+            stream << "li " << destReg << ", " << INT_MEM << std::endl;
+            stream << "mul " << index_reg << ", " << index_reg << ", "
+                   << destReg << std::endl;
+        }
         stream << "li " << destReg << ", " << start_offset << std::endl;
         stream << "sub " << destReg << ", " << destReg << ", " << index_reg
                << std::endl;
         stream << "add " << destReg << ", " << destReg << ", sp" << std::endl;
         stream << "mv " << index_reg << ", " << destReg << std::endl;
-        stream << "lw " << destReg << ", 0(" << index_reg << ")" << std::endl;
+        if (context.getBindingType(getId()) == data_type::_int)
+        {
+            stream << "lw " << destReg << ", 0(" << index_reg << ")" << std::endl;
+        }
+        else if (context.getBindingType(getId()) == data_type::_float){
+            stream << "flw " << destReg << ", 0(" << index_reg << ")" << std::endl;
+        }
+        else if (context.getBindingType(getId()) == data_type::_double){
+            stream << "fld " << destReg << ", 0(" << index_reg << ")" << std::endl;
+        }
+        else if (context.getBindingType(getId()) == data_type::_char){
+            stream << "lbu " << destReg << ", 0(" << index_reg << ")" << std::endl;
+        }
+        else{
+            stream << "lw " << destReg << ", 0(" << index_reg << ")" << std::endl;
+        }
 
         if (context.getFetchIndexReg())
         {
