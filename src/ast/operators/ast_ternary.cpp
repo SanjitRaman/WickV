@@ -30,3 +30,10 @@ void Ternary::Print(std::ostream &stream) const
     false_expression_->Print(stream);
     stream << ")";
 }
+
+data_type Ternary::getType(Context &context) const
+{
+    data_type true_type = true_expression_->getType(context);
+    data_type false_type = false_expression_->getType(context);
+    return true_type;
+}
